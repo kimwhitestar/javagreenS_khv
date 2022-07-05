@@ -172,7 +172,7 @@ public class CustomPersonController {
 		return "custom/person/customPersonEntry";
 	}
 	
-	//회원가입화면 이동
+	//회원가입화면
 	@RequestMapping(value="/customPersonEntry", method=RequestMethod.POST)
 	public String customPersonEntryPost(CustomPersonEntryUpdateFormVO entryVo) {
 

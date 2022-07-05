@@ -2,6 +2,7 @@ package com.spring.javagreenS_khv.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.javagreenS_khv.dao.CustomPersonDAO;
 import com.spring.javagreenS_khv.vo.CustomPersonLoginVO;
@@ -12,12 +13,12 @@ public class CustomPersonServiceImpl implements CustomPersonService {
 
 	@Autowired
 	public CustomPersonDAO customPersonDao;
-	
+
 	@Override
 	public CustomPersonLoginVO searchLogin(String id, String pwd) {
 		return customPersonDao.searchLogin(id, pwd);
 	}
-	
+
 	@Override
 	public void updateTodayCnt(String id, int customId) {
 		customPersonDao.updateTodayCnt(id, customId);
@@ -63,6 +64,7 @@ public class CustomPersonServiceImpl implements CustomPersonService {
 		return customPersonDao.obtainCustomId(customKindCode);
 	}
 
+	@Transactional
 	@Override
 	public void insertCustomCompAndCustomCompLogin(CustomPersonVO personVo, CustomPersonLoginVO loginVo) {
 		customPersonDao.insertCustomCompAndCustomCompLogin(personVo, loginVo);

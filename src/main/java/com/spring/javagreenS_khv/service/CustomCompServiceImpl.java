@@ -2,6 +2,7 @@ package com.spring.javagreenS_khv.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.javagreenS_khv.dao.CustomCompDAO;
 import com.spring.javagreenS_khv.vo.CustomCompLoginVO;
@@ -63,6 +64,7 @@ public class CustomCompServiceImpl implements CustomCompService {
 		customCompDao.insertCustomCompAndCustomCompLogin(compVo, loginVo);		
 	}
 
+	@Transactional
 	@Override
 	public int obtainCustomId(int customKindCode) {
 		return customCompDao.obtainCustomId(customKindCode);

@@ -178,7 +178,6 @@ public class CustomCompController {
 	}
 
 	//회원가입
-	@Transactional
 	@RequestMapping(value="/customCompEntry", method=RequestMethod.POST)
 	public String customCompEntryPost(CustomCompEntryUpdateFormVO entryVo) {
 
@@ -288,12 +287,12 @@ public class CustomCompController {
 		model.addAttribute("email1", email1);
 		model.addAttribute("email2", email2);
 		model.addAttribute("txtEmail2", txtEmail2);
-			//이메일 중복 / 존재 체크
-			if (customCompService.emailCheck(email)) {
-				model.addAttribute("existEmailYN", "Y");
-			} else {
-				model.addAttribute("existEmailYN", "N");
-			}
+		//이메일 중복 / 존재 체크
+		if (customCompService.emailCheck(email)) {
+			model.addAttribute("existEmailYN", "Y");
+		} else {
+			model.addAttribute("existEmailYN", "N");
+		}
 		return "custom/comp/customCompEmailCheck";
 	}
 	
