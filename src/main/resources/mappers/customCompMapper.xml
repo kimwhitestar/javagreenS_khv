@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.javagreenS_khv.dao.CustomCompDAO">
+<!-- 수정 <mapper namespace="org.mybatis.example.BlogMapper"></mapper> -->
+	<select id="searchCustomComp" resultType="com.spring.javagreenS_khv.vo.CustomCompVO">
+	    SELECT * FROM CUSTOM_COMP WHERE CUSTOM_ID = #{customId}
+	</select>
+	<select id="searchLogin" resultType="com.spring.javagreenS_khv.vo.CustomCompLoginVO">
+		SELECT 
+			ID,  -- primary key
+			PASSWORD,
+			CUSTOM_ID,  -- foreign key (custom_comp TBL)
+			(SELECT CUSTOM_NM FROM CUSTOM_COMP WHERE CUSTOM_ID = CUSTOM_COMP_LOGIN.CUSTOM_ID) AS CUSTOM_NAME,  -- foreign key (코드TBL)
+			CUSTOM_GRADE,
+			(SELECT GRADE_NAME FROM CUSTOM_GRADE WHERE GRADE_CODE = CUSTOM_GRADE) AS GRADE_NAME,  -- foreign key (코드TBL)
+			POINT,
+			VISIT_CNT,
+			TODAY_CNT,
+			LOGIN_DATE,
+			LOGOUT_DATE,
+			CREATE_DATE,
+			UPDATE_DATE,
+			DELETE_DATE 
+		FROM CUSTOM_COMP_LOGIN 
+		WHERE ID = #{id} AND PASSWORD = #{pwd} AND DELETE_DATE IS NULL ;  -- primary key(id) indexing	    
+	</select>
+	<update id="updateTodayCnt">
+		UPDATE CUSTOM_COMP_LOGIN SET TODAY_CNT = 0, LOGIN_DATE = DEFAULT, LOGIN_USER = #{id}, UPDATE_DATE = DEFAULT, UPDATE_USER = #{id} WHERE ID = #{id} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL
+	</update>
+	<update id="updateVisitCntAndTodayCnt">
+		UPDATE CUSTOM_COMP_LOGIN SET VISIT_CNT = VISIT_CNT+1, TODAY_CNT = TODAY_CNT+1, UPDATE_DATE = DEFAULT, UPDATE_USER = #{id} WHERE ID = #{id} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL
+	</update>
+	<update id="updatePoint">
+		UPDATE CUSTOM_COMP_LOGIN SET POINT = POINT + 100, UPDATE_DATE = DEFAULT, UPDATE_USER = #{id} WHERE ID = #{id} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL
+	</update>
+	<update id="updateCustomCompLoginUserDel">
+		UPDATE CUSTOM_COMP_LOGIN SET DELETE_DATE = DEFAULT, DELETE_USER = #{id}, LOGOUT_DATE = DEFAULT, LOGOUT_USER = #{id}  WHERE ID = #{id} AND CUSTOM_ID = #{customId}
+	</update>
+	<update id="updateLogout">
+		UPDATE CUSTOM_COMP_LOGIN SET LOGOUT_DATE = DEFAULT, LOGOUT_USER = #{id} WHERE ID = #{id} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL
+	</update>
+	<select id="loginIdCheck" resultType="boolean">
+		SELECT IF(COUNT(ID) > 0, TRUE, FALSE) AS ISEXIST_ID FROM CUSTOM_COMP_LOGIN WHERE ID = #{id}
+	</select>
+	<select id="companyNoCheck" resultType="boolean">
+		SELECT IF(COUNT(COMPANY_NO) > 0, TRUE, FALSE) AS ISEXIST_COMPANY_NO FROM CUSTOM_COMP WHERE COMPANY_NO = #{companyNo} -- Unique key(company_no) indexing
+	</select>
+	<select id="emailCheck" resultType="boolean">
+		SELECT IF(COUNT(EMAIL) > 0, TRUE, FALSE) AS ISEXIST_EMAIL FROM CUSTOM_COMP WHERE EMAIL = #{email}
+	</select>
+	<select id="obtainCustomId" resultType="int">
+		SELECT IFNULL(MAX(CUSTOM_ID) + 1, (CASE WHEN #{customKindCode} = 1 OR #{customKindCode} = 2 THEN 100 ELSE #{customKindCode} END) * 100000 + 1) AS OBT_CUSTOM_ID  
+		FROM CUSTOM_COMP 
+		WHERE SUBSTRING(CUSTOM_ID, 1,3) = CASE WHEN #{customKindCode} = 1 OR #{customKindCode} = 2 THEN 100 ELSE #{customKindCode} END; 
+		-- primary key(custom_id) indexing을 조건절에서 SUBSTRING에 사용하면 조회속도가 높을것 같기도 하는데요
+	</select>
+	<insert id="insertCustomCompAndCustomCompLogin">
+		INSERT INTO CUSTOM_COMP VALUES ( 
+				DEFAULT, 
+				#{compVo.custom_id},  	
+				#{compVo.custom_nm},  
+				#{compVo.custom_nm_short},  
+				1,
+				#{compVo.custom_kind_cd},  
+				'O',
+				#{compVo.estbl_date},  
+				#{compVo.company_no}, 
+				
+		<if test='#{compVo.office} == "기타"'>
+				#{compVo.txt_office},  
+		</if>
+		<if test='#{compVo.office} != "기타"'>
+				#{compVo.office},  
+		</if>
+			
+				#{compVo.tel_no},  
+				#{compVo.hp_no},  
+				#{compVo.email},  
+				#{compVo.post_code},  
+				#{compVo.road_addr},  
+				#{compVo.extra_addr},  
+				#{compVo.detail_addr},  
+				#{compVo.memo},  
+				#{compVo.custom_img_file_name},  
+				DEFAULT, 
+				#{compVo.custom_id},   -- create_user	
+				NULL, 
+				NULL, 
+				NULL, 
+				NULL );
+		
+		INSERT INTO CUSTOM_COMP_LOGIN VALUES ( #{loginVo.id}, #{loginVo.encrypt_pwd}, #{loginVo.custom_id}, 'O', DEFAULT, DEFAULT, DEFAULT, NULL, NULL, NULL, NULL, DEFAULT, #{loginVo.id}, NULL, NULL, NULL, NULL);
+
+	</insert>
+	
+	
+</mapper>
