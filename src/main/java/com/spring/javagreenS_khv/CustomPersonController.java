@@ -210,7 +210,7 @@ public class CustomPersonController {
 		loginVo.setCustom_id(customId);
 		
 		//개인고객 회원정보 DB 등록, 개인고객 로그인 DB 등록
-		customPersonService.insertCustomCompAndCustomCompLogin(personVo, loginVo);
+		customPersonService.insertCustomPersonAndCustomPersonLogin(personVo, loginVo);
 		
 //	if (1 == resLogin && 1 == resComp) {
 			return "redirect:/msgCustomComp/EntryOk";

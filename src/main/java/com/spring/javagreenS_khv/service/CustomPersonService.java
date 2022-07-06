@@ -25,6 +25,6 @@ public interface CustomPersonService {
 
 	public int obtainCustomId(int customKindCode);
 
-	public void insertCustomCompAndCustomCompLogin(CustomPersonVO personVo, CustomPersonLoginVO loginVo);
+	public void insertCustomPersonAndCustomPersonLogin(CustomPersonVO personVo, CustomPersonLoginVO loginVo);
 	
 }

@@ -66,7 +66,7 @@ public class CustomPersonServiceImpl implements CustomPersonService {
 
 	@Transactional
 	@Override
-	public void insertCustomCompAndCustomCompLogin(CustomPersonVO personVo, CustomPersonLoginVO loginVo) {
-		customPersonDao.insertCustomCompAndCustomCompLogin(personVo, loginVo);
+	public void insertCustomPersonAndCustomPersonLogin(CustomPersonVO personVo, CustomPersonLoginVO loginVo) {
+		customPersonDao.insertCustomPersonAndCustomPersonLogin(personVo, loginVo);
 	}
 }
