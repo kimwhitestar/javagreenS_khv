@@ -28,7 +28,7 @@
 		// Jquery방식으로, 자식창에서 윈도우 로딩시에 Document를 메모리로 모두 올리고 작업준비한다.
 		childWin.onload = function() {
 			//자식창에 id값 셋팅
-			childWin.document.getElementById("id").value = $("#id").val();
+			childWin.document.getElementById("loginId").value = $("#loginId").val();
 		}
 	}
 	
@@ -60,15 +60,15 @@
 
 	//회원가입폼 체크
 	function checkEntryForm() {
-		if ( editForm(regexCheck()) ) {
+ 		if ( editForm(regexCheck()) ) {
 			entryForm.submit();
 		}
-	}
+ 	}
 
 	//DB에 저장될 각각의 필드길이 체크
  	function regexCheck() {
-		const regexId = /^[a-zA-Z]+[0-9_+-.]*[a-zA-Z_+-.]*[0-9]([a-zA-Z0-9_+-.]*)$/g; //아이디체크(영문자1자리이상, 숫자나 특수기호 조합 2~20자리)
-    	const regexPassword = /([a-zA-Z][0-9][@#$%&!?^~*+-_.]|[0-9][a-zA-Z][@#$%&!?^~*+-_.]|[@#$%&!?^~*+-_.][a-zA-Z][0-9]|[@#$%&!?^~*+-_.][0-9][a-zA-Z])/g;//비밀번호체크(영문자,숫자,특수기호 @#$%&!?^~*+-_. 조합 3~20자리)
+		const regexLoginId = /^[a-zA-Z]+[0-9_+-.]*[a-zA-Z_+-.]*[0-9]([a-zA-Z0-9_+-.]*)$/g; //아이디체크(영문자1자리이상, 숫자나 특수기호 조합 2~20자리)
+    	const regexLoginPwd = /([a-zA-Z][0-9][@#$%&!?^~*+-_.]|[0-9][a-zA-Z][@#$%&!?^~*+-_.]|[@#$%&!?^~*+-_.][a-zA-Z][0-9]|[@#$%&!?^~*+-_.][0-9][a-zA-Z])/g;//비밀번호체크(영문자,숫자,특수기호 @#$%&!?^~*+-_. 조합 3~20자리)
   		const regexCustomName = /[가-힣a-zA-Z]{3,10}([0-9]*)/g; //이름체크(한글or영문에 필요하면 숫자포함 조합 3~20자리)
 		const regexTxtJob = /[가-힣a-zA-Z]{1,100}/g; //직업명체크(한글 또는 영문 1~100자리)
     	const regexDetailAddress = /[a-zA-Z0-9가-힣#-. ]{1,50}/g; //상세주소체크(한글or영문에 필요하면 숫자 또는 특수문자( .-#) 1~50자리)
@@ -83,30 +83,28 @@
 		let regexFlag = true;
 		
  		//회원아이디 정규식 체크
-		if ( ! $("#id").val().match(regexId) ) {
- 			$("#id").addClass("is-invalid");
- 			$("#idInvalid").addClass("is-invalid");
- 			$("#idInvalid").text("영문자로 시작하여 숫자1자리 이상 포함하는 영문,숫자,특수기호(_+-.)의 조합 2~20자리로 입력하세요");
- 			$("#id").focus();
+		if ( ! $("#loginId").val().match(regexLoginId) ) {
+ 			$("#loginId").addClass("is-invalid");
+ 			$("#loginIdInvalid").addClass("is-invalid");
+ 			$("#loginIdInvalid").text("영문자로 시작하여 숫자1자리 이상 포함하는 영문,숫자,특수기호(_+-.)의 조합 2~20자리로 입력하세요");
+ 			$("#loginId").focus();
  			regexFlag = false;
  		} else {
- 			$("#id").addClass("is-valid");
- 			$("#idInvalid").addClass("is-valid");
- 			$("#idInvalid").text("");
- 			$("#password").focus();
+ 			$("#loginId").addClass("is-valid");
+ 			$("#loginIdInvalid").addClass("is-valid");
+ 			$("#loginIdInvalid").text("");
  		}
 		//비밀번호 정규식 체크
-		if ( ! $("#password").val().match(regexPassword) ) {
-			$("#password").addClass("is-invalid");
-			$("#passwordInvalid").addClass("is-invalid");
-			$("#passwordInvalid").text("영문자, 숫자, 특수기호(~!?@#$%^&*_+-.) 조합 3~20자리로 입력하세요");
- 			$("#password").focus();
+		if ( ! $("#loginPwd").val().match(regexLoginPwd) ) {
+			$("#loginPwd").addClass("is-invalid");
+			$("#loginPwdInvalid").addClass("is-invalid");
+			$("#loginPwdInvalid").text("영문자, 숫자, 특수기호(~!?@#$%^&*_+-.) 조합 3~20자리로 입력하세요");
+ 			$("#loginPwd").focus();
  			regexFlag = false;
 		} else {
-			$("#password").addClass("is-valid");
-			$("#passwordInvalid").addClass("is-valid");
- 			$("#passwordInvalid").text("");
-			$("#customName").focus();
+			$("#loginPwd").addClass("is-valid");
+			$("#loginPwdInvalid").addClass("is-valid");
+ 			$("#loginPwdInvalid").text("");
 		}
 		//이름 정규식 체크
 		if ( ! $("#customName").val().match(regexCustomName) ) {
@@ -119,7 +117,6 @@
 			$("#customName").addClass("is-valid");
 			$("#customNameInvalid").addClass("is-valid");
 			$("#customNameInvalid").text("");
-			$("#job").focus();
 		}
 		//직업 정규식 체크
 		if ( ! $("#txtJob").val().match(regexTxtJob) ) {
@@ -132,7 +129,6 @@
 			$("#txtJob").addClass("is-valid");
 			$("#txtJobInvalid").addClass("is-valid");
 			$("#txtJobInvalid").text("");
-			$("#postcode").focus();
 		}
 		//우편번호 공란 체크
 		if ( '' == $('#addressGroup input[name="postcode"]').val()
@@ -146,7 +142,6 @@
 			$('#addressGroup input[name="detailAddress"]').addClass("is-valid");
 			$("#detailAddressInvalid").addClass("is-valid");
 			$("#detailAddressInvalid").text("");
-			$("#btnPostCode").focus();
 		}
 		//상세주소 정규식 체크
  		if ( '' != $('#addressGroup input[name="postcode"]').val() 
@@ -161,7 +156,6 @@
 				$('#addressGroup input[name="detailAddress"]').addClass("is-valid");
 				$("#detailAddressInvalid").addClass("is-valid");
 				$("#detailAddressInvalid").text("");
-				$("#email1").focus();
 			}
 		}
 		//이메일 정규식 체크
@@ -175,7 +169,6 @@
 			$("#email1").addClass("is-valid");
 			$("#email1Invalid").addClass("is-valid");
 			$("#email1Invalid").text("");
-			$("#email2").focus();
 		}
 		//이메일 도메인 정규식 체크
 		let options = entryForm.email2.options;
@@ -197,14 +190,12 @@
 						$("#txtEmail2").addClass("is-valid");
 						$("#txtEmail2Invalid").addClass("is-valid");
 						$("#txtEmail2Invalid").text("");
-						$("#tel1").focus();
 					}
 	  		}
 	  	}	else {//도메인 셀렉트박스에서 선택한 경우
 				$("#txtEmail2").addClass("is-valid");
 				$("#txtEmail2Invalid").addClass("is-valid");
 				$("#txtEmail2Invalid").text("");
-				$("#juminNo").focus();
 	  	}
 		//주민등록번호 정규식 체크
 		if ( ! $("#juminNo").val().match(regexJuminNo) ) {
@@ -217,7 +208,6 @@
 			$("#juminNo").addClass("is-valid");
 			$("#juminNoInvalid").addClass("is-valid");
 			$("#juminNoInvalid").text("");
-			$("#gender").focus();
 		}
 		//전화번호 정규식 체크
  		if ('' != $("#tel3").val()) {
@@ -287,7 +277,6 @@
 				$("#memo").addClass("is-valid");
 				$("#memoInvalid").addClass("is-valid");
 				$("#memoInvalid").text("");
-				$("#entry").focus();
 			}
 		}
 		
@@ -299,7 +288,7 @@
 		if (! flag) return false;
 		
 		//비밀번호 암호화
-		setEncryptPwd($("#password").val());
+		setEncryptPwd($("#loginPwd").val());
 		
 		//직업 편집
 		if ('기타' == $("#job").val() && '' != $("#txtJob").val()) {
@@ -349,8 +338,8 @@ alert('${now}' - $("#birthDate").val());
 	}
 	
 	//비밀번호 암호화
-	function setEncryptPwd(password) {
-		$("#encryptPwd").val('${security.encryptSHA256(password)}');
+	function setEncryptPwd(loginPwd) {
+		$("#encryptPwd").val('${security.encryptSHA256(loginPwd)}');
 	}
 	
  	function changeSel(selObj, txtObj)	{
@@ -372,20 +361,20 @@ alert('${now}' - $("#birthDate").val());
  	}
 </script>
 </head>
-<body class="jumbotron">
+<body class="jumbotron" background="${ctxPath}/images/backgroundimg.gif" >
 <div class="container" style="padding:30px">
   <form name="entryForm" method="post" action="${ctxPath}/customPerson/customPersonEntry" class="was-validated">
     <h2 class="text-center">개 인 고 객 회 원 가 입</h2>
     <br/>
     <div class="form-group">
-		<label for="id">아이디 : &nbsp; &nbsp;<input type="button" value="아이디 중복체크" class="btn btn-success" onclick="idCheck()"/></label>
-		<input type="text" class="form-control" id="id" name="id" placeholder="아이디를 입력하세요." maxlength=20 required autofocus/>
-		<div id="idInvalid" class="invalid-feedback">아이디는 필수 입력사항입니다.</div>
+		<label for="loginId">아이디 : &nbsp; &nbsp;<input type="button" value="아이디 중복체크" class="btn btn-success" onclick="idCheck()"/></label>
+		<input type="text" class="form-control" id="loginId" name="loginId" placeholder="아이디를 입력하세요." maxlength=20 required autofocus/>
+		<div id="loginIdInvalid" class="invalid-feedback">아이디는 필수 입력사항입니다.</div>
     </div>
     <div class="form-group">
-		<label for="password">비밀번호 :</label>
-		<input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요." maxlength=20 required />
-		<div id="passwordInvalid" class="invalid-feedback">비밀번호는 필수 입력사항입니다.</div>
+		<label for="loginPwd">비밀번호 :</label>
+		<input type="password" class="form-control" id="loginPwd" name="loginPwd" placeholder="비밀번호를 입력하세요." maxlength=20 required />
+		<div id="loginPwdInvalid" class="invalid-feedback">비밀번호는 필수 입력사항입니다.</div>
 		<input type="hidden" class="form-control" name="encryptPwd" id="encryptPwd" />
     </div>
     <div class="form-group">

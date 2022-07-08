@@ -17,7 +17,7 @@
     	});
     </script>
 </head>
-<body class="jumbotron">
+<body class="jumbotron" background="${ctxPath}/images/backgroundimg.gif" >
 <p><br></p>
 <div class="container">
 	<h2>개 인 회 원 전 용 방</h2>

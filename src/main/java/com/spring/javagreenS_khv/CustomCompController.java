@@ -20,11 +20,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.spring.javagreenS_khv.dto.CustomCompDTO;
+import com.spring.javagreenS_khv.dto.CustomCompLoginDTO;
 import com.spring.javagreenS_khv.service.CustomCompService;
 import com.spring.javagreenS_khv.vo.CustomCompEntryUpdateFormVO;
-import com.spring.javagreenS_khv.vo.CustomCompLoginVO;
-import com.spring.javagreenS_khv.vo.CustomCompVO;
+import com.spring.javagreenS_khv.vo.KakaoAddressVO;
 
 //기업고객회원관리Controller
 @Controller
@@ -32,6 +34,53 @@ import com.spring.javagreenS_khv.vo.CustomCompVO;
 public class CustomCompController {
 	@Autowired
 	public CustomCompService customCompService;
+	
+	//카카오맵 사용
+	@RequestMapping(value="/kakaomap", method=RequestMethod.GET)
+	public String kakaomapGet() {
+		return "custom/comp/kakaomap/kakaomap";
+	}
+	
+	//카카오맵 응용1 - Map 조회
+	@RequestMapping(value="/kakaoEx1", method=RequestMethod.GET)
+	public String kakaoEx1Get() {
+		return "custom/comp/kakaomap/kakaoEx1";
+	}
+	
+	//카카오맵 응용1 - 주소명으로 저장
+	@ResponseBody
+	@RequestMapping(value="/kakaoEx1", method=RequestMethod.POST)
+	public String kakaoEx1Post(KakaoAddressVO vo) {
+		KakaoAddressVO searchVo = customCompService.searchAddressName(vo.getAddress());
+		if (null != searchVo) return "0";
+		customCompService.insertAddressName(vo);
+		return "1";
+	}
+	
+	
+	//카카오맵 응용2 - Map 조회
+	@RequestMapping(value="/kakaoEx2", method=RequestMethod.GET)
+	public String kakaoEx2Get(Model model, @RequestParam(name="address", defaultValue="db에 저장되어있는 주소명 한개", required=false) String address) {
+		
+		List<KakaoAddressVO> vos = customCompService.searchAddressNameList();
+		KakaoAddressVO searchVo = customCompService.searchAddressName(address);
+		
+		model.addAttribute("vos", vos);
+		model.addAttribute("vo", searchVo);
+		model.addAttribute("address", address);
+		
+		return "custom/comp/kakaomap/kakaoEx2";
+	}
+	
+	//카카오맵 응용2.2 - 지점명 DB에서 삭제
+	@ResponseBody
+	@RequestMapping(value="/kakaoEx2Delete", method=RequestMethod.GET)
+	public String kakaoEx2DeleteGet(String address) {
+		customCompService.kakaoEx2Delete(address);
+		
+		return "";
+	}
+	
 	
 	//로그인화면 이동
 	@RequestMapping(value="/customCompLogin", method=RequestMethod.GET)
@@ -51,7 +100,7 @@ public class CustomCompController {
 	//로그인
 	@RequestMapping(value="/customCompLogin", method=RequestMethod.POST)
 	public String customCompLoginPost(HttpSession session, HttpServletRequest request, HttpServletResponse response,
-		@RequestParam("id") String id,
+		@RequestParam("loginId") String loginId,
 		@RequestParam("encryptPwd") String encryptPwd,
 		@RequestParam(name="idSave", defaultValue="", required=false) String idSave,
 		Model model) {//Model쓸때는 RedirectAttribute를 같이 쓸 수 없다
@@ -64,18 +113,18 @@ public class CustomCompController {
 		// 3.주요자료 세션 저장 
 		// 4.아이디 저장유무에 따라 쿠키 저장
 		// --------------------------------------------------
-		CustomCompLoginVO loginVo = customCompService.searchLogin(id, encryptPwd);
-		if (null == loginVo) {
+		CustomCompLoginDTO loginDto = customCompService.searchLogin(loginId, encryptPwd);
+		if (null == loginDto) {
 			return "custom/comp/customCompLogin";
 		}
 		
 		//로그인 아이디,비밀번호로 회원조회가 됬을 경우, HttpSession에 조회된 회원정보 설정
-		session.setAttribute("sLoginId", loginVo.getId());
-		session.setAttribute("sGradeCode", loginVo.getCustom_grade());//고객등급
-		session.setAttribute("sGradeName", loginVo.getGrade_name());//고객등급명
-		session.setAttribute("sCustomId", loginVo.getCustom_id());//고객ID -- SEQ로 바꾸자
-		session.setAttribute("sCustomName", loginVo.getCustom_name());//고객명
-		session.setAttribute("sLoginDate", loginVo.getLogin_date());//로그인날짜
+		session.setAttribute("sLoginId", loginDto.getLogin_id());
+		session.setAttribute("sGradeCode", loginDto.getCustom_grade());//고객등급
+		session.setAttribute("sGradeName", loginDto.getGrade_name());//고객등급명
+		session.setAttribute("sCustomId", loginDto.getCustom_id());//고객ID -- SEQ로 바꾸자
+		session.setAttribute("sCustomName", loginDto.getCustom_name());//고객명
+		session.setAttribute("sLoginDate", loginDto.getLogin_date());//로그인날짜
 		
 		// --------------------------------------------------
 		// DB 저장 : 오늘방문횟수, 전체방문횟수, 포인터 100씩 증가
@@ -83,31 +132,31 @@ public class CustomCompController {
 		//최종방문일과 오늘날짜 비교해서 다른 경우, 오늘방문횟수(todayCnt)값을 0으로 초기화
     String todayYmdhms = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date());
     String todayYmd = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-		if (null == loginVo.getLogin_date() || ! loginVo.getLogin_date().substring(0, 10).equals(todayYmd)) {
-			customCompService.updateTodayCnt(loginVo.getId(), loginVo.getCustom_id());//DB저장(오늘방문횟수 '0', 로그인날짜 default now())
-			loginVo.setToday_cnt(0);
-			loginVo.setLogin_date(todayYmdhms);
+		if (null == loginDto.getLogin_date() || ! loginDto.getLogin_date().substring(0, 10).equals(todayYmd)) {
+			customCompService.updateTodayCnt(loginDto.getLogin_id(), loginDto.getCustom_id());//DB저장(오늘방문횟수 '0', 로그인날짜 default now())
+			loginDto.setToday_cnt(0);
+			loginDto.setLogin_date(todayYmdhms);
 		}
 		//1.오늘방문횟수, 전체방문횟수 1씩 증가 
-		customCompService.updateVisitCntAndTodayCnt(loginVo.getId(), loginVo.getCustom_id());//DB 방문횟수 증가
-		loginVo.setToday_cnt(loginVo.getToday_cnt() + 1);
-		loginVo.setVisit_cnt(loginVo.getVisit_cnt() + 1);
-		if (10 >= loginVo.getToday_cnt()) {
+		customCompService.updateVisitCntAndTodayCnt(loginDto.getLogin_id(), loginDto.getCustom_id());//DB 방문횟수 증가
+		loginDto.setToday_cnt(loginDto.getToday_cnt() + 1);
+		loginDto.setVisit_cnt(loginDto.getVisit_cnt() + 1);
+		if (10 >= loginDto.getToday_cnt()) {
 			//2.포인터 100씩 증가(방문시마다 100포인트씩 증가<DB저장>, 1일 10회 이하)
-			customCompService.updatePoint(loginVo.getId(), loginVo.getCustom_id());//DB 포인트 100포인트 증가
-			loginVo.setPoint(loginVo.getPoint() + 100);
+			customCompService.updatePoint(loginDto.getLogin_id(), loginDto.getCustom_id());//DB 포인트 100포인트 증가
+			loginDto.setPoint(loginDto.getPoint() + 100);
 		}
 		// --------------------------------------------------
 		// 세션 저장(Mypage 회원전용방 출력용) : 오늘방문횟수, 전체방문횟수, 포인트
 		// --------------------------------------------------
-		session.setAttribute("sTodayVCnt", loginVo.getToday_cnt());
-		session.setAttribute("sVCnt", loginVo.getVisit_cnt());
-		session.setAttribute("sPoint", loginVo.getPoint());
+		session.setAttribute("sTodayVCnt", loginDto.getToday_cnt());
+		session.setAttribute("sVCnt", loginDto.getVisit_cnt());
+		session.setAttribute("sPoint", loginDto.getPoint());
 		
 		//idSave체크시 : 쿠키에 아이디(id)를 저장 checkbox checked 클릭 여부 - on/null
 		//id저장
 		if (idSave.equals("on")) {
-			Cookie cookie = new Cookie("cLoginId", id);
+			Cookie cookie = new Cookie("cLoginId", loginId);
 			cookie.setMaxAge(60*60*24*7); //쿠키저장기간 : 7일(단위:초)
 			response.addCookie(cookie);
 		} else {
@@ -126,7 +175,7 @@ public class CustomCompController {
 	
 	//회원전용방
 	@RequestMapping(value="/customCompMain", method=RequestMethod.GET)
-	public String customCompMainGet(HttpSession session, CustomCompLoginVO loginVo, Model model) {
+	public String customCompMainGet(HttpSession session, Model model) {
 		String sLoginId = (String)session.getAttribute("sLoginId");
 		String sGradeCode = (String)session.getAttribute("sGradeCode");
 		
@@ -214,8 +263,8 @@ public class CustomCompController {
 			return "redirect:/customComp/customCompEntry";
 		}
 		
-		CustomCompVO compVo = new CustomCompVO(); 
-		CustomCompLoginVO loginVo = new CustomCompLoginVO();
+		CustomCompDTO compDto = new CustomCompDTO(); 
+		CustomCompLoginDTO loginDto = new CustomCompLoginDTO();
 		
 		//기업고객아이디 발급
 		//CUSTOM_ID 구성 : 3자리(100~999) 'CUSTOM_KIND_CD' + 5자리 '순차발행' (00001~99999))
@@ -224,31 +273,31 @@ public class CustomCompController {
 		int customId = customCompService.obtainCustomId(customKindCode);
 
 		//기업고객 회원정보 VO 설정
-		compVo.setCustom_id(customId);
-		compVo.setCustom_nm(entryVo.getCustomName());
-		compVo.setCustom_nm_short(entryVo.getCustomNameShort());
-		compVo.setCustom_kind_cd(customKindCode);
-		compVo.setEstbl_date(entryVo.getEstblDate());
-		compVo.setCompany_no(entryVo.getCompanyNo());
-		compVo.setOffice(entryVo.getOffice());
-		compVo.setTxt_office(entryVo.getTxtOffice());
-		compVo.setTel_no(entryVo.getTelNo());
-		compVo.setHp_no(entryVo.getHpNo());
-		compVo.setEmail(entryVo.getEmail());
-		compVo.setPost_code(entryVo.getPostcode());
-		compVo.setRoad_addr(entryVo.getRoadAddress());
-		compVo.setExtra_addr(entryVo.getExtraAddress());
-		compVo.setDetail_addr(entryVo.getDetailAddress());
-		compVo.setMemo(entryVo.getMemo());
-		compVo.setCustom_img_file_name(entryVo.getPhoto());
+		compDto.setCustom_id(customId);
+		compDto.setCustom_nm(entryVo.getCustomName());
+		compDto.setCustom_nm_short(entryVo.getCustomNameShort());
+		compDto.setCustom_kind_cd(customKindCode);
+		compDto.setEstbl_date(entryVo.getEstblDate());
+		compDto.setCompany_no(entryVo.getCompanyNo());
+		compDto.setOffice(entryVo.getOffice());
+		compDto.setTxt_office(entryVo.getTxtOffice());
+		compDto.setTel_no(entryVo.getTelNo());
+		compDto.setHp_no(entryVo.getHpNo());
+		compDto.setEmail(entryVo.getEmail());
+		compDto.setPost_code(entryVo.getPostcode());
+		compDto.setRoad_addr(entryVo.getRoadAddress());
+		compDto.setExtra_addr(entryVo.getExtraAddress());
+		compDto.setDetail_addr(entryVo.getDetailAddress());
+		compDto.setMemo(entryVo.getMemo());
+		compDto.setCustom_img_file_name(entryVo.getPhoto());
 		
 		//기업고객 로그인 VO 설정
-		loginVo.setCustom_id(customId);
-		loginVo.setId(entryVo.getLoginId());
-		loginVo.setEncrypt_pwd(entryVo.getEncryptPwd());
+		loginDto.setCustom_id(customId);
+		loginDto.setLogin_id(entryVo.getLoginId());
+		loginDto.setEncrypt_pwd(entryVo.getEncryptPwd());
 		
 		//기업고객 회원정보 DB 등록, 기업고객 로그인 DB 등록 - mybatis transaction 포함
-		customCompService.insertCustomCompAndCustomCompLogin(compVo, loginVo);
+		customCompService.insertCustomCompAndCustomCompLogin(compDto, loginDto);
 		
 //		if (1 == resLogin && 1 == resComp) {
 				return "redirect:/msgCustomComp/EntryOk";
@@ -505,15 +554,15 @@ public class CustomCompController {
 	//로그인ID중복체크
 	@RequestMapping(value="/customCompLoginIdCheck", method=RequestMethod.POST)
 	public String customCompLoginIdCheckPost(
-		@RequestParam(name="id", defaultValue="", required=true) String id,
+		@RequestParam(name="loginId", defaultValue="", required=true) String loginId,
 		Model model) {
 		
-		model.addAttribute("id", id);
+		model.addAttribute("loginId", loginId);
 		//isExist = true 아이디 중복
-		if (customCompService.loginIdCheck(id)) {
-			model.addAttribute("existIdYN", "Y");
+		if (customCompService.loginIdCheck(loginId)) {
+			model.addAttribute("existLoginIdYN", "Y");
 		} else {
-			model.addAttribute("existIdYN", "N");
+			model.addAttribute("existLoginIdYN", "N");
 		}
 		return "custom/comp/customCompLoginIdCheck";
 	}

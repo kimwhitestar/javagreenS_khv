@@ -26,7 +26,7 @@
 		// Jquery방식으로, 자식창에서 윈도우 로딩시에 Document를 메모리로 모두 올리고 작업준비한다.
 		childWin.onload = function() {
 			//자식창에 id값 셋팅
-			childWin.document.getElementById("id").value = $("#id").val();
+			childWin.document.getElementById("loginId").value = $("#loginId").val();
 		}
 	}
 	
@@ -65,7 +65,7 @@
 
 	//DB에 저장될 각각의 필드길이 체크
  	function regexCheck() {
-    	const regexPassword = /([a-zA-Z][0-9][@#$%&!?^~*+-_.]|[0-9][a-zA-Z][@#$%&!?^~*+-_.]|[@#$%&!?^~*+-_.][a-zA-Z][0-9]|[@#$%&!?^~*+-_.][0-9][a-zA-Z])/g;//비밀번호체크(영문자,숫자,특수기호 @#$%&!?^~*+-_. 조합 3~20자리)
+    	const regexloginPwd = /([a-zA-Z][0-9][@#$%&!?^~*+-_.]|[0-9][a-zA-Z][@#$%&!?^~*+-_.]|[@#$%&!?^~*+-_.][a-zA-Z][0-9]|[@#$%&!?^~*+-_.][0-9][a-zA-Z])/g;//비밀번호체크(영문자,숫자,특수기호 @#$%&!?^~*+-_. 조합 3~20자리)
   		const regexCustomName = /[가-힣a-zA-Z]{3,10}([0-9]*)/g; //이름체크(한글or영문에 필요하면 숫자포함 조합 3~20자리)
 		const regexTxtJob = /[가-힣a-zA-Z]{1,100}/g; //직업명체크(한글 또는 영문 1~100자리)
     	const regexDetailAddress = /[a-zA-Z0-9가-힣#-. ]{1,50}/g; //상세주소체크(한글or영문에 필요하면 숫자 또는 특수문자( .-#) 1~50자리)
@@ -80,16 +80,16 @@
 		let regexFlag = true;
 		
 		//비밀번호 정규식 체크
-		if ( ! $("#password").val().match(regexPassword) ) {
-			$("#password").addClass("is-invalid");
-			$("#passwordInvalid").addClass("is-invalid");
-			$("#passwordInvalid").text("영문자, 숫자, 특수기호(~!?@#$%^&*_+-.) 조합 3~20자리로 입력하세요");
- 			$("#password").focus();
+		if ( ! $("#loginPwd").val().match(regexloginPwd) ) {
+			$("#loginPwd").addClass("is-invalid");
+			$("#loginPwdInvalid").addClass("is-invalid");
+			$("#loginPwdInvalid").text("영문자, 숫자, 특수기호(~!?@#$%^&*_+-.) 조합 3~20자리로 입력하세요");
+ 			$("#loginPwd").focus();
  			regexFlag = false;
 		} else {
-			$("#password").addClass("is-valid");
-			$("#passwordInvalid").addClass("is-valid");
- 			$("#passwordInvalid").text("");
+			$("#loginPwd").addClass("is-valid");
+			$("#loginPwdInvalid").addClass("is-valid");
+ 			$("#loginPwdInvalid").text("");
 			$("#customName").focus();
 		}
 		//이름 정규식 체크
@@ -271,7 +271,6 @@
 				$("#memo").addClass("is-valid");
 				$("#memoInvalid").addClass("is-valid");
 				$("#memoInvalid").text("");
-				$("#update").focus();
 			}
 		}
 		
@@ -283,7 +282,7 @@
 		if (! flag) return false;
 		
 		//비밀번호 암호화
-		setEncryptPwd($("#password").val());
+		setEncryptPwd($("#loginPwd").val());
 		
 		//직업 편집
 		if ('기타' == $("#job").val() && '' != $("#txtJob").val()) {
@@ -329,8 +328,8 @@
 	}
 	
 	//비밀번호 암호화
-	function setEncryptPwd(password) {
-			$("#encryptPwd").val('${security.encryptSHA256(password)}');
+	function setEncryptPwd(loginPwd) {
+			$("#encryptPwd").val('${security.encryptSHA256(loginPwd)}');
 	}
 	
  	function changeSel(selObj, txtObj)	{
@@ -353,18 +352,18 @@
  	
 </script>
 </head>
-<body class="jumbotron">
+<body class="jumbotron" background="${ctxPath}/images/backgroundimg.gif" >
 <div class="container" style="padding:30px">
   <form name="updateForm" method="post" action="${ctxPath}/customPerson/customPersonUpdate" class="was-validated">
 	<h2 class="text-center">개 인 고 객 회 원 정 보 수 정</h2><br>
     <h6 class="text-center"><font color="blue">회원정보를 수정하려면 회원비밀번호 입력하세요.</font></h6><br>
     <div class="form-group">
-			<label for="id">아이디 : ${sLoginId} </label>
+			<label >아이디 : ${sLoginId} </label>
     </div>
     <div class="form-group">
-			<label for="password">비밀번호 확인 :</label>
-			<input type="password" class="form-control" id="password" name="password" maxlength=20 required />
-			<div id="passwordInvalid" class="invalid-feedback">비밀번호는 필수 입력사항입니다.</div>
+			<label for="loginPwd">비밀번호 확인 :</label>
+			<input type="loginPwd" class="form-control" id="loginPwd" name="loginPwd" maxlength=20 required />
+			<div id="loginPwdInvalid" class="invalid-feedback">비밀번호는 필수 입력사항입니다.</div>
 			<input type="hidden" class="form-control" name="encryptPwd" id="encryptPwd" />
     </div>
     <div class="form-group">

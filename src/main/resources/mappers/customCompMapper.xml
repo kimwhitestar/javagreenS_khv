@@ -4,13 +4,26 @@
 
 <mapper namespace="com.spring.javagreenS_khv.dao.CustomCompDAO">
 <!-- 수정 <mapper namespace="org.mybatis.example.BlogMapper"></mapper> -->
-	<select id="searchCustomComp" resultType="com.spring.javagreenS_khv.vo.CustomCompVO">
+	<delete id="kakaoEx2Delete">
+		DELETE FROM KAKAOADDRESS WHERE ADDRESS = #{ADDRESS} 
+	</delete>
+	<select id="searchAddressName" resultType="com.spring.javagreenS_khv.vo.KakaoAddressVO">
+		SELECT * FROM KAKAOADDRESS WHERE ADDRESS = #{ADDRESS} 
+	</select>
+	<insert id="insertAddressName">
+		INSERT INTO KAKAOADDRESS VALUES (#{vo.address},#{vo.latitude},#{vo.longitude})
+	</insert>
+	<select id="searchAddressNameList" resultType="com.spring.javagreenS_khv.vo.KakaoAddressVO">
+		SELECT * FROM KAKAOADDRESS ORDER BY ADDRESS;
+	</select>
+
+	<select id="searchCustomComp" resultType="com.spring.javagreenS_khv.dto.CustomCompDTO">
 	    SELECT * FROM CUSTOM_COMP WHERE CUSTOM_ID = #{customId}
 	</select>
-	<select id="searchLogin" resultType="com.spring.javagreenS_khv.vo.CustomCompLoginVO">
+	<select id="searchLogin" resultType="com.spring.javagreenS_khv.dto.CustomCompLoginDTO">
 		SELECT 
-			ID,  -- primary key
-			PASSWORD,
+			LOGIN_ID,  -- primary key
+			LOGIN_PWD,
 			CUSTOM_ID,  -- foreign key (custom_comp TBL)
 			(SELECT CUSTOM_NM FROM CUSTOM_COMP WHERE CUSTOM_ID = CUSTOM_COMP_LOGIN.CUSTOM_ID) AS CUSTOM_NAME,  -- foreign key (코드TBL)
 			CUSTOM_GRADE,
@@ -24,25 +37,25 @@
 			UPDATE_DATE,
 			DELETE_DATE 
 		FROM CUSTOM_COMP_LOGIN 
-		WHERE ID = #{id} AND PASSWORD = #{pwd} AND DELETE_DATE IS NULL ;  -- primary key(id) indexing	    
+		WHERE LOGIN_ID = #{loginId} AND LOGIN_PWD = #{encryptPwd} AND DELETE_DATE IS NULL ;  -- primary key(LOGIN_ID) indexing	    
 	</select>
 	<update id="updateTodayCnt">
-		UPDATE CUSTOM_COMP_LOGIN SET TODAY_CNT = 0, LOGIN_DATE = DEFAULT, LOGIN_USER = #{id}, UPDATE_DATE = DEFAULT, UPDATE_USER = #{id} WHERE ID = #{id} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL
+		UPDATE CUSTOM_COMP_LOGIN SET TODAY_CNT = 0, LOGIN_DATE = DEFAULT, LOGIN_USER = #{loginId}, UPDATE_DATE = DEFAULT, UPDATE_USER = #{loginId} WHERE LOGIN_ID = #{loginId} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL
 	</update>
 	<update id="updateVisitCntAndTodayCnt">
-		UPDATE CUSTOM_COMP_LOGIN SET VISIT_CNT = VISIT_CNT+1, TODAY_CNT = TODAY_CNT+1, UPDATE_DATE = DEFAULT, UPDATE_USER = #{id} WHERE ID = #{id} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL
+		UPDATE CUSTOM_COMP_LOGIN SET VISIT_CNT = VISIT_CNT+1, TODAY_CNT = TODAY_CNT+1, UPDATE_DATE = DEFAULT, UPDATE_USER = #{loginId} WHERE LOGIN_ID = #{loginId} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL
 	</update>
 	<update id="updatePoint">
-		UPDATE CUSTOM_COMP_LOGIN SET POINT = POINT + 100, UPDATE_DATE = DEFAULT, UPDATE_USER = #{id} WHERE ID = #{id} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL
+		UPDATE CUSTOM_COMP_LOGIN SET POINT = POINT + 100, UPDATE_DATE = DEFAULT, UPDATE_USER = #{loginId} WHERE LOGIN_ID = #{loginId} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL
 	</update>
 	<update id="updateCustomCompLoginUserDel">
-		UPDATE CUSTOM_COMP_LOGIN SET DELETE_DATE = DEFAULT, DELETE_USER = #{id}, LOGOUT_DATE = DEFAULT, LOGOUT_USER = #{id}  WHERE ID = #{id} AND CUSTOM_ID = #{customId}
+		UPDATE CUSTOM_COMP_LOGIN SET DELETE_DATE = DEFAULT, DELETE_USER = #{loginId}, LOGOUT_DATE = DEFAULT, LOGOUT_USER = #{loginId}  WHERE LOGIN_ID = #{loginId} AND CUSTOM_ID = #{customId}
 	</update>
 	<update id="updateLogout">
-		UPDATE CUSTOM_COMP_LOGIN SET LOGOUT_DATE = DEFAULT, LOGOUT_USER = #{id} WHERE ID = #{id} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL
+		UPDATE CUSTOM_COMP_LOGIN SET LOGOUT_DATE = DEFAULT, LOGOUT_USER = #{loginId} WHERE LOGIN_ID = #{loginId} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL
 	</update>
 	<select id="loginIdCheck" resultType="boolean">
-		SELECT IF(COUNT(ID) > 0, TRUE, FALSE) AS ISEXIST_ID FROM CUSTOM_COMP_LOGIN WHERE ID = #{id}
+		SELECT IF(COUNT(LOGIN_ID) > 0, TRUE, FALSE) AS ISEXIST_ID FROM CUSTOM_COMP_LOGIN WHERE LOGIN_ID = #{loginId}
 	</select>
 	<select id="companyNoCheck" resultType="boolean">
 		SELECT IF(COUNT(COMPANY_NO) > 0, TRUE, FALSE) AS ISEXIST_COMPANY_NO FROM CUSTOM_COMP WHERE COMPANY_NO = #{companyNo} -- Unique key(company_no) indexing
@@ -59,39 +72,39 @@
 	<insert id="insertCustomCompAndCustomCompLogin">
 		INSERT INTO CUSTOM_COMP VALUES ( 
 				DEFAULT, 
-				#{compVo.custom_id},  	
-				#{compVo.custom_nm},  
-				#{compVo.custom_nm_short},  
+				#{compDto.custom_id},  	
+				#{compDto.custom_nm},  
+				#{compDto.custom_nm_short},  
 				1,
-				#{compVo.custom_kind_cd},  
+				#{compDto.custom_kind_cd},  
 				'O',
-				#{compVo.estbl_date},  
-				#{compVo.company_no}, 
+				#{compDto.estbl_date},  
+				#{compDto.company_no}, 
 				
-		<if test='#{compVo.office} == "기타"'>
-				#{compVo.txt_office},  
+		<if test='#{compDto.office} == "기타"'>
+				#{compDto.txt_office},  
 		</if>
-		<if test='#{compVo.office} != "기타"'>
-				#{compVo.office},  
+		<if test='#{compDto.office} != "기타"'>
+				#{compDto.office},  
 		</if>
 			
-				#{compVo.tel_no},  
-				#{compVo.hp_no},  
-				#{compVo.email},  
-				#{compVo.post_code},  
-				#{compVo.road_addr},  
-				#{compVo.extra_addr},  
-				#{compVo.detail_addr},  
-				#{compVo.memo},  
-				#{compVo.custom_img_file_name},  
+				#{compDto.tel_no},  
+				#{compDto.hp_no},  
+				#{compDto.email},  
+				#{compDto.post_code},  
+				#{compDto.road_addr},  
+				#{compDto.extra_addr},  
+				#{compDto.detail_addr},  
+				#{compDto.memo},  
+				#{compDto.custom_img_file_name},  
 				DEFAULT, 
-				#{compVo.custom_id},   -- create_user	
+				#{compDto.custom_id},   -- create_user	
 				NULL, 
 				NULL, 
 				NULL, 
 				NULL );
 		
-		INSERT INTO CUSTOM_COMP_LOGIN VALUES ( #{loginVo.id}, #{loginVo.encrypt_pwd}, #{loginVo.custom_id}, 'O', DEFAULT, DEFAULT, DEFAULT, NULL, NULL, NULL, NULL, DEFAULT, #{loginVo.id}, NULL, NULL, NULL, NULL);
+		INSERT INTO CUSTOM_COMP_LOGIN VALUES ( #{loginDto.login_id}, #{loginDto.encrypt_pwd}, #{loginDto.custom_id}, 'O', DEFAULT, DEFAULT, DEFAULT, NULL, NULL, NULL, NULL, DEFAULT, #{loginDto.login_id}, NULL, NULL, NULL, NULL);
 
 	</insert>
 	

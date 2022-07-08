@@ -16,7 +16,7 @@
     </script>
 </head>
 <body>
-111111<c:out value="${existIdYN}"/>
+111111<c:out value="${existLoginIdYN}"/>
 <div class="container">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -29,38 +29,38 @@
 					<form name="changPwdForm" method="post" action="${ctxPath}/customCompPwdChangeOk.cmbr" class="was-validated">
 						<h2>비 밀 번 호  재 설 정</h2>
 						<c:choose>
-							<c:when test="${!empty existIdYN && 'N' == existIdYN}"><p>ID가 존재하지않습니다</p></c:when>
+							<c:when test="${!empty existLoginIdYN && 'N' == existLoginIdYN}"><p>ID가 존재하지않습니다</p></c:when>
 							<c:when test="${!empty existEmailYN && 'N' == existEmailYN}"><p>Email이 존재하지않습니다</p></c:when>
 							<c:when test="${!empty existShaEmailYN && 'N' == existShaEmailYN}"><p>Email로 전송한 본인확인 암호화문자가 확인되지않습니다</p></c:when>
 							<c:when test="${!empty validPwdYN && 'N' == validPwdYN}"><p>New비밀번호와 Re비밀번호가 같지않습니다</p></c:when>
 							<c:otherwise></c:otherwise>
 						</c:choose>
 						<div class="form-group">
-							<label for="id">아이디 : </label>
-							<input type="text" class="form-control" name="id" placeholder="아이디를 입력하세요." required autofocus/>
-							<div class="invalid-feedback">아이디는 필수 입력사항입니다.</div>
+							<label for="loginId">아이디 : </label>
+							<input type="text" class="form-control" id="loginId" name="loginId" placeholder="아이디를 입력하세요." required autofocus/>
+							<div id="loginIdInvalid" class="invalid-feedback">아이디는 필수 입력사항입니다.</div>
 						</div>
 						<div class="form-group">
 							<label for="email">이메일 : </label>
-							<input type="text" class="form-control" name="email" placeholder="이메일을 입력하세요." required />
-							<div class="invalid-feedback">이메일은 필수 입력사항입니다.</div>
+							<input type="text" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요." required />
+							<div id="emailInvalid" class="invalid-feedback">이메일은 필수 입력사항입니다.</div>
 							<button type="button" class="btn btn-secondary btn-sm" onclick="">이메일 확인</button> &nbsp;
 						</div>
 						<div class="form-group">
 							<label for="shaEmail">이메일 확인 문자 : </label>
-							<input type="text" class="form-control" name="shaEmail" placeholder="이메일 확인문자를 입력하세요." required />
-							<div class="invalid-feedback">이메일 확인문자는 필수 입력사항입니다.</div>
+							<input type="text" class="form-control" id="shaEmail" name="shaEmail" placeholder="이메일 확인문자를 입력하세요." required />
+							<div id="shaEmailInvalid" class="invalid-feedback">이메일 확인문자는 필수 입력사항입니다.</div>
 						</div>
 						<div class="form-group">
 							<label for="newPwd">새비밀번호 : </label>
-							<input type="text" class="form-control" name="newPwd" placeholder="새비밀번호를 입력하세요." required />
+							<input type="text" class="form-control" id="newPwd" name="newPwd" placeholder="새비밀번호를 입력하세요." required />
 							<div class="invalid-feedback">새비밀번호는 필수 입력사항입니다.</div>
-							<input type="hidden" class="form-control" name="shaNewPwd" />
+							<input id="newPwdInvalid" type="hidden" class="form-control" name="shaNewPwd" />
 						</div>
 						<div class="form-group">
 							<label for="rePwd">새비밀번호 확인 : </label>
-							<input type="text" class="form-control" name="rePwd" placeholder="새비밀번호를 다시 입력하세요." required />
-							<div class="invalid-feedback">새비밀번호 확인은 필수 입력사항입니다.</div>
+							<input type="text" class="form-control" id="rePwd" name="rePwd" placeholder="새비밀번호를 다시 입력하세요." required />
+							<div id="rePwdInvalid" class="invalid-feedback">새비밀번호 확인은 필수 입력사항입니다.</div>
 							<input type="hidden" class="form-control" name="shaRePwd" />
 						</div>
 						<div class="form-group">

@@ -2,24 +2,24 @@ package com.spring.javagreenS_khv.dao;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.spring.javagreenS_khv.vo.CustomPersonLoginVO;
-import com.spring.javagreenS_khv.vo.CustomPersonVO;
+import com.spring.javagreenS_khv.dto.CustomPersonDTO;
+import com.spring.javagreenS_khv.dto.CustomPersonLoginDTO;
 
 public interface CustomPersonDAO {
 
-	public CustomPersonLoginVO searchLogin(@Param("id") String id, @Param("pwd") String pwd);
+	public CustomPersonLoginDTO searchLogin(@Param("loginId") String loginId, @Param("loginPwd") String loginPwd);
 
-	public void updateTodayCnt(@Param("id") String id, @Param("customId") int customId);
+	public void updateTodayCnt(@Param("loginId") String loginId, @Param("customId") int customId);
 
-	public void updateVisitCntAndTodayCnt(@Param("id") String id, @Param("customId") int customId);
+	public void updateVisitCntAndTodayCnt(@Param("loginId") String loginId, @Param("customId") int customId);
 
-	public void updatePoint(@Param("id") String id, @Param("customId") int customId);
+	public void updatePoint(@Param("loginId") String loginId, @Param("customId") int customId);
 
-	public void updateCustomPersonLoginUserDel(@Param("id") String id, @Param("customId") int customId);
+	public void updateCustomPersonLoginUserDel(@Param("loginId") String loginId, @Param("customId") int customId);
 
-	public void updateLogout(@Param("id") String id, @Param("customId") int customId);
+	public void updateLogout(@Param("loginId") String loginId, @Param("customId") int customId);
 
-	public boolean loginIdCheck(@Param("id") String id);
+	public boolean loginIdCheck(@Param("loginId") String loginId);
 
 	public boolean emailCheck(@Param("email") String email);
 
@@ -27,6 +27,6 @@ public interface CustomPersonDAO {
 
 	public int obtainCustomId(@Param("customKindCode") int customKindCode);
 
-	public void insertCustomPersonAndCustomPersonLogin(@Param("personVo") CustomPersonVO personVo, @Param("loginVo") CustomPersonLoginVO loginVo);
+	public void insertCustomPersonAndCustomPersonLogin(@Param("personDto") CustomPersonDTO personDto, @Param("loginDto") CustomPersonLoginDTO loginDto);
 	
 }

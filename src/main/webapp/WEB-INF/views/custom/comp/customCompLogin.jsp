@@ -19,46 +19,45 @@
    	//로그인폼 체크 후 로그인 요청 전송
    	function formCheck() {
    		if ( ! regexCheck() ) return false;
-		setEncryptPwd($("#password").val());
+		setEncryptPwd($("#loginPwd").val());
    		loginForm.submit();
    	}
    	//REGEX PATTERN 유효성 체크 : 로그인폼 입력필드의 '영문자, 한글, 숫자, 특수문자, 길이' 체크
     function regexCheck() {
-   		const regexId = /^[a-zA-Z]+[0-9_+-.]*[a-zA-Z_+-.]*[0-9]([a-zA-Z0-9_+-.]*){20}$/g; //아이디체크(영문자1자리이상, 숫자나 특수기호 조합 2~20자리)
-       	const regexPassword = /([a-zA-Z][0-9][@#$%&!?^~*+-_.]|[0-9][a-zA-Z][@#$%&!?^~*+-_.]|[@#$%&!?^~*+-_.][a-zA-Z][0-9]|[@#$%&!?^~*+-_.][0-9][a-zA-Z])/g;//비밀번호체크(영문자,숫자,특수기호 @#$%&!?^~*+-_. 조합 3~20자리)
+   		const regexLoginId = /^[a-zA-Z]+[0-9_+-.]*[a-zA-Z_+-.]*[0-9]([a-zA-Z0-9_+-.]*){20}$/g; //아이디체크(영문자1자리이상, 숫자나 특수기호 조합 2~20자리)
+       	const regexLoginPwd = /([a-zA-Z][0-9][@#$%&!?^~*+-_.]|[0-9][a-zA-Z][@#$%&!?^~*+-_.]|[@#$%&!?^~*+-_.][a-zA-Z][0-9]|[@#$%&!?^~*+-_.][0-9][a-zA-Z])/g;//비밀번호체크(영문자,숫자,특수기호 @#$%&!?^~*+-_. 조합 3~20자리)
 		let regexFlag = true;
 
        //회원아이디 정규식 체크
-     	if ( ! $("#id").val().match(regexId) ) {
-   			$("#id").addClass("is-invalid");
-   			$("#idInvalid").addClass("is-invalid");
-   			$("#idInvalid").text("영문자로 시작하여 숫자1자리 이상 포함하는 영문,숫자,특수기호(_+-.)의 조합 2~20자리로 입력하세요");
-   			$("#id").focus();
+     	if ( ! $("#loginId").val().match(regexLoginId) ) {
+   			$("#loginId").addClass("is-invalid");
+   			$("#loginIdInvalid").addClass("is-invalid");
+   			$("#loginIdInvalid").text("영문자로 시작하여 숫자1자리 이상 포함하는 영문,숫자,특수기호(_+-.)의 조합 2~20자리로 입력하세요");
+   			$("#loginId").focus();
    			regexFlag = false;
    		} else {
-   			$("#id").addClass("is-valid");
-   			$("#idInvalid").addClass("is-valid");
-   			$("#idInvalid").text("");
-   			$("#password").focus();
+   			$("#loginId").addClass("is-valid");
+   			$("#loginIdInvalid").addClass("is-valid");
+   			$("#loginIdInvalid").text("");
    		}
     	//비밀번호 정규식 체크
-  		if ( ! $("#password").val().match(regexPassword) ) {
-  			$("#password").addClass("is-invalid");
-  			$("#passwordInvalid").addClass("is-invalid");
-  			$("#passwordInvalid").text("영문자, 숫자, 특수기호(~!?@#$%^&*_+-.) 조합 3~20자리로 입력하세요");
-   			$("#password").focus();
+  		if ( ! $("#loginPwd").val().match(regexLoginPwd) ) {
+  			$("#loginPwd").addClass("is-invalid");
+  			$("#loginPwdInvalid").addClass("is-invalid");
+  			$("#loginPwdInvalid").text("영문자, 숫자, 특수기호(~!?@#$%^&*_+-.) 조합 3~20자리로 입력하세요");
+   			$("#loginPwd").focus();
    			regexFlag = false;
   		} else {
-  			$("#password").addClass("is-valid");
-  			$("#passwordInvalid").addClass("is-valid");
-   			$("#passwordInvalid").text("");
+  			$("#loginPwd").addClass("is-valid");
+  			$("#loginPwdInvalid").addClass("is-valid");
+   			$("#loginPwdInvalid").text("");
   		}
     		
    		return regexFlag;
    	}
    	//비밀번호 암호화
-   	function setEncryptPwd(password) {
-		$("#encryptPwd").val('${security.encryptSHA256(password)}');
+   	function setEncryptPwd(loginPwd) {
+		$("#encryptPwd").val('${security.encryptSHA256(loginPwd)}');
    	}
     //아이디 찾기
    	function findoutId() {
@@ -72,7 +71,7 @@
    	}
      </script>
 </head>
-<body class="jumbotron" <%--background="${ctxPath}/images/bgimg.gif" --%> >
+<body class="jumbotron" background="${ctxPath}/images/backgroundimg.gif" >
 <p><br></p>
 <div class="container">
 	<div class="modal-dialog">
@@ -82,14 +81,14 @@
 					<h2 class="text-center">기 업 고 객 로 그 인</h2>
 					<p>아이디와 비밀번호를 입력해 주세요</p>
 					<div class="form-group">
-						<label for="id">아이디 : </label>
-						<input type="text" class="form-control" name="id" id="id" value="${loginId}" placeholder="아이디를 입력하세요." required autofocus />
-						<div id="idInvalid" class="invalid-feedback">아이디는 필수 입력사항입니다.</div>
+						<label for="loginId">아이디 : </label>
+						<input type="text" class="form-control" name="loginId" id="loginId" value="${loginId}" placeholder="아이디를 입력하세요." required autofocus />
+						<div id="loginIdInvalid" class="invalid-feedback">아이디는 필수 입력사항입니다.</div>
 					</div>
 					<div class="form-group">
-						<label for="password">비밀번호 : </label>
-						<input type="text" class="form-control" name="password" id="password" placeholder="비밀번호를 입력하세요." required />
-						<!-- <div id="passwordInvalid" class="invalid-feedback">비밀번호는 필수 입력사항입니다.</div> -->
+						<label for="loginPwd">비밀번호 : </label>
+						<input type="pqssword" class="form-control" name="loginPwd" id="loginPwd" placeholder="비밀번호를 입력하세요." required />
+						<!-- <div id="loginPwdInvalid" class="invalid-feedback">비밀번호는 필수 입력사항입니다.</div> -->
 						<input type="hidden" class="form-control" name="encryptPwd" id="encryptPwd" />
 					</div>
 					<div class="form-group text-center">

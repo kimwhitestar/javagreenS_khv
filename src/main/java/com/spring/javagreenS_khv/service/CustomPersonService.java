@@ -1,23 +1,23 @@
 package com.spring.javagreenS_khv.service;
 
-import com.spring.javagreenS_khv.vo.CustomPersonLoginVO;
-import com.spring.javagreenS_khv.vo.CustomPersonVO;
+import com.spring.javagreenS_khv.dto.CustomPersonDTO;
+import com.spring.javagreenS_khv.dto.CustomPersonLoginDTO;
 
 public interface CustomPersonService {
 
-	public CustomPersonLoginVO searchLogin(String id, String pwd);
+	public CustomPersonLoginDTO searchLogin(String loginId, String encryptPwd);
 	
-	public void updateTodayCnt(String id, int customId);
+	public void updateTodayCnt(String loginId, int customId);
 
-	public void updateVisitCntAndTodayCnt(String id, int customId);
+	public void updateVisitCntAndTodayCnt(String loginId, int customId);
 
-	public void updatePoint(String id, int customId);
+	public void updatePoint(String loginId, int customId);
 
-	public void updateCustomPersonLoginUserDel(String id, int customId);
+	public void updateCustomPersonLoginUserDel(String loginId, int customId);
 
-	public void updateLogout(String id, int customId);
+	public void updateLogout(String loginId, int customId);
 
-	public boolean loginIdCheck(String id);
+	public boolean loginIdCheck(String loginId);
 
 	public boolean emailCheck(String email);
 
@@ -25,6 +25,6 @@ public interface CustomPersonService {
 
 	public int obtainCustomId(int customKindCode);
 
-	public void insertCustomPersonAndCustomPersonLogin(CustomPersonVO personVo, CustomPersonLoginVO loginVo);
+	public void insertCustomPersonAndCustomPersonLogin(CustomPersonDTO personDto, CustomPersonLoginDTO loginDto);
 	
 }

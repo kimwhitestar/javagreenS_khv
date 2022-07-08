@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.javagreenS_khv.dao.CustomPersonDAO;
-import com.spring.javagreenS_khv.vo.CustomPersonLoginVO;
-import com.spring.javagreenS_khv.vo.CustomPersonVO;
+import com.spring.javagreenS_khv.dto.CustomPersonDTO;
+import com.spring.javagreenS_khv.dto.CustomPersonLoginDTO;
 
 @Service
 public class CustomPersonServiceImpl implements CustomPersonService {
@@ -15,38 +15,38 @@ public class CustomPersonServiceImpl implements CustomPersonService {
 	public CustomPersonDAO customPersonDao;
 
 	@Override
-	public CustomPersonLoginVO searchLogin(String id, String pwd) {
-		return customPersonDao.searchLogin(id, pwd);
+	public CustomPersonLoginDTO searchLogin(String loginId, String encryptPwd) {
+		return customPersonDao.searchLogin(loginId, encryptPwd);
 	}
 
 	@Override
-	public void updateTodayCnt(String id, int customId) {
-		customPersonDao.updateTodayCnt(id, customId);
+	public void updateTodayCnt(String loginId, int customId) {
+		customPersonDao.updateTodayCnt(loginId, customId);
 	}
 
 	@Override
-	public void updateVisitCntAndTodayCnt(String id, int customId) {
-		customPersonDao.updateVisitCntAndTodayCnt(id, customId);
+	public void updateVisitCntAndTodayCnt(String loginId, int customId) {
+		customPersonDao.updateVisitCntAndTodayCnt(loginId, customId);
 	}
 
 	@Override
-	public void updatePoint(String id, int customId) {
-		customPersonDao.updatePoint(id, customId);
+	public void updatePoint(String loginId, int customId) {
+		customPersonDao.updatePoint(loginId, customId);
 	}
 
 	@Override
-	public void updateCustomPersonLoginUserDel(String id, int customId) {
-		customPersonDao.updateCustomPersonLoginUserDel(id, customId);
+	public void updateCustomPersonLoginUserDel(String loginId, int customId) {
+		customPersonDao.updateCustomPersonLoginUserDel(loginId, customId);
 	}
 
 	@Override
-	public void updateLogout(String id, int customId) {
-		customPersonDao.updateLogout(id, customId);
+	public void updateLogout(String loginId, int customId) {
+		customPersonDao.updateLogout(loginId, customId);
 	}
 
 	@Override
-	public boolean loginIdCheck(String id) {
-		return customPersonDao.loginIdCheck(id);
+	public boolean loginIdCheck(String loginId) {
+		return customPersonDao.loginIdCheck(loginId);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class CustomPersonServiceImpl implements CustomPersonService {
 
 	@Transactional
 	@Override
-	public void insertCustomPersonAndCustomPersonLogin(CustomPersonVO personVo, CustomPersonLoginVO loginVo) {
-		customPersonDao.insertCustomPersonAndCustomPersonLogin(personVo, loginVo);
+	public void insertCustomPersonAndCustomPersonLogin(CustomPersonDTO personDto, CustomPersonLoginDTO loginDto) {
+		customPersonDao.insertCustomPersonAndCustomPersonLogin(personDto, loginDto);
 	}
 }

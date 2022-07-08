@@ -16,7 +16,7 @@
     </script>
 </head>
 <body>
-111111<c:out value="${existIdYN}"/>
+111111<c:out value="${existLoginIdYN}"/>
 <div class="container">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -29,7 +29,7 @@
 					<form name="changPwdForm" method="post" action="${ctxPath}/customPersonPwdChangeOk.mbr" class="was-validated">
 						<h2>비 밀 번 호  재 설 정</h2>
 						<c:choose>
-							<c:when test="${!empty existIdYN && 'N' == existIdYN}"><p>ID가 존재하지않습니다</p></c:when>
+							<c:when test="${!empty existLoginIdYN && 'N' == existLoginIdYN}"><p>ID가 존재하지않습니다</p></c:when>
 							<c:when test="${!empty existEmailYN && 'N' == existEmailYN}"><p>Email이 존재하지않습니다</p></c:when>
 							<c:when test="${!empty existShaEmailYN && 'N' == existShaEmailYN}"><p>Email로 전송한 본인확인 암호화문자가 확인되지않습니다</p></c:when>
 							<c:when test="${!empty validPwdYN && 'N' == validPwdYN}"><p>New비밀번호와 Re비밀번호가 같지않습니다</p></c:when>

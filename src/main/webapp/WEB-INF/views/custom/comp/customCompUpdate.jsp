@@ -52,8 +52,7 @@
 	
 	//DB에 저장될 각각의 필드길이 체크
  	function regexCheck() {
-		const regexId = /^[a-zA-Z]+[0-9_+-.]*[a-zA-Z_+-.]*[0-9]([a-zA-Z0-9_+-.]*)$/g; //아이디체크(영문자1자리이상, 숫자나 특수기호 조합 2~20자리)
-    	const regexPassword = /([a-zA-Z][0-9][@#$%&!?^~*+-_.]|[0-9][a-zA-Z][@#$%&!?^~*+-_.]|[@#$%&!?^~*+-_.][a-zA-Z][0-9]|[@#$%&!?^~*+-_.][0-9][a-zA-Z])/g;//비밀번호체크(영문자,숫자,특수기호 @#$%&!?^~*+-_. 조합 3~20자리)
+    	const regexloginPwd = /([a-zA-Z][0-9][@#$%&!?^~*+-_.]|[0-9][a-zA-Z][@#$%&!?^~*+-_.]|[@#$%&!?^~*+-_.][a-zA-Z][0-9]|[@#$%&!?^~*+-_.][0-9][a-zA-Z])/g;//비밀번호체크(영문자,숫자,특수기호 @#$%&!?^~*+-_. 조합 3~20자리)
   		const regexCustomName = /[가-힣a-zA-Z]{3,10}([0-9]*)/g; //기업명체크(한글or영문에 필요하면 숫자포함 조합 3~20자리)
     	const regexCustomNameShort = /[가-힣a-zA-Z]{3,10}([0-9]*)/g; //기업명(단축명칭)체크(한글or영문에 필요하면 숫자포함 조합 3~20자리)
 		const regexCompanyNo = /[0-9]{3}-[0-9]{2}-[0-9]{5}/g; //사업자등록번호체크(숫자3자리-숫자2자리-숫자5자리)
@@ -68,31 +67,17 @@
 		const regexMemo = /[a-zA-Z0-9가-힣]([@#$%^&!?]|[~()<>_*+-=]|[,.:;\/]|[ ]*)/gm; //메모 체크(숫자,문자,특수문자체크(~!?@#$%^&*()<>_+=-,.:;/ ) 조합 500자리)
 		let regexFlag = true;
 		
- 		//회원아이디 정규식 체크
-		if ( ! $("#id").val().match(regexId) ) {
- 			$("#id").addClass("is-invalid");
- 			$("#idInvalid").addClass("is-invalid");
- 			$("#idInvalid").text("영문자로 시작하여 숫자1자리 이상 포함하는 영문,숫자,특수기호(_+-.)의 조합 2~20자리로 입력하세요");
- 			$("#id").focus();
- 			regexFlag = false;
- 		} else {
- 			$("#id").addClass("is-valid");
- 			$("#idInvalid").addClass("is-valid");
- 			$("#idInvalid").text("");
- 			$("#password").focus();
- 		}
 		//비밀번호 정규식 체크
-		if ( ! $("#password").val().match(regexPassword) ) {
-			$("#password").addClass("is-invalid");
-			$("#passwordInvalid").addClass("is-invalid");
-			$("#passwordInvalid").text("영문자, 숫자, 특수기호(~!?@#$%^&*_+-.) 조합 3~20자리로 입력하세요");
- 			$("#password").focus();
+		if ( ! $("#loginPwd").val().match(regexloginPwd) ) {
+			$("#loginPwd").addClass("is-invalid");
+			$("#loginPwdInvalid").addClass("is-invalid");
+			$("#loginPwdInvalid").text("영문자, 숫자, 특수기호(~!?@#$%^&*_+-.) 조합 3~20자리로 입력하세요");
+ 			$("#loginPwd").focus();
  			regexFlag = false;
 		} else {
-			$("#password").addClass("is-valid");
-			$("#passwordInvalid").addClass("is-valid");
- 			$("#passwordInvalid").text("");
-			$("#customName").focus();
+			$("#loginPwd").addClass("is-valid");
+			$("#loginPwdInvalid").addClass("is-valid");
+ 			$("#loginPwdInvalid").text("");
 		}
 		//기업명 정규식 체크
 		if ( ! $("#customName").val().match(regexCustomName) ) {
@@ -105,7 +90,6 @@
 			$("#customName").addClass("is-valid");
 			$("#customNameInvalid").addClass("is-valid");
 			$("#customNameInvalid").text("");
-			$("#customNameShort").focus();
 		}
 		//기업명(단축명칭) 정규식 체크
 		if ( ! $("#customNameShort").val().match(regexCustomNameShort) ) {
@@ -118,7 +102,6 @@
 			$("#customNameShort").addClass("is-valid");
 			$("#customNameShortInvalid").addClass("is-valid");
 			$("#customNameShortInvalid").text("");
-			$("#email1").focus();
 		}
 		//사업자등록번호 정규식 체크
 		if ( ! $("#companyNo").val().match(regexCompanyNo) ) {
@@ -131,7 +114,6 @@
 			$("#companyNo").addClass("is-valid");
 			$("#companyNoInvalid").addClass("is-valid");
 			$("#companyNoInvalid").text("");
-			$("#customKindCode").focus();
 		}
 		//사무실명 정규식 체크
 		if ( ! $("#txtOffice").val().match(regexTxtOffice) ) {
@@ -144,7 +126,6 @@
 			$("#txtOffice").addClass("is-valid");
 			$("#txtOfficeInvalid").addClass("is-valid");
 			$("#txtOfficeInvalid").text("");
-			$("#postcode").focus();
 		}
 		//우편번호 공란 체크
 		if ( '' == $('#addressGroup input[name="postcode"]').val()
@@ -158,7 +139,6 @@
 			$('#addressGroup input[name="detailAddress"]').addClass("is-valid");
 			$("#detailAddressInvalid").addClass("is-valid");
 			$("#detailAddressInvalid").text("");
-			$("#btnPostCode").focus();
 		}
 		//상세주소 정규식 체크
  		if ( '' != $('#addressGroup input[name="postcode"]').val() 
@@ -173,7 +153,6 @@
 				$('#addressGroup input[name="detailAddress"]').addClass("is-valid");
 				$("#detailAddressInvalid").addClass("is-valid");
 				$("#detailAddressInvalid").text("");
-				$("#email1").focus();
 			}
 		}
 		//이메일 정규식 체크
@@ -187,7 +166,6 @@
 			$("#email1").addClass("is-valid");
 			$("#email1Invalid").addClass("is-valid");
 			$("#email1Invalid").text("");
-			$("#email2").focus();
 		}
 		//이메일 도메인 정규식 체크
 		let options = updateForm.email2.options;
@@ -209,14 +187,12 @@
 					$("#txtEmail2").addClass("is-valid");
 					$("#txtEmail2Invalid").addClass("is-valid");
 					$("#txtEmail2Invalid").text("");
-					$("#tel1").focus();
 				}
   		}
   	}	else {//도메인 셀렉트박스에서 선택한 경우
 			$("#txtEmail2").addClass("is-valid");
 			$("#txtEmail2Invalid").addClass("is-valid");
 			$("#txtEmail2Invalid").text("");
-			$("#tel1").focus();
   	}
 		//전화번호 정규식 체크
 		if ('' != $("#tel3").val()) {
@@ -285,8 +261,7 @@
 			} else {
 				$("#memo").addClass("is-valid");
 				$("#memoInvalid").addClass("is-valid");
-				$("#memoInvalid").text("");
-				$("#customImgFileName").focus();
+				$("#memoInvalid").text('');
 			}
 		}
 
@@ -298,7 +273,7 @@
 		if (! flag) return false;
 		
 		//비밀번호 암호화
-		setEncryptPwd($("#password").val());
+		setEncryptPwd($("#loginPwd").val());
 		
 		//사무실 편집
 		if ('기타' == $("#office").val() && '' != $("#txtOffice").val()) {
@@ -349,8 +324,8 @@
 	}
 	
 	//비밀번호 암호화
-	function setEncryptPwd(password) {
-			$("#encryptPwd").val('${security.encryptSHA256(password)}');
+	function setEncryptPwd(loginPwd) {
+			$("#encryptPwd").val('${security.encryptSHA256(loginPwd)}');
 	}
 	
  	function changeSel(selObj, txtObj)	{
@@ -373,18 +348,18 @@
  	
 </script>
 </head>
-<body class="jumbotron">
+<body class="jumbotron" background="${ctxPath}/images/backgroundimg.gif" >
 <div class="container" style="padding:30px" >
   <form name="updateForm" method="post" action="${ctxPath}/customComp/customCompUpdate" class="was-validated" enctype="multipart/form-data">
 	<h2 class="text-center">기 업 고 객 회 원 정 보 수 정</h2><br>
     <h6 class="text-center"><font color="blue">회원정보를 수정하려면 회원비밀번호 입력하세요.</font></h6><br>
     <div class="form-group">
-			<label for="id">아이디 : ${sLoginId}</label>
+			<label>아이디 : ${sLoginId}</label>
     </div>
     <div class="form-group">
-			<label for="password">비밀번호 확인 :</label>
-			<input type="password" class="form-control" id="password" name="password" maxlength=20 required />
-			<div id="passwordInvalid" class="invalid-feedback">비밀번호는 필수 입력사항입니다.</div>
+			<label for="loginPwd">비밀번호 확인 :</label>
+			<input type="loginPwd" class="form-control" id="loginPwd" name="loginPwd" maxlength=20 required />
+			<div id="loginPwdInvalid" class="invalid-feedback">비밀번호는 필수 입력사항입니다.</div>
 			<input type="hidden" class="form-control" name="encryptPwd" id="encryptPwd" />
     </div>
     <div class="form-group">

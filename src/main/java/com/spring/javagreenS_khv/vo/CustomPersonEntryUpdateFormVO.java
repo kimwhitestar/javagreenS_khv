@@ -36,7 +36,8 @@ public @Data class CustomPersonEntryUpdateFormVO {
 	private String deleteUser;
 	private int overDaysUserDel; //회원삭제신청 경과일(30일 경과시 회원탈퇴처리)
 	//개인고객회원로그인정보
-	private String id;
+	private String loginId;
+	private String loginPwd;
 	private String encryptPwd;
 	private int point;
 	private int visitCnt;

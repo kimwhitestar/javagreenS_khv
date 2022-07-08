@@ -4,13 +4,13 @@
 
 <mapper namespace="com.spring.javagreenS_khv.dao.CustomPersonDAO">
 <!-- 수정 <mapper namespace="org.mybatis.example.BlogMapper"></mapper> -->
-	<select id="searchCustomPerson" resultType="com.spring.javagreenS_khv.vo.CustomPersonVO">
+	<select id="searchCustomPerson" resultType="com.spring.javagreenS_khv.dto.CustompersonDto">
 	    SELECT * FROM CUSTOM_PERSON WHERE CUSTOM_ID = #{customId}
 	</select>
-	<select id="searchLogin" resultType="com.spring.javagreenS_khv.vo.CustomPersonLoginVO">
+	<select id="searchLogin" resultType="com.spring.javagreenS_khv.dto.CustomPersonloginDto">
 		SELECT 
-			ID,  -- primary key
-			PASSWORD,
+			LOGIN_ID,  -- primary key
+			LOGIN_PWD,
 			CUSTOM_ID,  -- foreign key (custom_person TBL)
 			(SELECT CUSTOM_NM FROM CUSTOM_PERSON WHERE CUSTOM_ID = CUSTOM_PERSON_LOGIN.CUSTOM_ID) AS CUSTOM_NAME,  -- foreign key (코드TBL)
 			CUSTOM_GRADE,
@@ -24,25 +24,25 @@
 			UPDATE_DATE,
 			DELETE_DATE 
 		FROM CUSTOM_PERSON_LOGIN 
-		WHERE ID = #{id} AND PASSWORD = #{pwd} AND DELETE_DATE IS NULL ;  -- primary key(id) indexing	    
+		WHERE LOGIN_ID = #{loginId} AND LOGIN_PWD = #{loginPwd} AND DELETE_DATE IS NULL ;  -- primary key(loginId) indexing	    
 	</select>
 	<update id="updateTodayCnt">
-		UPDATE CUSTOM_PERSON_LOGIN SET TODAY_CNT = 0, LOGIN_DATE = DEFAULT, LOGIN_USER = #{id}, UPDATE_DATE = DEFAULT, UPDATE_USER = #{id} WHERE ID = #{id} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL
+		UPDATE CUSTOM_PERSON_LOGIN SET TODAY_CNT = 0, LOGIN_DATE = DEFAULT, LOGIN_USER = #{loginId}, UPDATE_DATE = DEFAULT, UPDATE_USER = #{loginId} WHERE LOGIN_ID = #{loginId} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL
 	</update>
 	<update id="updateVisitCntAndTodayCnt">
-		UPDATE CUSTOM_PERSON_LOGIN SET VISIT_CNT = VISIT_CNT+1, TODAY_CNT = TODAY_CNT+1, UPDATE_DATE = DEFAULT, UPDATE_USER = #{id} WHERE ID = #{id} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL
+		UPDATE CUSTOM_PERSON_LOGIN SET VISIT_CNT = VISIT_CNT+1, TODAY_CNT = TODAY_CNT+1, UPDATE_DATE = DEFAULT, UPDATE_USER = #{loginId} WHERE LOGIN_ID = #{loginId} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL
 	</update>
 	<update id="updatePoint">
-		UPDATE CUSTOM_PERSON_LOGIN SET POINT = POINT + 100, UPDATE_DATE = DEFAULT, UPDATE_USER = #{id} WHERE ID = #{id} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL
+		UPDATE CUSTOM_PERSON_LOGIN SET POINT = POINT + 100, UPDATE_DATE = DEFAULT, UPDATE_USER = #{loginId} WHERE LOGIN_ID = #{loginId} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL
 	</update>
 	<update id="updateCustomPersonLoginUserDel">
-		UPDATE CUSTOM_PERSON_LOGIN SET DELETE_DATE = DEFAULT, DELETE_USER = #{id} , LOGOUT_DATE = DEFAULT, LOGOUT_USER = #{id}  WHERE ID = #{id} AND CUSTOM_ID = #{customId}
+		UPDATE CUSTOM_PERSON_LOGIN SET DELETE_DATE = DEFAULT, DELETE_USER = #{loginId} , LOGOUT_DATE = DEFAULT, LOGOUT_USER = #{loginId}  WHERE LOGIN_ID = #{loginId} AND CUSTOM_ID = #{customId}
 	</update>
 	<update id="updateLogout">
-		UPDATE CUSTOM_PERSON_LOGIN SET LOGOUT_DATE = DEFAULT, LOGOUT_USER = #{id} WHERE ID = #{id} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL 
+		UPDATE CUSTOM_PERSON_LOGIN SET LOGOUT_DATE = DEFAULT, LOGOUT_USER = #{loginId} WHERE LOGIN_ID = #{loginId} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL 
 	</update>
 	<select id="loginIdCheck" resultType="boolean">
-		SELECT IF(COUNT(ID) > 0, TRUE, FALSE) AS ISEXIST_ID FROM CUSTOM_PERSON_LOGIN WHERE ID= #{id};
+		SELECT IF(COUNT(LOGIN_ID) > 0, TRUE, FALSE) AS ISEXIST_ID FROM CUSTOM_PERSON_LOGIN WHERE LOGIN_ID = #{loginId};
 	</select>
 	<select id="emailCheck" resultType="boolean">
 		SELECT IF(COUNT(EMAIL) > 0, TRUE, FALSE) AS ISEXIST_EMAIL FROM CUSTOM_PERSON WHERE EMAIL = #{email}
@@ -59,38 +59,38 @@
 	<insert id="insertCustomPersonAndCustomPersonLogin">
 		INSERT INTO CUSTOM_PERSON VALUES ( 
 			DEFAULT, 
-			#{personVo.custom_id},   -- create_user	
-			#{personVo.custom_nm},  
+			#{personDto.custom_id},   -- create_user	
+			#{personDto.custom_nm},  
 			2,
-			#{personVo.custom_kind_cd},  
+			#{personDto.custom_kind_cd},  
 			'P',
 			
-		<if test='#{personVo.job} == "기타"'>
-			#{personVo.txtJob},  
+		<if test='#{personDto.job} == "기타"'>
+			#{personDto.txtJob},  
 		</if>
-		<if test='#{personVo.job} != "기타"'>
-			#{personVo.job},  
+		<if test='#{personDto.job} != "기타"'>
+			#{personDto.job},  
 		</if>
 
-			#{personVo.hobby},  
-			#{personVo.birth_date},  
-			#{personVo.jumin_no},  
-			#{personVo.gender},  
-			#{personVo.tel_no},  
-			#{personVo.hp_no},  
-			#{personVo.email},  
-			#{personVo.post_code},  
-			#{personVo.road_addr},  
-			#{personVo.extra_addr},  
-			#{personVo.detail_addr},  
-			#{personVo.memo},  
+			#{personDto.hobby},  
+			#{personDto.birth_date},  
+			#{personDto.jumin_no},  
+			#{personDto.gender},  
+			#{personDto.tel_no},  
+			#{personDto.hp_no},  
+			#{personDto.email},  
+			#{personDto.post_code},  
+			#{personDto.road_addr},  
+			#{personDto.extra_addr},  
+			#{personDto.detail_addr},  
+			#{personDto.memo},  
 			DEFAULT, 
-			#{personVo.custom_id},   -- create_user	
+			#{personDto.custom_id},   -- create_user	
 			NULL, 
 			NULL, 
 			NULL, 
 			NULL );
 	
-		INSERT INTO CUSTOM_PERSON_LOGIN VALUES ( #{loginVo.id}, #{loginVo.encrypt_pwd}, #{loginVo.custom_id}, 'P', DEFAULT, DEFAULT, DEFAULT, NULL, NULL, NULL, NULL, DEFAULT, #{loginVo.id}, NULL, NULL, NULL, NULL);
+		INSERT INTO CUSTOM_PERSON_LOGIN VALUES ( #{loginDto.login_id}, #{loginDto.encrypt_pwd}, #{loginDto.custom_id}, 'P', DEFAULT, DEFAULT, DEFAULT, NULL, NULL, NULL, NULL, DEFAULT, #{loginDto.login_id}, NULL, NULL, NULL, NULL);
 	</insert>
 </mapper>

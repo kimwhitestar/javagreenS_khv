@@ -16,8 +16,8 @@
 	});
 	
 	function sendId() {
-		opener.window.document.loginForm.id.value = $("#findoutId").val();
-		opener.window.document.loginForm.password.focus();
+		opener.window.document.loginForm.loginId.value = $("#findoutId").val();
+		opener.window.document.loginForm.loginPwd.focus();
 		window.close();
 	}
 	
@@ -36,20 +36,20 @@
 		
 		$.ajax({
 			type: "post",
-			url: "${ctxPath}/customCompIdFindoutOk",
+			url: "${ctxPath}/customCompLoginIdFindout",
 			data: param,
-			success: function(id) {
-				if ('' == id) {
-					$("#existIdN").html("<h5 class='text-center'><font color='red'>아이디를 찾지 못했습니다.</font></h5>");
+			success: function(loginId) {
+				if ('' == loginId) {
+					$("#existLoginIdN").html("<h5 class='text-center'><font color='red'>아이디를 찾지 못했습니다.</font></h5>");
 				} else {
-					$("#existIdN").html('');
-					$("#existIdEmpty").html('');
+					$("#existLoginIdN").html('');
+					$("#existLoginIdEmpty").html('');
 					let resHtml = "<h4 class='text-center'>회원님의 아이디는 <font color='blue'><span id='spanFindoutId'></span></font>입니다</h4>"
 						+ "<p class='text-center'><input type='button' class='btn btn-info btn-sm' value='창닫기' onclick='sendId()'/></p>"
 						+ "<input type='hidden' name='findoutId' id='findoutId' value='"+id+"'/>";
-					$("#existIdY").html(resHtml);
-					$("#spanFindoutId").html(id);
-					$("#findoutId").val(id);
+					$("#existLoginIdY").html(resHtml);
+					$("#spanFindoutId").html(loginId);
+					$("#findoutId").val(loginId);
 				}
 			},
 			error: function() {
@@ -148,9 +148,9 @@
 		<div class="modal-content">
 			<div class="container p-3 border">
 				<div id="lblFindId"></div>
-				<div id="existIdN"></div>
-				<div id="existIdY"></div>
-				<div id="existIdEmpty">
+				<div id="existLoginIdN"></div>
+				<div id="existLoginIdY"></div>
+				<div id="existLoginIdEmpty">
 					<form name="findIdForm" method="post" class="was-validated">
 						<p class="text-success">가입한 기업명, 이메일, 전화번호를 입력해 주세요</p>
 						<div class="form-group">

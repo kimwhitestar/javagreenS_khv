@@ -208,7 +208,7 @@ alert('customKindCode' + $("#customKindCode").val());
 			<label for="customKindCode">기업구분코드 :</label>
 			<select id="customKindCode" name="customKindCode" class="custom-select">
 <%-- 				<c:forEach var="vo" items="${customKind}" >
-					<option value="${vo.customKindCd}" >${vo.customKindNm}</option>
+					<option value="${vo.customKindCode}" >${vo.customKindName}</option>
 				</c:forEach>
  --%>				<option value="1" >일반법인업체</option>
 			</select>

@@ -3,24 +3,21 @@ package com.spring.javagreenS_khv.vo;
 import lombok.Data;
 
 public @Data class CustomPersonLoginVO {
-	private String id;
-	private String pwd;
-	private String encrypt_pwd;
-	private int custom_id;
-	private String custom_name;
-	private String custom_grade;
-	private String grade_name;
+	private String loginId;//아이디체크(영문자1자리이상, 숫자나 특수기호 조합 2~20자리)
+	private String loginPwd;//
+	private String encryptPwd;
+	private int customId;
+	private String customName;
+	private String customGrade;
+	private String gradeName;
 	private int point;
-	private int visit_cnt;
-	private int today_cnt;
-	private String login_date;
-	private String login_user;
-	private String logout_date;
-	private String logout_user;
-	private String create_date;
-	private String create_user;
-	private String update_date;
-	private String update_user;
-	private String delete_date;
-	private String delete_user;
+	private int visitCnt;
+	private int todayCnt;
+	private String loginDate;
+	private String logoutDate;
+	private String createDate;
+	private String updateDate;
+	private String updateUser;
+	private String deleteDate;
+	private String deleteUser;
 }
