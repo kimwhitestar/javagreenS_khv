@@ -8,6 +8,10 @@
 %>
 <script>
 	'use strict';
+	function logoutCheck(flg) {
+		if ('기업' == flg) parent.location.href = "${ctxPath}/customComp/customCompLogout";
+		else if ('개인' == flg) parent.location.href = "${ctxPath}/customPerson/customPersonLogout";
+	}
 	function checkCustomCompDelete() {
 		if (confirm('정말 탈퇴하겠습니까?')) {
 			if (confirm('탈퇴 후 1개월간은 같은 아이디로 재가입할 수 없습니다.\n탈퇴하겠습니까?')) 
@@ -41,7 +45,7 @@
 <%	} else if (99 != sGradeCode && 'O' == sGradeCode) { %>
 <%-- <%	} else if (99 != sGradeCode && 1 == sKindGrpCode) { %> --%>
 			    <div class="dropdown-menu bg-dark">
-		 			  <a class="dropdown-item navbar-brand" target="customContent"  href="${ctxPath}/customComp/customCompLogout">기업고객 로그아웃</a>
+		 			  <a class="dropdown-item navbar-brand" target="customContent"  onclick='javascript:logoutCheck("기업")'>기업고객 로그아웃</a>
 	 			  </div>
 <%	} %>
 				</div>

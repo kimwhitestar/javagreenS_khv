@@ -80,6 +80,8 @@ public @Data class CustomCompEntryUpdateFormVO {
 	private int point;
 	private int visitCnt;
 	private int todayCnt;
+	private String deleteDate;
+	private String deleteUser;
 	/* hibernate validator 체크
 	 @Digits(Integer=, fraction=) : @숫자(정수, 소수이하자릿수)
 	 @Past() : 과거 날짜?, @Future : 미래 날짜?
