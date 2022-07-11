@@ -17,9 +17,6 @@
 		SELECT * FROM KAKAOADDRESS ORDER BY ADDRESS;
 	</select>
 
-	<select id="searchCustomComp" resultType="com.spring.javagreenS_khv.dto.CustomCompDTO">
-	    SELECT * FROM CUSTOM_COMP WHERE CUSTOM_ID = #{customId}
-	</select>
 	<select id="searchLogin" resultType="com.spring.javagreenS_khv.dto.CustomCompLoginDTO">
 		SELECT 
 			LOGIN_ID,  -- primary key
@@ -107,6 +104,36 @@
 		INSERT INTO CUSTOM_COMP_LOGIN VALUES ( #{loginDto.login_id}, #{loginDto.encrypt_pwd}, #{loginDto.custom_id}, 'O', DEFAULT, DEFAULT, DEFAULT, NULL, NULL, NULL, NULL, DEFAULT, #{loginDto.login_id}, NULL, NULL, NULL, NULL);
 
 	</insert>
-	
-	
+	<select id="searchCustomComp" resultType="com.spring.javagreenS_khv.dto.CustomCompDTO">
+	    SELECT * FROM CUSTOM_COMP WHERE CUSTOM_ID = #{customId}
+	</select>
+	<update id="updateCustomComp">
+		UPDATE CUSTOM_COMP SET
+			CUSTOM_NM = #{compDto.custom_nm}, 
+			CUSTOM_NM_SHORT = #{compDto.custom_nm_short}, 
+			CUSTOM_KIND_CD = #{compDto.custom_kind_cd}, 
+			ESTBL_DATE = #{compDto.estbl_date}, 
+			COMPANY_NO = #{compDto.company_no}, 
+			 
+		<if test='#{compDto.office} == "기타"'>
+			OFFICE = #{compDto.txt_office},  
+		</if>
+		<if test='#{compDto.office} != "기타"'>
+			OFFICE = #{compDto.office},  
+		</if>
+			
+			TEL_NO = #{compDto.tel_no}, 
+			HP_NO = #{compDto.hp_no}, 
+			EMAIL = #{compDto.email}, 
+			POST_CODE = #{compDto.post_code}, 
+			ROAD_ADDR = #{compDto.road_addr}, 
+			EXTRA_ADDR = #{compDto.extra_addr}, 
+			DETAIL_ADDR = #{compDto.detail_addr}, 
+			MEMO = #{compDto.memo}, 
+			CUSTOM_IMG_FILE_NAME = #{compDto.custom_img_file_name}, 
+			UPDATE_DATE = DEFAULT, 
+			UPDATE_USER = #{compDto.custom_id} 
+		WHERE CUSTOM_ID = #{compDto.custom_id} 
+		  AND DELETE_DATE IS NULL
+	</update>
 </mapper>

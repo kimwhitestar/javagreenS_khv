@@ -1,7 +1,9 @@
 package com.spring.javagreenS_khv;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -15,17 +17,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.spring.javagreenS_khv.dto.CustomKindDTO;
 import com.spring.javagreenS_khv.dto.CustomPersonDTO;
 import com.spring.javagreenS_khv.dto.CustomPersonLoginDTO;
+import com.spring.javagreenS_khv.service.CustomKindService;
 import com.spring.javagreenS_khv.service.CustomPersonService;
+import com.spring.javagreenS_khv.vo.CustomKindVO;
 import com.spring.javagreenS_khv.vo.CustomPersonEntryUpdateFormVO;
 
 //개인고객회원관리Controller
 @Controller
 @RequestMapping("/customPerson")
 public class CustomPersonController {
+
 	@Autowired
 	public CustomPersonService customPersonService;
+	
+	@Autowired
+	public CustomKindService customKindService;
 	
 	//로그인화면 이동
 	@RequestMapping(value="/customPersonLogin", method=RequestMethod.GET)
@@ -168,7 +177,19 @@ public class CustomPersonController {
 
 	//회원가입화면 이동
 	@RequestMapping(value="/customPersonEntry", method=RequestMethod.GET)
-	public String customPersonEntryGet() {
+	public String customPersonEntryGet(Model model) {
+		//기업고객고분코드 목록조회 
+		List<CustomKindDTO> customKindDtoList = customKindService.searchCustomKindList();
+		List<CustomKindVO> customKindVoList = new ArrayList<>();
+		CustomKindVO customKindVo = null;
+		for (CustomKindDTO customKindDto : customKindDtoList) {
+			customKindVo = new CustomKindVO();
+			customKindVo.setCustomKindCode(customKindDto.getCustom_kind_cd());
+			customKindVo.setCustomKindName(customKindDto.getCustom_kind_nm());
+			customKindVoList.add(customKindVo);
+		}
+		//기업고객고분코드 화면표시값 설정 
+		model.addAttribute("customKindList", customKindVoList);
 		return "custom/person/customPersonEntry";
 	}
 	
@@ -213,9 +234,9 @@ public class CustomPersonController {
 		customPersonService.insertCustomPersonAndCustomPersonLogin(personDto, loginDto);
 		
 //	if (1 == resLogin && 1 == resComp) {
-			return "redirect:/msgCustomComp/EntryOk";
+			return "redirect:/msgCustomPerson/EntryOk";
 //	} else {
-//			return "redirect:/msgCustomComp/EntryNo";
+//			return "redirect:/msgCustomPerson/EntryNo";
 //	}		
 	}
 	
@@ -293,7 +314,19 @@ public class CustomPersonController {
 	
 	//회원정보수정화면 이동
 	@RequestMapping(value="/customPersonUpdate", method=RequestMethod.GET)
-	public String customPersonUpdateGet() {
+	public String customPersonUpdateGet(Model model) {
+		//기업고객고분코드 목록조회 
+		List<CustomKindDTO> customKindDtoList = customKindService.searchCustomKindList();
+		List<CustomKindVO> customKindVoList = new ArrayList<>();
+		CustomKindVO customKindVo = null;
+		for (CustomKindDTO customKindDto : customKindDtoList) {
+			customKindVo = new CustomKindVO();
+			customKindVo.setCustomKindCode(customKindDto.getCustom_kind_cd());
+			customKindVo.setCustomKindName(customKindDto.getCustom_kind_nm());
+			customKindVoList.add(customKindVo);
+		}
+		//기업고객고분코드 화면표시값 설정 
+		model.addAttribute("customKindList", customKindVoList);
 		return "custom/person/customPersonUpdate";
 	}
 	

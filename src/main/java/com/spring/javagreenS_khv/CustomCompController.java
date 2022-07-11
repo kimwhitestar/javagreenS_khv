@@ -1,6 +1,7 @@
 package com.spring.javagreenS_khv;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -24,16 +25,26 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.javagreenS_khv.dto.CustomCompDTO;
 import com.spring.javagreenS_khv.dto.CustomCompLoginDTO;
+import com.spring.javagreenS_khv.dto.CustomKindDTO;
 import com.spring.javagreenS_khv.service.CustomCompService;
+import com.spring.javagreenS_khv.service.CustomKindService;
 import com.spring.javagreenS_khv.vo.CustomCompEntryUpdateFormVO;
+import com.spring.javagreenS_khv.vo.CustomKindVO;
 import com.spring.javagreenS_khv.vo.KakaoAddressVO;
 
 //기업고객회원관리Controller
 @Controller
 @RequestMapping("/customComp")
 public class CustomCompController {
+	
 	@Autowired
 	public CustomCompService customCompService;
+	
+	@Autowired
+	public CustomKindService customKindService;
+	
+//	@Autowired
+//	public CustomCompEntryUpdateFormVO customCompVo;
 	
 	//카카오맵 사용
 	@RequestMapping(value="/kakaomap", method=RequestMethod.GET)
@@ -56,7 +67,6 @@ public class CustomCompController {
 		customCompService.insertAddressName(vo);
 		return "1";
 	}
-	
 	
 	//카카오맵 응용2 - Map 조회
 	@RequestMapping(value="/kakaoEx2", method=RequestMethod.GET)
@@ -223,17 +233,24 @@ public class CustomCompController {
 
 	//회원가입화면 이동
 	@RequestMapping(value="/customCompEntry", method=RequestMethod.GET)
-	public String customCompEntryGet() {
-//		//기업고객고분코드 목록조회 
-//		CustomKindDAO dao = new CustomKindDAO();
-//		List<CustomKindVO> customKind = dao.searchCustomCompCustomKindList();
-//		request.setAttribute("customKind", customKind);
+	public String customCompEntryGet(Model model) {
+		//기업고객고분코드 목록조회 
+		List<CustomKindDTO> customKindDtoList = customKindService.searchCustomKindList();
+		List<CustomKindVO> customKindVoList = new ArrayList<>();
+		CustomKindVO customKindVo = null;
+		for (CustomKindDTO customKindDto : customKindDtoList) {
+			customKindVo = new CustomKindVO();
+			customKindVo.setCustomKindCode(customKindDto.getCustom_kind_cd());
+			customKindVo.setCustomKindName(customKindDto.getCustom_kind_nm());
+			customKindVoList.add(customKindVo);
+		}
+		model.addAttribute("customKindList", customKindVoList);
 		return "custom/comp/customCompEntry";
 	}
 
 	//회원가입
 	@RequestMapping(value="/customCompEntry", method=RequestMethod.POST)
-	public String customCompEntryPost(Model model, @Validated CustomCompEntryUpdateFormVO entryVo, BindingResult bindRes) {
+	public String customCompEntryPost(Model model, @Validated CustomCompEntryUpdateFormVO customCompVo, BindingResult bindRes) {
 		
 		if (bindRes.hasErrors()) {
 			HashMap errMsgMap = new HashMap();
@@ -260,6 +277,19 @@ public class CustomCompController {
 			System.out.println(" FieldErrors : " + i);
 			
 			model.addAttribute("errMsgMap", errMsgMap);
+			
+			//기업고객고분코드 목록조회 
+			List<CustomKindDTO> customKindDtoList = customKindService.searchCustomKindList();
+			List<CustomKindVO> customKindVoList = new ArrayList<>();
+			CustomKindVO customKindVo = null;
+			for (CustomKindDTO customKindDto : customKindDtoList) {
+				customKindVo = new CustomKindVO();
+				customKindVo.setCustomKindCode(customKindDto.getCustom_kind_cd());
+				customKindVo.setCustomKindName(customKindDto.getCustom_kind_nm());
+				customKindVoList.add(customKindVo);
+			}
+			model.addAttribute("customKindList", customKindVoList);
+
 			return "redirect:/customComp/customCompEntry";
 		}
 		
@@ -269,32 +299,32 @@ public class CustomCompController {
 		//기업고객아이디 발급
 		//CUSTOM_ID 구성 : 3자리(100~999) 'CUSTOM_KIND_CD' + 5자리 '순차발행' (00001~99999))
 		//CUSTOM_KIND_CD '1', '2'의 경우는 '100'으로 설정 
-		int customKindCode = entryVo.getCustomKindCode();
+		int customKindCode = Integer.parseInt(customCompVo.getCustomKindCode());
 		int customId = customCompService.obtainCustomId(customKindCode);
 
 		//기업고객 회원정보 VO 설정
 		compDto.setCustom_id(customId);
-		compDto.setCustom_nm(entryVo.getCustomName());
-		compDto.setCustom_nm_short(entryVo.getCustomNameShort());
+		compDto.setCustom_nm(customCompVo.getCustomName());
+		compDto.setCustom_nm_short(customCompVo.getCustomNameShort());
 		compDto.setCustom_kind_cd(customKindCode);
-		compDto.setEstbl_date(entryVo.getEstblDate());
-		compDto.setCompany_no(entryVo.getCompanyNo());
-		compDto.setOffice(entryVo.getOffice());
-		compDto.setTxt_office(entryVo.getTxtOffice());
-		compDto.setTel_no(entryVo.getTelNo());
-		compDto.setHp_no(entryVo.getHpNo());
-		compDto.setEmail(entryVo.getEmail());
-		compDto.setPost_code(entryVo.getPostcode());
-		compDto.setRoad_addr(entryVo.getRoadAddress());
-		compDto.setExtra_addr(entryVo.getExtraAddress());
-		compDto.setDetail_addr(entryVo.getDetailAddress());
-		compDto.setMemo(entryVo.getMemo());
-		compDto.setCustom_img_file_name(entryVo.getPhoto());
+		compDto.setEstbl_date(customCompVo.getEstblDate());
+		compDto.setCompany_no(customCompVo.getCompanyNo());
+		compDto.setOffice(customCompVo.getOffice());
+		compDto.setTxt_office(customCompVo.getTxtOffice());
+		compDto.setTel_no(customCompVo.getTelNo());
+		compDto.setHp_no(customCompVo.getHpNo());
+		compDto.setEmail(customCompVo.getEmail());
+		compDto.setPost_code(customCompVo.getPostcode());
+		compDto.setRoad_addr(customCompVo.getRoadAddress());
+		compDto.setExtra_addr(customCompVo.getExtraAddress());
+		compDto.setDetail_addr(customCompVo.getDetailAddress());
+		compDto.setMemo(customCompVo.getMemo());
+		compDto.setCustom_img_file_name(customCompVo.getPhoto());
 		
 		//기업고객 로그인 VO 설정
 		loginDto.setCustom_id(customId);
-		loginDto.setLogin_id(entryVo.getLoginId());
-		loginDto.setEncrypt_pwd(entryVo.getEncryptPwd());
+		loginDto.setLogin_id(customCompVo.getLoginId());
+		loginDto.setEncrypt_pwd(customCompVo.getEncryptPwd());
 		
 		//기업고객 회원정보 DB 등록, 기업고객 로그인 DB 등록 - mybatis transaction 포함
 		customCompService.insertCustomCompAndCustomCompLogin(compDto, loginDto);
@@ -619,13 +649,132 @@ public class CustomCompController {
 	
 	//회원정보수정화면 이동
 	@RequestMapping(value="/customCompUpdate", method=RequestMethod.GET)
-	public String customCompUpdateGet() {
+	public String customCompUpdateGet(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		int sCustomId = (int) session.getAttribute("sCustomId");
+
+		//개별회원정보 조회
+		CustomCompDTO compDto = customCompService.searchCustomComp(sCustomId);
+		if (null == compDto) return "redirect:/msgCustomComp/LoginNo";//비회원화면으로 이동
+			
+		//Form출력 설정
+		CustomCompEntryUpdateFormVO customCompVo = new CustomCompEntryUpdateFormVO();
+		customCompVo.setCustomName(compDto.getCustom_nm());
+		customCompVo.setCustomNameShort(compDto.getCustom_nm_short());
+		customCompVo.setCompanyNo(compDto.getCompany_no());
+		customCompVo.setCustomKindCode(String.valueOf(compDto.getCustom_kind_cd()));
+		customCompVo.setPostcode(compDto.getPost_code());
+		customCompVo.setRoadAddress(compDto.getRoad_addr());
+		customCompVo.setExtraAddress(compDto.getExtra_addr());
+		customCompVo.setDetailAddress(compDto.getDetail_addr());
+		customCompVo.setMemo(compDto.getMemo());
+		
+		//Form출력 편집 설정
+		//창립일
+		System.out.println("compDto.getEstblDate() = " + compDto.getEstbl_date());		
+		customCompVo.setEstblDate(compDto.getEstbl_date().substring(0, 10));
+
+		//사무실 편집
+		int startIdx = compDto.getOffice().indexOf(":") + 1;
+		if ( -1 < startIdx ) {
+			customCompVo.setTxtOffice(compDto.getOffice().substring(startIdx, compDto.getOffice().length()));
+			customCompVo.setOffice("기타");
+		}
+		
+		//Email 분리(@)
+		String[] email = compDto.getEmail().split("@");
+		if (null == email || 2 > email.length) {
+			customCompVo.setEmail("");
+			customCompVo.setEmail1("");
+			customCompVo.setEmail2("");
+		} else {
+			customCompVo.setEmail(compDto.getEmail());
+			customCompVo.setEmail1(email[0]);
+			customCompVo.setEmail2(email[1]);
+		}
+		
+		//전화번호 분리(-) : 필수입력항목
+		customCompVo.setTelNo(compDto.getTel_no());
+		String[] tel = compDto.getTel_no().split("-");
+		customCompVo.setTel1(tel[0]);
+		customCompVo.setTel2(tel[1]);
+		customCompVo.setTel3(tel[2]);
+		
+		//휴대전화 분리(-) : 선택입력항목
+		String[] hp = compDto.getHp_no().split("-");
+		if (null == hp || 3 > hp.length) {
+			customCompVo.setHpNo("");
+			customCompVo.setHp1("");
+			customCompVo.setHp2("");
+			customCompVo.setHp3("");
+		} else {
+			customCompVo.setHpNo(compDto.getHp_no());
+			customCompVo.setHp1(hp[0]);
+			customCompVo.setHp2(hp[1]);
+			customCompVo.setHp3(hp[2]);
+		}
+		
+		//customImgFileName
+		customCompVo.setCustomImgFileName(compDto.getCustom_img_file_name());
+
+		//기업고객정보수정FormVO 화면표시값 설정
+		model.addAttribute("vo", customCompVo);
+
+		//기업고객고분코드 목록조회 
+		List<CustomKindDTO> customKindDtoList = customKindService.searchCustomKindList();
+		List<CustomKindVO> customKindVoList = new ArrayList<>();
+		CustomKindVO customKindVo = null;
+		for (CustomKindDTO customKindDto : customKindDtoList) {
+			customKindVo = new CustomKindVO();
+			customKindVo.setCustomKindCode(customKindDto.getCustom_kind_cd());
+			customKindVo.setCustomKindName(customKindDto.getCustom_kind_nm());
+			customKindVoList.add(customKindVo);
+		}
+		//기업고객고분코드 화면표시값 설정 
+		model.addAttribute("customKindList", customKindVoList);
+		
 		return "custom/comp/customCompUpdate";
 	}
 	
 	//회원정보수정
 	@RequestMapping(value="/customCompUpdate", method=RequestMethod.POST)
-	public String customCompUpdatePost() {
-		return "custom/comp/customCompUpdate";
+	public String customCompUpdatePost(HttpServletRequest request, @Validated CustomCompEntryUpdateFormVO customCompVo, Model model) {
+		HttpSession session = request.getSession();
+		String sLoginId = (String) session.getAttribute("sLoginId");
+		String encryptPwd = customCompVo.getEncryptPwd();
+		
+		CustomCompLoginDTO loginDto = customCompService.searchLogin(sLoginId, encryptPwd);
+		if (null == loginDto) return "redirect:/msgCustomComp/PwdNo";//회원정보수정화면으로 재이동-비밀번호 오류
+		
+		//기업고객 회원정보 VO 설정
+		CustomCompDTO compDto = new CustomCompDTO();
+		String customName = customCompVo.getCustomName();
+		compDto.setCustom_id(loginDto.getCustom_id());
+		compDto.setCustom_nm(customName);
+		compDto.setCustom_nm_short(customCompVo.getCustomNameShort());
+		compDto.setCustom_kind_cd(Integer.parseInt(customCompVo.getCustomKindCode()));
+		compDto.setEstbl_date(customCompVo.getEstblDate());
+		compDto.setCompany_no(customCompVo.getCompanyNo());
+		compDto.setOffice(customCompVo.getOffice());
+		compDto.setTxt_office(customCompVo.getTxtOffice());
+		compDto.setTel_no(customCompVo.getTelNo());
+		compDto.setHp_no(customCompVo.getHpNo());
+		compDto.setEmail(customCompVo.getEmail());
+		compDto.setPost_code(customCompVo.getPostcode());
+		compDto.setRoad_addr(customCompVo.getRoadAddress());
+		compDto.setExtra_addr(customCompVo.getExtraAddress());
+		compDto.setDetail_addr(customCompVo.getDetailAddress());
+		compDto.setMemo(customCompVo.getMemo());
+		compDto.setCustom_img_file_name(customCompVo.getPhoto());
+
+		//기업고객 회원정보 DB 수정
+		customCompService.updateCustomComp(compDto);
+		
+//		if (1 == resComp) {
+			model.addAttribute("sCustomName", customName);//고객명
+			return "redirect:/msgCustomComp/UpdateOk";
+//		} else {
+//			return "redirect:/msgCustomComp/UpdateNo";
+//		}
 	}
 }

@@ -7,7 +7,15 @@ import com.spring.javagreenS_khv.dto.CustomCompLoginDTO;
 import com.spring.javagreenS_khv.vo.KakaoAddressVO;
 
 public interface CustomCompService {
+	
+	public KakaoAddressVO searchAddressName(String address);
 
+	public void insertAddressName(KakaoAddressVO vo);
+
+	public List<KakaoAddressVO> searchAddressNameList();
+
+	public void kakaoEx2Delete(String address);
+	
 	public CustomCompLoginDTO searchLogin(String loginId, String encryptPwd);
 
 	public void updateTodayCnt(String loginId, int customId);
@@ -30,12 +38,21 @@ public interface CustomCompService {
 
 	public int obtainCustomId(int customKindCode);
 
-	public KakaoAddressVO searchAddressName(String address);
+	public CustomCompDTO searchCustomComp(int customId);
 
-	public void insertAddressName(KakaoAddressVO vo);
+	public void updateCustomComp(CustomCompDTO compDto);
 
-	public List<KakaoAddressVO> searchAddressNameList();
-
-	public void kakaoEx2Delete(String address);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

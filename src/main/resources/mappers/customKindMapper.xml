@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.javagreenS_khv.dao.CustomKindDAO">
+<!-- 수정 <mapper namespace="org.mybatis.example.BlogMapper"></mapper> -->
+<select id="searchCustomKindList" resultType="com.spring.javagreenS_khv.dto.CustomKindDTO">
+	SELECT 
+		 CUSTOM_KIND_CD, -- primary key
+		 CUSTOM_KIND_NM  
+	FROM CUSTOM_KIND 
+	WHERE CUSTOM_KIND_CD > 2  -- 기업고객구분코드 제외 조건
+	ORDER BY CUSTOM_KIND_CD  -- ASC생략시 DEFAULT로 ASENDING됨
+</select>
+</mapper>

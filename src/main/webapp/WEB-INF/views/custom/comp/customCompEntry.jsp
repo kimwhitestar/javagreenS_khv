@@ -207,10 +207,10 @@ alert('customKindCode' + $("#customKindCode").val());
     <div class="form-group">
 			<label for="customKindCode">기업구분코드 :</label>
 			<select id="customKindCode" name="customKindCode" class="custom-select">
-<%-- 				<c:forEach var="vo" items="${customKind}" >
-					<option value="${vo.customKindCode}" >${vo.customKindName}</option>
+ 				<c:forEach var="kindVo" items="${customKindList}" >
+					<option value="${kindVo.customKindCode}" >${kindVo.customKindName}</option>
 				</c:forEach>
- --%>				<option value="1" >일반법인업체</option>
+				<option value="1" >일반법인업체</option>
 			</select>
 		</div>
     <div class="form-group" id="officeGroup">

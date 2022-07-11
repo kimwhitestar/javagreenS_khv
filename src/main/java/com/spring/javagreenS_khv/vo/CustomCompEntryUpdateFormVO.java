@@ -18,7 +18,7 @@ public @Data class CustomCompEntryUpdateFormVO {
 	private String customNameShort; //기업명(단축명칭)체크(한글or영문에 필요하면 숫자포함 조합 3~20자리)
 	private int customKindGroupCode;
 	private String kindGroupName;
-	private int customKindCode;
+	private String customKindCode;
 	private String customKindName;
 	private char customGrade;
 	private String gradeName;

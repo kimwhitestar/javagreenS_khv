@@ -23,6 +23,9 @@ public class MessageCustomCompController {
   	} else if (msgFlag.equals("LoginOk")) { 
     	m.addAttribute("msg", sCustomName + "님 로그인됬습니다");
     	m.addAttribute("url", "customComp/customCompMain");
+  	} else if (msgFlag.equals("PwdNo")) { 
+    	m.addAttribute("msg", sCustomName + "님, 잘못된 비밀번호입니다. 비밀번호를 다시 입력하세요.");
+    	m.addAttribute("url", "customComp/customCompUpdate");
     	
 //    } else if (msgFlag.equals("IdFindoutNo")) { 
 //    	m.addAttribute("msg", "아이디 찾기 실패"); 
@@ -48,12 +51,12 @@ public class MessageCustomCompController {
     } else if (msgFlag.equals("EntryNo")) { 
     	m.addAttribute("msg", "회원 가입 실패"); 
     	m.addAttribute("url", "customComp/customCompEntry");
-//    } else if (msgFlag.equals("UpdateOk")) { 
-//    	m.addAttribute("msg", "회원정보가 수정됬습니다."); 
-//    	m.addAttribute("url", "/customComp/memberLogin");
-//    } else if (msgFlag.equals("UpdateNo")) { 
-//    	m.addAttribute("msg", "회원정보 수정 실패"); 
-//    	m.addAttribute("url", "/customComp/memberLogin");
+    } else if (msgFlag.equals("UpdateOk")) { 
+    	m.addAttribute("msg", "회원정보가 수정됬습니다."); 
+    	m.addAttribute("url", "customComp/customCompMain");
+    } else if (msgFlag.equals("UpdateNo")) { 
+    	m.addAttribute("msg", "회원정보 수정 실패"); 
+    	m.addAttribute("url", "customComp/customCompUpdate");
 //    } else if (msgFlag.equals("LevelUpdateOk")) { 
 //    	m.addAttribute("msg", "회원레벨이 수정됬습니다"); 
 //    	m.addAttribute("url", "/customComp/memberLogin");

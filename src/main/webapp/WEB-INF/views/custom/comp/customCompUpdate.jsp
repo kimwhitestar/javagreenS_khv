@@ -384,7 +384,7 @@
     <div class="form-group">
 			<label for="customKindCode">기업구분코드 :</label>
 			<select id="customKindCode" name="customKindCode" class="custom-select">
-				<c:forEach var="kindVo" items="${customKindVo}" >
+				<c:forEach var="kindVo" items="${customKindList}" >
 					<option value="${kindVo.customKindCode}" ${ kindVo.customKindCode == vo.customKindCode ? 'selected' : '' } >${kindVo.customKindName}</option>
 				</c:forEach>
 				<option value="1" ${ '1' == vo.customKindCode ? 'selected' : '' } >일반법인업체</option>

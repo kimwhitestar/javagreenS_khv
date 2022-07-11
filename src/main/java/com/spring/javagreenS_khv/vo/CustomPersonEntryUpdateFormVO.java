@@ -9,7 +9,7 @@ public @Data class CustomPersonEntryUpdateFormVO {
 	private String customName;
 	private int customKindGroupCode;
 	private String kindGroupName;
-	private int customKindCode;
+	private String customKindCode;
 	private String kindName;
 	private char customGrade;
 	private String gradeName;

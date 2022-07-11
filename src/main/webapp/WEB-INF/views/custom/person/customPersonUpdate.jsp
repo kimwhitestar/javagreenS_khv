@@ -374,7 +374,7 @@
     <div class="form-group">
 			<label for="customKindCode">고객구분코드 :</label>
 			<select id="customKindCode" name="customKindCode" class="custom-select">
-				<c:forEach var="kindVo" items="${customKindVo}" >
+				<c:forEach var="kindVo" items="${customKindVoList}" >
 					<option value="${kindVo.customKindCode}" ${ kindVo.customKindCode == vo.customKindCode ? 'selected' : '' } >${kindVo.customKindName}</option>
 				</c:forEach>
 				<option value="2" ${ '2' == vo.customKindCode ? 'selected' : '' } >개인</option>

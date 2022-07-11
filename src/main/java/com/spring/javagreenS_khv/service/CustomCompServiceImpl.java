@@ -13,10 +13,30 @@ import com.spring.javagreenS_khv.vo.KakaoAddressVO;
 
 @Service
 public class CustomCompServiceImpl implements CustomCompService {
-
+	
 	@Autowired
 	public CustomCompDAO customCompDao;
 	
+	@Override
+	public KakaoAddressVO searchAddressName(String address) {
+		return customCompDao.searchAddressName(address);
+	}
+
+	@Override
+	public void insertAddressName(KakaoAddressVO vo) {
+		customCompDao.insertAddressName(vo);
+	}
+
+	@Override
+	public List<KakaoAddressVO> searchAddressNameList() {
+		return customCompDao.searchAddressNameList();
+	}
+
+	@Override
+	public void kakaoEx2Delete(String address) {
+		customCompDao.kakaoEx2Delete(address);
+	}
+
 	@Override
 	public CustomCompLoginDTO searchLogin(String loginId, String encryptPwd) {
 		return customCompDao.searchLogin(loginId, encryptPwd);
@@ -74,22 +94,13 @@ public class CustomCompServiceImpl implements CustomCompService {
 	}
 
 	@Override
-	public KakaoAddressVO searchAddressName(String address) {
-		return customCompDao.searchAddressName(address);
+	public CustomCompDTO searchCustomComp(int customId) {
+		return customCompDao.searchCustomComp(customId);
 	}
 
 	@Override
-	public void insertAddressName(KakaoAddressVO vo) {
-		customCompDao.insertAddressName(vo);
+	public void updateCustomComp(CustomCompDTO compDto) {
+		customCompDao.updateCustomComp(compDto);
 	}
 
-	@Override
-	public List<KakaoAddressVO> searchAddressNameList() {
-		return customCompDao.searchAddressNameList();
-	}
-
-	@Override
-	public void kakaoEx2Delete(String address) {
-		customCompDao.kakaoEx2Delete(address);
-	}
 }
