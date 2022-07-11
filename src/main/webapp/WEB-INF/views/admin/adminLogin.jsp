@@ -1,0 +1,48 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:set var="ctxPath" value="${pageContext.request.contextPath}"/>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>adminLogin.jsp</title>
+  <jsp:include page="/include/bs4.jsp" />
+  <style>
+  </style>
+  <script>
+  'use strict';
+  </script>
+</head>
+<body>
+  <jsp:include page="/common/admin/header_home.jsp" />
+  <jsp:include page="/common/admin/adminNav.jsp" />
+
+  <p><br></p>
+  <div class="container">
+  <form name="myForm" method="post">
+  	<table class="table table-bordered text-center">
+  	  <tr>
+  	    <td colspan="2"><h3>관 리 자 로 그 인</h3></td>
+  	  </tr>
+  	  <tr>
+  	  	<th class="bg-secondary text-white">아이디</th>
+  	  	<td><input type="text" id="loginId" name="loginId" value="${sLoginId}" autofocus class="form-control"/></td>
+  	  </tr>
+  	  <tr>
+  	  	<th class="bg-secondary text-white">비밀번호</th>
+  	  	<td><input type="password" id="loginPwd" name="loginPwd" class="form-control"/></td>
+  	  </tr>
+  	  <tr>
+  	    <td colspan="2">
+  	      <button type="reset" class="btn btn-success">다시입력</button> &nbsp;&nbsp;
+  	      <button type="submit" class="btn btn-success">관리자 로그인</button> &nbsp;&nbsp;
+  	    </td>
+  	  </tr>
+  	</table>
+  </form>
+  </div>
+   
+<jsp:include page="/common/admin/footer.jsp"/>
+</body>
+</html>

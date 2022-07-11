@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.javagreenS_khv.dao.AdminDAO">
+<!-- 수정 <mapper namespace="org.mybatis.example.BlogMapper"></mapper> -->
+	<select id="searchAdminLogin" resultType="com.spring.javagreenS_khv.vo.AdminLoginVO">
+		select *, (select ifnull(levelName, '') from adminlevel where level = this.level) as levelName 
+		from adminLogin as this
+		where deleteDate is null 
+		and loginId = #{loginId} 
+		and loginPwd = #{encryptPwd} 
+		order by idx desc
+	</select>
+	<update id="updateLogout">
+		update adminLogin set logoutDate = default, logoutUser = #{loginId} where loginId = #{loginId}
+	</update>
+</mapper>
