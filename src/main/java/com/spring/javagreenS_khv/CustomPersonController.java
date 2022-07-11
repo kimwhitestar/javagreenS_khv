@@ -420,7 +420,11 @@ public class CustomPersonController {
 	
 	//회원정보수정
 	@RequestMapping(value="/customPersonUpdate", method=RequestMethod.POST)
-	public String customPersonUpdatePost(HttpServletRequest request, @Validated CustomPersonEntryUpdateFormVO customPersonVo, Model model) {
+	public String customPersonUpdatePost(HttpServletRequest request, 
+		@Validated CustomPersonEntryUpdateFormVO customPersonVo, 
+		BindingResult bindRes, 
+		Model model) {
+		
 		//개인고객 로그인 정보 취득
 		HttpSession session = request.getSession();
 		String sLoginId = (String) session.getAttribute("sLoginId");

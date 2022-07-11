@@ -253,8 +253,9 @@ public class CustomCompController {
 	public String customCompEntryPost(Model model, @Validated CustomCompEntryUpdateFormVO customCompVo, BindingResult bindRes) {
 		
 		if (bindRes.hasErrors()) {
+			List<FieldError> fieldErrors = bindRes.getFieldErrors();
 			HashMap errMsgMap = new HashMap();
-			initErrMsgList(errMsgMap);
+			initErrMsgList(errMsgMap, fieldErrors);
 
 			int i=0;
 			List<ObjectError> errors = bindRes.getAllErrors();
@@ -265,16 +266,6 @@ public class CustomCompController {
 			}			
 			System.out.println(" ObjectErrors : " + i);
 
-			i=0;
-			List<FieldError> fieldErrors = bindRes.getFieldErrors();
-			for (FieldError fe : fieldErrors) {
-				i++;
-				System.out.println("fielderrors : " + bindRes.hasFieldErrors(fe.getField()));
-				System.out.println("field : " + fe.getField());
-				System.out.println("Message : " + fe.getDefaultMessage());
-//				errMsgMap.put(fe.getField(), fe.getDefaultMessage());
-			}
-			System.out.println(" FieldErrors : " + i);
 			
 			model.addAttribute("errMsgMap", errMsgMap);
 			
@@ -336,20 +327,16 @@ public class CustomCompController {
 //		}		
 	}
 	
-	private void initErrMsgList(HashMap errMsgMap) {
-		errMsgMap.put("customName", "");
-		errMsgMap.put("customNameShort", "");
-		errMsgMap.put("companyNo", "");
-		errMsgMap.put("txtOffice", "");
-		errMsgMap.put("tel2", "");
-		errMsgMap.put("tel3", "");
-		errMsgMap.put("hp2", "");
-		errMsgMap.put("hp3", "");
-		errMsgMap.put("email1", "");
-		errMsgMap.put("txtEmail2", "");
-		errMsgMap.put("detailAddress", "");
-		errMsgMap.put("memo", "");
-		errMsgMap.put("customImgFileName", "");
+	private void initErrMsgList(HashMap errMsgMap, List<FieldError> fieldErrors) {
+		int i=0;
+		for (FieldError fe : fieldErrors) {
+			errMsgMap.put(fe.getField(), "");
+			System.out.println("fielderrors : " + fe.getField());
+			System.out.println("field : " + fe.getField());
+			System.out.println("Message : " + fe.getDefaultMessage());
+			i++;
+		}
+		System.out.println(" FieldErrors : " + i);
 	}
 
 	//error style class 적용
@@ -740,7 +727,11 @@ public class CustomCompController {
 	
 	//회원정보수정
 	@RequestMapping(value="/customCompUpdate", method=RequestMethod.POST)
-	public String customCompUpdatePost(HttpServletRequest request, @Validated CustomCompEntryUpdateFormVO customCompVo, Model model) {
+	public String customCompUpdatePost(HttpServletRequest request, 
+		@Validated CustomCompEntryUpdateFormVO customCompVo, 
+		BindingResult bindRes, 
+		Model model) {
+		
 		HttpSession session = request.getSession();
 		String sLoginId = (String) session.getAttribute("sLoginId");
 		String encryptPwd = customCompVo.getEncryptPwd();
