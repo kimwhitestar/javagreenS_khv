@@ -28,5 +28,9 @@ public interface CustomPersonDAO {
 	public int obtainCustomId(@Param("customKindCode") int customKindCode);
 
 	public void insertCustomPersonAndCustomPersonLogin(@Param("personDto") CustomPersonDTO personDto, @Param("loginDto") CustomPersonLoginDTO loginDto);
+
+	public CustomPersonDTO searchCustomPerson(@Param("customId") int customId);
+	
+	public void updateCustomPerson(@Param("personDto") CustomPersonDTO personDto);
 	
 }

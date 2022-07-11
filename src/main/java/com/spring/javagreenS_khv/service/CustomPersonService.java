@@ -26,5 +26,9 @@ public interface CustomPersonService {
 	public int obtainCustomId(int customKindCode);
 
 	public void insertCustomPersonAndCustomPersonLogin(CustomPersonDTO personDto, CustomPersonLoginDTO loginDto);
+
+	public CustomPersonDTO searchCustomPerson(int customId);
+
+	public void updateCustomPerson(CustomPersonDTO personDto);
 	
 }

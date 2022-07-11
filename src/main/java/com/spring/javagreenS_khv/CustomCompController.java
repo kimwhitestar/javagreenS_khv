@@ -679,6 +679,8 @@ public class CustomCompController {
 		if ( -1 < startIdx ) {
 			customCompVo.setTxtOffice(compDto.getOffice().substring(startIdx, compDto.getOffice().length()));
 			customCompVo.setOffice("기타");
+		} else {
+			customCompVo.setOffice(compDto.getOffice());
 		}
 		
 		//Email 분리(@)

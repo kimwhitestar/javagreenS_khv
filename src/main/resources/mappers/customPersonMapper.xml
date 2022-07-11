@@ -93,4 +93,66 @@
 	
 		INSERT INTO CUSTOM_PERSON_LOGIN VALUES ( #{loginDto.login_id}, #{loginDto.encrypt_pwd}, #{loginDto.custom_id}, 'P', DEFAULT, DEFAULT, DEFAULT, NULL, NULL, NULL, NULL, DEFAULT, #{loginDto.login_id}, NULL, NULL, NULL, NULL);
 	</insert>
+	<select id="searchCustomPerson" resultType="com.spring.javagreenS_khv.dto.CustompersonDto">
+		SELECT 
+			SEQ, --  unique key 
+			CUSTOM_ID, --  primary key
+			CUSTOM_NM, 
+			CUSTOM_KIND_GROUP_CODE,
+			CUSTOM_KIND_CD, -- foreign key (코드TBL)
+			(SELECT CUSTOM_KIND_NM FROM CUSTOM_KIND WHERE CUSTOM_KIND_CD = THIS.CUSTOM_KIND_CD) AS KIND_NAME, -- foreign key (코드TBL)
+			CUSTOM_GRADE, -- foreign key (코드TBL)
+			(SELECT GRADE_NAME FROM CUSTOM_GRADE WHERE GRADE_CODE = THIS.CUSTOM_GRADE) AS GRADE_NAME, -- foreign key (코드TBL)
+			JOB, 
+			HOBBY, 
+			BIRTH_DATE,
+			JUMIN_NO,
+			GENDER,
+			TEL_NO,
+			HP_NO, 
+			EMAIL, 
+			POST_CODE, 
+			ROAD_ADDR, 
+			EXTRA_ADDR,
+			DETAIL_ADDR, 
+			MEMO,
+			CREATE_DATE, 
+			CREATE_USER, 
+			UPDATE_DATE, 
+			UPDATE_USER, 
+			DELETE_DATE, 
+			DELETE_USER 
+		FROM CUSTOM_PERSON AS THIS 
+		WHERE CUSTOM_ID = #{customId} 
+		  AND DELETE_DATE IS NULL -- primary key(SEQ) indexing	
+	</select>
+	<update id="updateCustomPerson">
+		UPDATE CUSTOM_PERSON SET 
+			CUSTOM_NM = #{personDto.custom_nm}, 
+			CUSTOM_KIND_CD = #{personDto.custom_kind_cd}, 
+			
+		<if test='#{personDto.job} == "기타"'>
+			JOB = #{personDto.txtJob}, 
+		</if>
+		<if test='#{personDto.job} != "기타"'>
+			JOB = #{personDto.job}, 
+		</if>
+			
+			HOBBY = #{personDto.hobby},  
+			BIRTH_DATE = #{personDto.birth_date},  
+			JUMIN_NO = #{personDto.jumin_no}, 
+			GENDER = #{personDto.gender}, 
+			TEL_NO = #{personDto.tel_no}, 
+			HP_NO = #{personDto.hp_no}, 
+			EMAIL = #{personDto.email}, 
+			POST_CODE = #{personDto.post_code}, 
+			ROAD_ADDR = #{personDto.road_addr}, 
+			EXTRA_ADDR = #{personDto.extra_addr}, 
+			DETAIL_ADDR = #{personDto.detail_addr}, 
+			MEMO = #{personDto.memo}, 
+			UPDATE_DATE = DEFAULT, 
+			UPDATE_USER = #{personDto.custom_id} 
+		WHERE CUSTOM_ID = #{personDto.custom_id} 
+		  AND DELETE_DATE IS NULL
+	</update>
 </mapper>

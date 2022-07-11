@@ -69,4 +69,15 @@ public class CustomPersonServiceImpl implements CustomPersonService {
 	public void insertCustomPersonAndCustomPersonLogin(CustomPersonDTO personDto, CustomPersonLoginDTO loginDto) {
 		customPersonDao.insertCustomPersonAndCustomPersonLogin(personDto, loginDto);
 	}
+
+	@Override
+	public CustomPersonDTO searchCustomPerson(int customId) {
+		return customPersonDao.searchCustomPerson(customId);
+	}
+
+	@Transactional
+	@Override
+	public void updateCustomPerson(CustomPersonDTO personDto) {
+		customPersonDao.updateCustomPerson(personDto);
+	}
 }

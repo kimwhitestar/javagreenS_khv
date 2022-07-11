@@ -13,6 +13,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -195,39 +197,57 @@ public class CustomPersonController {
 	
 	//회원가입화면
 	@RequestMapping(value="/customPersonEntry", method=RequestMethod.POST)
-	public String customPersonEntryPost(CustomPersonEntryUpdateFormVO entryVo) {
+	public String customPersonEntryPost(Model model, @Validated CustomPersonEntryUpdateFormVO customPersonVo, BindingResult bindRes) {
 
+		if (bindRes.hasErrors()) {
+//			model.addAttribute("errMsgMap", errMsgMap);
+			
+			//기업고객고분코드 목록조회 
+			List<CustomKindDTO> customKindDtoList = customKindService.searchCustomKindList();
+			List<CustomKindVO> customKindVoList = new ArrayList<>();
+			CustomKindVO customKindVo = null;
+			for (CustomKindDTO customKindDto : customKindDtoList) {
+				customKindVo = new CustomKindVO();
+				customKindVo.setCustomKindCode(customKindDto.getCustom_kind_cd());
+				customKindVo.setCustomKindName(customKindDto.getCustom_kind_nm());
+				customKindVoList.add(customKindVo);
+			}
+			model.addAttribute("customKindList", customKindVoList);
+
+			return "redirect:/customPerson/customPersonEntry";
+		}
+		
 		CustomPersonLoginDTO loginDto = new CustomPersonLoginDTO();
 		CustomPersonDTO personDto = new CustomPersonDTO();
 
 		//개인고객아이디 발급
 		//CUSTOM_ID 구성 : 3자리(100~999) 'CUSTOM_KIND_CD' + 5자리 '순차발행' (00001~99999))
 		//CUSTOM_KIND_CD '1', '2'의 경우는 '100'으로 설정 
-		int customKindCode = entryVo.getCustomKindCode();
+		int customKindCode = Integer.parseInt(customPersonVo.getCustomKindCode());
 		int customId = customPersonService.obtainCustomId(customKindCode);
 
 		//개인고객 회원정보 VO 설정
 		personDto.setCustom_id(customId);
-		personDto.setCustom_nm(entryVo.getCustomName());
+		personDto.setCustom_nm(customPersonVo.getCustomName());
 		personDto.setCustom_kind_cd(customKindCode);
-		personDto.setJob(entryVo.getJob());
-		personDto.setTxt_job(entryVo.getTxtJob());
-		personDto.setPost_code(entryVo.getPostcode());
-		personDto.setRoad_addr(entryVo.getRoadAddress());
-		personDto.setExtra_addr(entryVo.getExtraAddress());
-		personDto.setDetail_addr(entryVo.getDetailAddress());
-		personDto.setEmail(entryVo.getEmail());
-		personDto.setJumin_no(entryVo.getJuminNo());
-		//personDto.setGender(entryVo.getGender());
-		personDto.setBirth_date(entryVo.getBirthDate());
-		personDto.setTel_no(entryVo.getTelNo());
-		personDto.setHp_no(entryVo.getHpNo());
-		personDto.setHobby(entryVo.getCheckedHobbies());
-		personDto.setMemo(entryVo.getMemo());
+		personDto.setJob(customPersonVo.getJob());
+		personDto.setTxt_job(customPersonVo.getTxtJob());
+		personDto.setPost_code(customPersonVo.getPostcode());
+		personDto.setRoad_addr(customPersonVo.getRoadAddress());
+		personDto.setExtra_addr(customPersonVo.getExtraAddress());
+		personDto.setDetail_addr(customPersonVo.getDetailAddress());
+		personDto.setEmail(customPersonVo.getEmail());
+		personDto.setJumin_no(customPersonVo.getJuminNo());
+		//personDto.setGender(customPersonVo.getGender());
+		personDto.setBirth_date(customPersonVo.getBirthDate());
+		personDto.setTel_no(customPersonVo.getTelNo());
+		personDto.setHp_no(customPersonVo.getHpNo());
+		personDto.setHobby(customPersonVo.getCheckedHobbies());
+		personDto.setMemo(customPersonVo.getMemo());
 		
 		//개인고객 로그인 VO 설정
-		loginDto.setLogin_id(entryVo.getLoginId());
-		loginDto.setEncrypt_pwd(entryVo.getEncryptPwd());
+		loginDto.setLogin_id(customPersonVo.getLoginId());
+		loginDto.setEncrypt_pwd(customPersonVo.getEncryptPwd());
 		loginDto.setCustom_id(customId);
 		
 		//개인고객 회원정보 DB 등록, 개인고객 로그인 DB 등록
@@ -314,7 +334,75 @@ public class CustomPersonController {
 	
 	//회원정보수정화면 이동
 	@RequestMapping(value="/customPersonUpdate", method=RequestMethod.GET)
-	public String customPersonUpdateGet(Model model) {
+	public String customPersonUpdateGet(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		int sCustomId = (int) session.getAttribute("sCustomId");
+
+		//개별회원정보 조회
+		CustomPersonDTO personDto = customPersonService.searchCustomPerson(sCustomId);
+		if (null == personDto) return "redirect:/msgCustomPerson/LoginNo";//비회원화면으로 이동
+		
+		//Form출력 편집 설정
+		CustomPersonEntryUpdateFormVO customPersonVo = new CustomPersonEntryUpdateFormVO();
+		customPersonVo.setCustomName(personDto.getCustom_nm());
+		customPersonVo.setCustomKindCode(String.valueOf(personDto.getCustom_kind_cd()));
+		customPersonVo.setPostcode(personDto.getPost_code());
+		customPersonVo.setRoadAddress(personDto.getRoad_addr());
+		customPersonVo.setExtraAddress(personDto.getExtra_addr());
+		customPersonVo.setDetailAddress(personDto.getDetail_addr());
+		customPersonVo.setJuminNo(personDto.getJumin_no());
+		customPersonVo.setGender(personDto.getGender());
+		customPersonVo.setHobby(personDto.getHobby());
+		customPersonVo.setMemo(personDto.getMemo());
+		
+		//직업 편집
+		int startIdx = personDto.getJob().indexOf(":") + 1;
+		if ( -1 < startIdx ) {
+			customPersonVo.setTxtJob(personDto.getJob().substring(startIdx, personDto.getJob().length()));
+			customPersonVo.setJob("기타");
+		} else {
+			customPersonVo.setJob(personDto.getJob());
+		}
+		
+		//Email 분리(@)
+		String[] email = personDto.getEmail().split("@");
+		if (null == email || 2 > email.length) {
+			customPersonVo.setEmail("");
+			customPersonVo.setEmail1("");
+			customPersonVo.setEmail2("");
+		} else {
+			customPersonVo.setEmail(personDto.getEmail());
+			customPersonVo.setEmail1(email[0]);
+			customPersonVo.setEmail2(email[1]);
+		}
+		
+		//생일
+		customPersonVo.setBirthDate(personDto.getBirth_date().substring(0, 10));
+
+		//전화번호 분리(-) : 선택입력항목
+		String[] tel = personDto.getTel_no().split("-");
+		if (null == tel || 3 > tel.length) {
+			customPersonVo.setTelNo("");
+			customPersonVo.setTel1("");
+			customPersonVo.setTel2("");
+			customPersonVo.setTel3("");
+		} else {
+			customPersonVo.setTelNo(personDto.getTel_no());
+			customPersonVo.setTel1(tel[0]);
+			customPersonVo.setTel2(tel[1]);
+			customPersonVo.setTel3(tel[2]);
+		}		
+		
+		//휴대전화 분리(-) : 필수입력항목
+		String[] hp = personDto.getHp_no().split("-");
+		customPersonVo.setHpNo(personDto.getHp_no());
+		customPersonVo.setHp1(hp[0]);
+		customPersonVo.setHp2(hp[1]);
+		customPersonVo.setHp3(hp[2]);
+
+		//기업고객정보수정FormVO 화면표시값 설정
+		model.addAttribute("vo", customPersonVo);
+
 		//기업고객고분코드 목록조회 
 		List<CustomKindDTO> customKindDtoList = customKindService.searchCustomKindList();
 		List<CustomKindVO> customKindVoList = new ArrayList<>();
@@ -330,4 +418,47 @@ public class CustomPersonController {
 		return "custom/person/customPersonUpdate";
 	}
 	
+	//회원정보수정
+	@RequestMapping(value="/customPersonUpdate", method=RequestMethod.POST)
+	public String customPersonUpdatePost(HttpServletRequest request, @Validated CustomPersonEntryUpdateFormVO customPersonVo, Model model) {
+		//개인고객 로그인 정보 취득
+		HttpSession session = request.getSession();
+		String sLoginId = (String) session.getAttribute("sLoginId");
+		String encryptPwd = customPersonVo.getEncryptPwd();
+		
+		//개인고객 로그인 정보 조회
+		CustomPersonLoginDTO loginDto = customPersonService.searchLogin(sLoginId, encryptPwd);
+		if (null == loginDto) return "redirect:/msgCustomPerson/PwdNo";//회원정보수정화면으로 재이동-비밀번호 오류
+		
+		//개인고객 회원정보 VO 설정
+		CustomPersonDTO personDto = new CustomPersonDTO();
+		String customName = customPersonVo.getCustomName();
+		personDto.setCustom_id(loginDto.getCustom_id());
+		personDto.setCustom_nm(customName);
+		personDto.setCustom_kind_cd(Integer.parseInt(customPersonVo.getCustomKindCode()));
+		personDto.setJob(customPersonVo.getJob());
+		personDto.setTxt_job(customPersonVo.getTxtJob());
+		personDto.setPost_code(customPersonVo.getPostcode());
+		personDto.setRoad_addr(customPersonVo.getRoadAddress());
+		personDto.setExtra_addr(customPersonVo.getExtraAddress());
+		personDto.setDetail_addr(customPersonVo.getDetailAddress());
+		personDto.setEmail(customPersonVo.getEmail());
+		personDto.setJumin_no(customPersonVo.getJuminNo());
+		personDto.setGender(customPersonVo.getGender());
+		personDto.setBirth_date(customPersonVo.getBirthDate());
+		personDto.setTel_no(customPersonVo.getTelNo());
+		personDto.setHp_no(customPersonVo.getHpNo());
+		personDto.setHobby(customPersonVo.getCheckedHobbies());
+		personDto.setMemo(customPersonVo.getMemo());
+
+		//개인고객 회원정보 DB 수정
+		customPersonService.updateCustomPerson(personDto);
+		
+//		if (1 == resPerson) {
+				session.setAttribute("sCustomName", customName);//고객명
+				return "redirect:/msgCustomPerson/UpdateOk";
+//		} else {
+//			return "redirect:/msgCustomPerson/UpdateNo";
+//		}
+	}
 }
