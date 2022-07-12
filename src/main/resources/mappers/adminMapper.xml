@@ -29,6 +29,13 @@
 			FROM CUSTOM_COMP_LOGIN A, CUSTOM_COMP B
 			WHERE A.DELETE_DATE IS NOT NULL -- 탈퇴회원(임시탈퇴자, 로그인삭제일) 
 			AND A.CUSTOM_ID = B.CUSTOM_ID
+			<!-- 크고 작은 연산자를 mybatis에서는 사용안되서 CDATA로 변환해서 사용. 단, 동적query에서는 CDATA(convert data)를 사용할 수 없다 -->
+			<if test='#{overFlg} == "OVER"'>
+				<![CDATA[ AND TIMESTAMPDIFF(DAY, A.DELETE_DATE, NOW()) >= 30 ]]> 
+			</if>
+			<if test='#{overFlg} == "PRAC"'>
+				<![CDATA[ AND TIMESTAMPDIFF(DAY, A.DELETE_DATE, NOW()) < 30 ]]> 
+			</if>
 			) AS DEL_PRAC 
 		LEFT OUTER JOIN 
 			(SELECT CUSTOM_ID, 'OVER' AS OVER_FLG 

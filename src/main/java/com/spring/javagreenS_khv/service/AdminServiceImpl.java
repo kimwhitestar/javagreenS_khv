@@ -25,7 +25,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public List<CustomCompDeleteDTO> searchCustomCompDeleteList() {
-		return adminDao.searchCustomCompDeleteList();
+	public List<CustomCompDeleteDTO> searchCustomCompDeleteList(String overFlg) {
+		return adminDao.searchCustomCompDeleteList(overFlg);
 	}
 }
