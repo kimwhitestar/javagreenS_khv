@@ -90,20 +90,25 @@
 	  			<th>로그인 삭제자</th>
 	  			<th>삭제</th>
 	  		</tr>
-			<c:forEach var="vo" items="${vos}" begin="1" end="${vos.length}" step="1" varStatus="st">
-				<tr>
-	  				<td><input type="checkbox" id="chk${st.count}" ></td>
-					<td>${vo.loginId}</td>
-					<td>${vo.customId}<input type="hidden" id="customId${st.count}" value="${vo.customId}"/></td>
-					<td>${vo.customName}</td>
-					<td>${vo.companyNo}</td>
-					<td>${vo.overDaysUserDel}</td>
-					<td>${vo.overFlg}</td>
-					<td>${vo.deleteDate}</td>
-					<td>${vo.deleteUser}</td>
-					<td><input type="button" id="del${st.count}" value="삭제" onclick="javascript:deleteCustomCompPrac('${vo.customId}')" <c:if test="${'OVER' ne vo.overDaysUserDel}">disabled</c:if> /></td>
-				</tr>
-			</c:forEach>
+	  		<c:if test="${empty vos}">
+	  			<tr><td colspan="10"><font color="text-dark"><b>검색된 자료가 존재하지 않습니다</b></font></td></tr>
+	  		</c:if>
+	  		<c:if test="${! empty vos}">
+				<c:forEach var="vo" items="${vos}" begin="1" end="${vos.length}" step="1" varStatus="st">
+					<tr>
+		  				<td><input type="checkbox" id="chk${st.count}" ></td>
+						<td>${vo.loginId}</td>
+						<td>${vo.customId}<input type="hidden" id="customId${st.count}" value="${vo.customId}"/></td>
+						<td>${vo.customName}</td>
+						<td>${vo.companyNo}</td>
+						<td>${vo.overDaysUserDel}</td>
+						<td>${vo.overFlg}</td>
+						<td>${vo.deleteDate}</td>
+						<td>${vo.deleteUser}</td>
+						<td><input type="button" id="del${st.count}" value="삭제" onclick="javascript:deleteCustomCompPrac('${vo.customId}')" <c:if test="${'OVER' ne vo.overDaysUserDel}">disabled</c:if> /></td>
+					</tr>
+				</c:forEach>
+	  		</c:if>
 	  	</table>
 	  	<div id="delList">
 	  		<input type="hidden" name="delCustomId" /><br>
