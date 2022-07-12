@@ -11,4 +11,6 @@ public interface AdminService {
 	public void updateLogout(String sLoginId);
 
 	public List<CustomCompDeleteDTO> searchCustomCompDeleteList(String overFlg);
+
+	public void deleteCustomCompDelete(String customId);
 }

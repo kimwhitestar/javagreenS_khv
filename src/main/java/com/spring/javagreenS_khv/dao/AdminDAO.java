@@ -13,4 +13,6 @@ public interface AdminDAO {
 	public void updateLogout(@Param("loginId") String loginId);
 
 	public List<CustomCompDeleteDTO> searchCustomCompDeleteList(@Param("overFlg") String overFlg);
+
+	public void deleteCustomCompDelete(@Param("customId") String customId);
 }

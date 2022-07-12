@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.javagreenS_khv.dao.AdminDAO;
 import com.spring.javagreenS_khv.dto.CustomCompDeleteDTO;
@@ -27,5 +28,11 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<CustomCompDeleteDTO> searchCustomCompDeleteList(String overFlg) {
 		return adminDao.searchCustomCompDeleteList(overFlg);
+	}
+
+	@Transactional
+	@Override
+	public void deleteCustomCompDelete(String customId) {
+		adminDao.deleteCustomCompDelete(customId);
 	}
 }

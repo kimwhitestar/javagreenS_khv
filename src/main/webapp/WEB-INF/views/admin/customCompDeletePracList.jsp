@@ -17,10 +17,33 @@
 	  deletePracForm.submit();
   }
   
-  function deleteCustomComp(obj) {
+  function deleteCustomCompPrac() {
+	  let listLen = ${vos.length};
+	  let delHtml = '';
+	  let delCustomId = '';
+	  $("#delList").html('');
+	  for (let i=1; i<=listLen; i++) {
+		  alert($("#chk"+i).checked);
+		  if (true == $("#chk"+i).checked) {
+			  delCustomId = $("#customId"+i).val();
+			  delHtml += '<input type="hidden" name="delCustomId" value="'+delCustomId+'"/>';
+		  }
+	  }
+	  $("#delList").html(delHtml);
+	  
 	  deletePracForm.action = '${ctxPath}/admin/customCompDeletePrac';
 	  deletePracForm.submit();
   }
+  
+  function deleteCustomCompPrac(delCustomId) {
+	  $("#delList").html('');
+	  let delHtml = '<input type="hidden" name="delCustomId" value="'+delCustomId+'"/>';
+	  $("#delList").html(delHtml);
+	  
+	  deletePracForm.action = '${ctxPath}/admin/customCompDeletePrac';
+	  deletePracForm.submit();
+  }
+  
   </script>
 </head>
 <body>
@@ -39,7 +62,8 @@
 	  			<option value="OVER">경과</option>
 	  			<option value="PRAC">미경과</option>
 	  		</select>
-	  		<input type="button" id="search" value="조회" class="text-right" onclick="searchCustomCompDelPracList()"/>
+	  		<input type="button" id="search" value="조회" class="text-right" onclick="searchCustomCompDelPracList()"/> &nbsp;&nbsp;
+	  		<input type="button" id="delete" value="삭제" class="text-right" onclick="deleteCustomCompPrac()"/>
 	  	</div>
 	  	<table>
 	  		<tr>
@@ -58,17 +82,18 @@
 				<tr>
 	  				<td><input type="checkbox" id="chk${st.count}" ></td>
 					<td>${vo.loginId}</td>
-					<td>${vo.customId}</td>
+					<td>${vo.customId}<input type="hidden" id="customId${st.count}" value="${vo.customId}"/></td>
 					<td>${vo.customName}</td>
 					<td>${vo.companyNo}</td>
 					<td>${vo.overDaysUserDel}</td>
 					<td>${vo.overFlg}</td>
 					<td>${vo.deleteDate}</td>
 					<td>${vo.deleteUser}</td>
-					<td><input type="button" id="del${st.count}" value="삭제" onclick="javascript:deleteCustomComp(this)"/></td>
+					<td><input type="button" id="del${st.count}" value="삭제" onclick="javascript:deleteCustomCompPrac(${vo.customId})"/></td>
 				</tr>
 			</c:forEach>
 	  	</table>
+	  	<div id="delList"></div>
   	</form>
   </div>
    

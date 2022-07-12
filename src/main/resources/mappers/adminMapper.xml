@@ -45,4 +45,7 @@
 		ON DEL_PRAC.CUSTOM_ID = DEL_OVER.CUSTOM_ID 
 		ORDER BY OVER_FLG ASC, OVER_DAYS_USER_DEL DESC
 	</select>
+	<delete id="deleteCustomCompDelete">
+		DELETE FROM CUSTOM_COMP WHERE CUSTOM_ID = #{customId}
+	</delete>
 </mapper>

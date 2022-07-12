@@ -112,11 +112,17 @@ public class AdminController {
 	
 	//기업회원탈퇴목록 - 탈퇴회원신청자 회원삭제
 	@RequestMapping(value="/customCompDeletePrac", method=RequestMethod.POST)
-	public String customCompDeletePracPost() {
+	public String customCompDeletePracPost(
+		@RequestParam(name="delCustomId", required=false) String[] delCustomId,
+		@RequestParam(name="overFlg", defaultValue="-", required=false) String overFlg,
+		Model model) {
 		
+		for (String customId : delCustomId) {
+			adminService.deleteCustomCompDelete(customId);
+		}
 		
-		
-		return "";
+		model.addAttribute("overFlg", overFlg);
+		return "admin/customCompDeletePracList";
 	}
 
 	//개인회원탈퇴목록화면 이동
