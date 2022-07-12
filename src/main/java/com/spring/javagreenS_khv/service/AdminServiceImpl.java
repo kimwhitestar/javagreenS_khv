@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.javagreenS_khv.dao.AdminDAO;
 import com.spring.javagreenS_khv.dto.CustomCompDeleteDTO;
+import com.spring.javagreenS_khv.dto.CustomPersonDeleteDTO;
 import com.spring.javagreenS_khv.vo.AdminLoginVO;
 
 @Service
@@ -30,9 +31,20 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.searchCustomCompDeleteList(overFlg);
 	}
 
+	@Override
+	public List<CustomPersonDeleteDTO> searchCustomPersonDeleteList(String overFlg) {
+		return adminDao.searchCustomPersonDeleteList(overFlg);
+	}
+
 	@Transactional
 	@Override
 	public void deleteCustomCompDelete(String customId) {
 		adminDao.deleteCustomCompDelete(customId);
+	}
+
+	@Transactional
+	@Override
+	public void deleteCustomPersonDelete(String customId) {
+		adminDao.deleteCustomPersonDelete(customId);
 	}
 }
