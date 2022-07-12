@@ -114,8 +114,15 @@ public class AdminController {
 	@RequestMapping(value="/customCompDeletePrac", method=RequestMethod.POST)
 	public String customCompDeletePracPost(
 		@RequestParam(name="delCustomId", required=false) String[] delCustomId,
+		@RequestParam(name="onceDelCustomId", defaultValue="", required=false) String onceDelCustomId,
 		@RequestParam(name="overFlg", defaultValue="-", required=false) String overFlg,
 		Model model) {
+		
+		if (!onceDelCustomId.isEmpty()) {
+			adminService.deleteCustomCompDelete(onceDelCustomId);
+			model.addAttribute("overFlg", overFlg);
+			return "admin/customCompDeletePracList";
+		}
 		
 		for (String customId : delCustomId) {
 			adminService.deleteCustomCompDelete(customId);

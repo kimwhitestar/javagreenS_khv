@@ -37,7 +37,7 @@
   
   function deleteCustomCompPrac(delCustomId) {
 	  $("#delList").html('');
-	  let delHtml = '<input type="hidden" name="delCustomId" value="'+delCustomId+'"/>';
+	  let delHtml = '<input type="hidden" name="onceDelCustomId" value="'+delCustomId+'"/>';
 	  $("#delList").html(delHtml);
 	  
 	  deletePracForm.action = '${ctxPath}/admin/customCompDeletePrac';
@@ -93,7 +93,10 @@
 				</tr>
 			</c:forEach>
 	  	</table>
-	  	<div id="delList"></div>
+	  	<div id="delList">
+	  		<input type="hidden" name="delCustomId" /><br>
+	  		<input type="hidden" name="onceDelCustomId" />
+	  	</div>
   	</form>
   </div>
    
