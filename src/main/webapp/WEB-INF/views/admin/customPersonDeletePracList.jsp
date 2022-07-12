@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>기업고객 회원탈퇴신청목록</title>
+  <title>개인고객 회원탈퇴신청목록</title>
   <jsp:include page="/include/bs4.jsp" />
   <style>
   </style>

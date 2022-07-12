@@ -101,7 +101,10 @@
 				NULL, 
 				NULL );
 		
+		INSERT INTO CUSTOM_COMP_HISTORY VALUES ( DEFAULT, #{compDto.custom_id}, #{compDto.custom_kind_cd}, 'O', DEFAULT, #{compDto.custom_id}, NULL, NULL, NULL, NULL );
+
 		INSERT INTO CUSTOM_COMP_LOGIN VALUES ( #{loginDto.login_id}, #{loginDto.encrypt_pwd}, #{loginDto.custom_id}, 'O', DEFAULT, DEFAULT, DEFAULT, NULL, NULL, NULL, NULL, DEFAULT, #{loginDto.login_id}, NULL, NULL, NULL, NULL);
+		
 
 	</insert>
 	<select id="searchCustomComp" resultType="com.spring.javagreenS_khv.dto.CustomCompDTO">
@@ -134,6 +137,13 @@
 			UPDATE_DATE = DEFAULT, 
 			UPDATE_USER = #{compDto.custom_id} 
 		WHERE CUSTOM_ID = #{compDto.custom_id} 
-		  AND DELETE_DATE IS NULL
+		  AND DELETE_DATE IS NULL;
+		  
+		UPDATE CUSTOM_COMP_HISTORY SET 
+			CUSTOM_KIND_CD = #{compDto.custom_kind_cd}, 
+			UPDATE_DATE = DEFAULT, 
+			UPDATE_USER = #{compDto.custom_id} 
+		WHERE CUSTOM_ID = #{compDto.custom_id} 
+		  AND DELETE_DATE IS NULL;
 	</update>
 </mapper>

@@ -18,9 +18,10 @@
         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">회원관리</a>
         <div class="dropdown">
 		    <div class="dropdown-menu">
-				<a class="dropdown-item" href="<%=request.getContextPath()%>/admin/customCompDeleteList">기업회원탈퇴목록</a>
-				<a class="dropdown-item" href="<%=request.getContextPath()%>/admin/customPersonDeleteList">개인회원탈퇴목록</a>
-				<a class="dropdown-item" href="<%=request.getContextPath()%>/admin/customStats">회원통계</a>
+				<a class="dropdown-item" href="<%=request.getContextPath()%>/admin/customCompDeletePracList">기업회원탈퇴목록</a>
+				<a class="dropdown-item" href="<%=request.getContextPath()%>/admin/customPersonDeletePracList">개인회원탈퇴목록</a>
+				<a class="dropdown-item" href="<%=request.getContextPath()%>/admin/customCompStats">기업회원통계</a>
+				<a class="dropdown-item" href="<%=request.getContextPath()%>/admin/customPersonStats">개인회원통계</a>
 		    </div>
 		</div>
       </li>

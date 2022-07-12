@@ -90,6 +90,8 @@
 			NULL, 
 			NULL, 
 			NULL );
+			
+		INSERT INTO CUSTOM_PERSON_HISTORY VALUES ( DEFAULT, #{personDto.custom_id}, #{personDto.custom_kind_cd}, 'P', #{personDto.gender}, DEFAULT, #{compDto.custom_id}, NULL, NULL, NULL, NULL );
 	
 		INSERT INTO CUSTOM_PERSON_LOGIN VALUES ( #{loginDto.login_id}, #{loginDto.encrypt_pwd}, #{loginDto.custom_id}, 'P', DEFAULT, DEFAULT, DEFAULT, NULL, NULL, NULL, NULL, DEFAULT, #{loginDto.login_id}, NULL, NULL, NULL, NULL);
 	</insert>
@@ -153,6 +155,15 @@
 			UPDATE_DATE = DEFAULT, 
 			UPDATE_USER = #{personDto.custom_id} 
 		WHERE CUSTOM_ID = #{personDto.custom_id} 
-		  AND DELETE_DATE IS NULL
+		  AND DELETE_DATE IS NULL;
+		  
+		UPDATE CUSTOM_PERSON_HISTORY SET 
+			CUSTOM_KIND_CD = #{personDto.custom_kind_cd}, 
+			GENDER = #{personDto.gender}, 
+			UPDATE_DATE = DEFAULT, 
+			UPDATE_USER = #{personDto.custom_id} 
+		WHERE CUSTOM_ID = #{personDto.custom_id} 
+		  AND DELETE_DATE IS NULL;
+
 	</update>
 </mapper>

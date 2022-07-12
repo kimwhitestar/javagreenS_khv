@@ -63,7 +63,17 @@ public class AdminController {
 //		}
 	}
 	
-	//기업회원탈퇴목록화면 - 전체목록
+	//관리자 메인화면
+	@RequestMapping(value="/adminIndex", method=RequestMethod.GET)
+	public String adminIndexGet(Model model) {
+		
+		
+		
+		
+		return "admin/adminIndex";
+	}
+	
+	//기업고객회원탈퇴목록화면 - 전체목록
 	@RequestMapping(value="/customCompDeletePracList", method=RequestMethod.GET)
 	public String customCompDeletePracListGet(Model model) {
 		//한 페이징에 표시할 레코드 검색
@@ -89,7 +99,7 @@ public class AdminController {
 		return "admin/customCompDeletePracList";
 	}
 
-	//기업회원탈퇴목록화면 - 조건목록
+	//기업고객회원탈퇴목록화면 - 조건목록
 	@RequestMapping(value="/customCompDeletePracList", method=RequestMethod.POST)
 	public String customCompDeletePracListPost(
 		@RequestParam(name="overFlg", defaultValue="-", required=false) String overFlg,
@@ -118,7 +128,7 @@ public class AdminController {
 		return "admin/customCompDeletePracList";
 	}
 	
-	//개인회원탈퇴목록화면 이동
+	//개인고객회원탈퇴목록화면 이동
 	@RequestMapping(value="/customPersonDeletePracList", method=RequestMethod.GET)
 	public String customPersonDeletePracListGet(Model model) {
 		//한 페이징에 표시할 레코드 검색
@@ -144,7 +154,7 @@ public class AdminController {
 		return "admin/customPersonDeletePracList";
 	}
 	
-	//개인회원탈퇴목록화면 - 조건목록
+	//개인고객회원탈퇴목록화면 - 조건목록
 	@RequestMapping(value="/customPersonDeletePracList", method=RequestMethod.POST)
 	public String customPersonDeletePracListPost(
 		@RequestParam(name="overFlg", defaultValue="-", required=false) String overFlg,
@@ -173,7 +183,7 @@ public class AdminController {
 		return "admin/customPersonDeletePracList";
 	}
 	
-	//기업회원탈퇴목록 - 탈퇴회원신청자 회원삭제(탈퇴신청 1개월차)
+	//기업고객회원탈퇴목록 - 탈퇴회원신청자 회원삭제(탈퇴신청 1개월차)
 	@RequestMapping(value="/customCompDeletePrac", method=RequestMethod.POST)
 	public String customCompDeletePracPost(
 		@RequestParam(name="delCustomId", required=false) String[] delCustomId,
@@ -195,7 +205,7 @@ public class AdminController {
 		return "admin/customCompDeletePracList";
 	}
 
-	//개인회원탈퇴목록 - 탈퇴회원신청자 회원삭제(탈퇴신청 1개월차)
+	//개인고객회원탈퇴목록 - 탈퇴회원신청자 회원삭제(탈퇴신청 1개월차)
 	@RequestMapping(value="/customPersonDeletePrac", method=RequestMethod.POST)
 	public String customPersonDeletePracPost(
 		@RequestParam(name="delCustomId", required=false) String[] delCustomId,
@@ -217,4 +227,31 @@ public class AdminController {
 		return "admin/customPersonDeletePracList";
 	}
 
+	//기업고객회원통계화면 이동
+	@RequestMapping(value="/customCompStats", method=RequestMethod.GET)
+	public String customCompStatsGet(Model model) {
+
+		//기간별(년월), 고객구분코드별 신규가입회원 통계
+		
+		//기간별(년월), 고객구분코드별 탈퇴신청회원 통계
+		
+		//기간별(년월), 고객구분코드별 탈퇴회원 통계
+		
+		//model.addAttribute("", );
+		return "admin/customCompStats";
+	}
+	
+	//개인고객회원통계화면 이동
+	@RequestMapping(value="/customPersonStats", method=RequestMethod.GET)
+	public String customPersonStatsGet(Model model) {
+
+		//기간별(년월), 고객구분코드별 신규가입회원 통계
+		
+		//기간별(년월), 고객구분코드별, 성별 탈퇴신청회원 통계
+		
+		//기간별(년월), 고객구분코드별, 성별 탈퇴회원 통계
+		
+		//model.addAttribute("", );
+		return "admin/customPersonStats";
+	}
 }
