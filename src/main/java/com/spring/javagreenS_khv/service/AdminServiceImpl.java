@@ -1,9 +1,12 @@
 package com.spring.javagreenS_khv.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.javagreenS_khv.dao.AdminDAO;
+import com.spring.javagreenS_khv.dto.CustomCompDeleteDTO;
 import com.spring.javagreenS_khv.vo.AdminLoginVO;
 
 @Service
@@ -19,5 +22,10 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public void updateLogout(String loginId) {
 		adminDao.updateLogout(loginId);
+	}
+
+	@Override
+	public List<CustomCompDeleteDTO> searchCustomCompDeleteList() {
+		return adminDao.searchCustomCompDeleteList();
 	}
 }

@@ -12,9 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.spring.javagreenS_khv.dto.CustomCompDTO;
+import com.spring.javagreenS_khv.dto.CustomCompDeleteDTO;
 import com.spring.javagreenS_khv.service.AdminService;
 import com.spring.javagreenS_khv.vo.AdminLoginVO;
+import com.spring.javagreenS_khv.vo.CustomCompDeleteFormVO;
 import com.spring.javagreenS_khv.vo.CustomCompEntryUpdateFormVO;
 
 @Controller
@@ -61,32 +62,32 @@ public class AdminController {
 	}
 	
 	//기업회원탈퇴목록화면 이동
-	@RequestMapping(value="/customCompDeleteList", method=RequestMethod.GET)
-	public String customCompDeleteListGet(Model model) {
+	@RequestMapping(value="/customCompDeletePracList", method=RequestMethod.GET)
+	public String customCompDeletePracListGet(Model model) {
 		//한 페이징에 표시할 레코드 검색
-		List<CustomCompDTO> dtos = adminService.searchCustomCompDeleteList(paging.getStartIndexNo(), paging.getPageSize());
+		List<CustomCompDeleteDTO> dtos = adminService.searchCustomCompDeleteList();
 		
 		if (null == dtos) return "redirect:/msgAdmin/";//화면으로 이동
 		
-		List<CustomCompEntryUpdateFormVO> vos = new ArrayList<>();
-		CustomCompEntryUpdateFormVO customCompVo = null;
-		for (CustomCompDTO compDto : dtos) {
+		List<CustomCompDeleteFormVO> vos = new ArrayList<>();
+		CustomCompDeleteFormVO compDelVo = null;
+		for (CustomCompDeleteDTO compDelDto : dtos) {
 			//Form출력 설정
-			customCompVo = new CustomCompEntryUpdateFormVO();
-			customCompVo.setCustomName(compDto.getCustom_nm());
-			customCompVo.setCompanyNo(compDto.getCompany_no());
-			customCompVo.setCustomKindCode(String.valueOf(compDto.getCustom_kind_cd()));
-			customCompVo.setOverDaysUserDel(compDto.getOver_days_user_del());
-			vos.add(customCompVo);
+			compDelVo = new CustomCompDeleteFormVO();
+			compDelVo.setLoginId(compDelDto.getLogin_id());
+			compDelVo.setCustomId(compDelDto.getCustom_id());
+			compDelVo.setCustomName(compDelDto.getCustom_nm());
+			compDelVo.setCompanyNo(compDelDto.getCompany_no());
+			compDelVo.setOverDaysUserDel(compDelDto.getOver_days_user_del());
+			vos.add(compDelVo);
 		}
-		
 		model.addAttribute("vos", vos);
-		return "admin/customCompDeleteList";
+		return "admin/customCompDeletePracList";
 	}
 
 	//기업회원탈퇴
-	@RequestMapping(value="/customCompDeleteList", method=RequestMethod.POST)
-	public String customCompDeleteListPost() {
+	@RequestMapping(value="/customCompDeletePracList", method=RequestMethod.POST)
+	public String customCompDeletePracListPost() {
 		return "";
 	}
 
