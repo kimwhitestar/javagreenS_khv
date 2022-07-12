@@ -18,6 +18,7 @@
   }
   
   function deleteCustomCompPrac() {
+	  let delFlg = false;
 	  let listLen = ${vos.length};
 	  let delHtml = '';
 	  let delCustomId = '';
@@ -26,8 +27,13 @@
 		  alert($("#chk"+i).checked);
 		  if (true == $("#chk"+i).checked) {
 			  delCustomId = $("#customId"+i).val();
-			  delHtml += '<input type="hidden" name="delCustomId" value="'+delCustomId+'"/>';
+			  delHtml += '<input type="hidden" name="delCustomId" value="'+delCustomId+'"/>'
+			  delFlg = true;
 		  }
+	  }
+	  if (! delFlg) {
+		  alert('회원을 삭제할 수 없습니다. 삭제할 회원을 선택해 주세요.');
+		  return false;
 	  }
 	  $("#delList").html(delHtml);
 	  
@@ -35,7 +41,12 @@
 	  deletePracForm.submit();
   }
   
-  function deleteCustomCompPrac(delCustomId) {
+  function deleteCustomCompPrac(delCustomId, overDaysUserDel) {
+	  if ('OVER' != overDaysUserDel) {
+		  alert('회원을 삭제할 수 없습니다. 회원탈퇴 신청 후 30일 경과했는지 확인하세요.');
+		  return false;
+	  }
+	  
 	  $("#delList").html('');
 	  let delHtml = '<input type="hidden" name="onceDelCustomId" value="'+delCustomId+'"/>';
 	  $("#delList").html(delHtml);
@@ -89,7 +100,7 @@
 					<td>${vo.overFlg}</td>
 					<td>${vo.deleteDate}</td>
 					<td>${vo.deleteUser}</td>
-					<td><input type="button" id="del${st.count}" value="삭제" onclick="javascript:deleteCustomCompPrac(${vo.customId})"/></td>
+					<td><input type="button" id="del${st.count}" value="삭제" onclick="javascript:deleteCustomCompPrac('${vo.customId}', '${vo.overDaysUserDel}')" <c:if test="${'OVER' ne vo.overDaysUserDel}">disabled</c:if> /></td>
 				</tr>
 			</c:forEach>
 	  	</table>
