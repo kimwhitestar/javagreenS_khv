@@ -11,4 +11,6 @@ public @Data class CustomCompDeleteFormVO {
 	private String overFlg;//login삭제후 30일 경과유무FLG (경과:'OVER', 미경과:'PRAC')
 	private String deleteDate;
 	private String deleteUser;
+	private String deleteDate2;
+	private String deleteUser2;
 }
