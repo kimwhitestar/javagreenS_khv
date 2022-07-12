@@ -18,7 +18,12 @@
   }
   
   function deleteCustomCompPrac() {
-	  let delFlg = false;
+	  if ('OVER' != $("#overFlg").val()) {
+		  $("#msgBar").html('<font class="text-danger">회원을 삭제할 수 없습니다. 회원탈퇴 후 30일 경과한 회원 조회 후 회원삭제할 수 있습니다.</font>');
+		  return false;
+	  }
+	  
+	  let delFlg = true;
 	  let listLen = ${vos.length};
 	  let delHtml = '';
 	  let delCustomId = '';
@@ -28,11 +33,11 @@
 		  if (true == $("#chk"+i).checked) {
 			  delCustomId = $("#customId"+i).val();
 			  delHtml += '<input type="hidden" name="delCustomId" value="'+delCustomId+'"/>'
-			  delFlg = true;
+			  delFlg = false;
 		  }
 	  }
 	  if (! delFlg) {
-		  alert('회원을 삭제할 수 없습니다. 삭제할 회원을 선택해 주세요.');
+		  $("#msgBar").html('<font class="text-danger">회원을 삭제할 수 없습니다. 삭제할 회원을 선택해 주세요.</font>');
 		  return false;
 	  }
 	  $("#delList").html(delHtml);
@@ -41,12 +46,7 @@
 	  deletePracForm.submit();
   }
   
-  function deleteCustomCompPrac(delCustomId, overDaysUserDel) {
-	  if ('OVER' != overDaysUserDel) {
-		  alert('회원을 삭제할 수 없습니다. 회원탈퇴 신청 후 30일 경과했는지 확인하세요.');
-		  return false;
-	  }
-	  
+  function deleteCustomCompPrac(delCustomId) {
 	  $("#delList").html('');
 	  let delHtml = '<input type="hidden" name="onceDelCustomId" value="'+delCustomId+'"/>';
 	  $("#delList").html(delHtml);
@@ -65,6 +65,7 @@
   <div class="container">
   	<h3>기업고객 회원탈퇴신청목록</h3>
   	<br>
+  	<div id="msgBar"></div>
   	<form name="deletePracForm" method="post">
 	  	<div class="form-control">
 	  		<label for="overFlg" class="text-left">30일 경과</label>
@@ -100,7 +101,7 @@
 					<td>${vo.overFlg}</td>
 					<td>${vo.deleteDate}</td>
 					<td>${vo.deleteUser}</td>
-					<td><input type="button" id="del${st.count}" value="삭제" onclick="javascript:deleteCustomCompPrac('${vo.customId}', '${vo.overDaysUserDel}')" <c:if test="${'OVER' ne vo.overDaysUserDel}">disabled</c:if> /></td>
+					<td><input type="button" id="del${st.count}" value="삭제" onclick="javascript:deleteCustomCompPrac('${vo.customId}')" <c:if test="${'OVER' ne vo.overDaysUserDel}">disabled</c:if> /></td>
 				</tr>
 			</c:forEach>
 	  	</table>
