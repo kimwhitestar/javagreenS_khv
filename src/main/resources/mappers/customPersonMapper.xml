@@ -36,7 +36,12 @@
 		UPDATE CUSTOM_PERSON_LOGIN SET POINT = POINT + 100, UPDATE_DATE = DEFAULT, UPDATE_USER = #{loginId} WHERE LOGIN_ID = #{loginId} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL
 	</update>
 	<update id="updateCustomPersonLoginUserDel">
-		UPDATE CUSTOM_PERSON_LOGIN SET DELETE_DATE = DEFAULT, DELETE_USER = #{loginId} , LOGOUT_DATE = DEFAULT, LOGOUT_USER = #{loginId}  WHERE LOGIN_ID = #{loginId} AND CUSTOM_ID = #{customId}
+		UPDATE CUSTOM_PERSON_LOGIN SET DELETE_DATE = DEFAULT, DELETE_USER = #{loginId} , LOGOUT_DATE = DEFAULT, LOGOUT_USER = #{loginId}  WHERE LOGIN_ID = #{loginId} AND CUSTOM_ID = #{customId};
+
+		UPDATE CUSTOM_PERSON SET DELETE_DATE = DEFAULT, DELETE_USER = #{customId} WHERE CUSTOM_ID = #{customId};
+
+		UPDATE CUSTOM_PERSON_HISTORY SET DELETE_DATE = DEFAULT, DELETE_USER = #{customId} WHERE CUSTOM_ID = #{customId};
+
 	</update>
 	<update id="updateLogout">
 		UPDATE CUSTOM_PERSON_LOGIN SET LOGOUT_DATE = DEFAULT, LOGOUT_USER = #{loginId} WHERE LOGIN_ID = #{loginId} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL 
@@ -91,7 +96,7 @@
 			NULL, 
 			NULL );
 			
-		INSERT INTO CUSTOM_PERSON_HISTORY VALUES ( DEFAULT, #{personDto.custom_id}, #{personDto.custom_kind_cd}, 'P', #{personDto.gender}, DEFAULT, #{compDto.custom_id}, NULL, NULL, NULL, NULL );
+		INSERT INTO CUSTOM_PERSON_HISTORY VALUES ( DEFAULT, #{personDto.custom_id}, #{personDto.custom_kind_cd}, 'P', #{personDto.gender}, DEFAULT, DEFAULT, #{compDto.custom_id}, NULL, NULL, NULL, NULL );
 	
 		INSERT INTO CUSTOM_PERSON_LOGIN VALUES ( #{loginDto.login_id}, #{loginDto.encrypt_pwd}, #{loginDto.custom_id}, 'P', DEFAULT, DEFAULT, DEFAULT, NULL, NULL, NULL, NULL, DEFAULT, #{loginDto.login_id}, NULL, NULL, NULL, NULL);
 	</insert>

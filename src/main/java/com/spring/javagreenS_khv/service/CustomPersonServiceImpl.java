@@ -34,6 +34,7 @@ public class CustomPersonServiceImpl implements CustomPersonService {
 		customPersonDao.updatePoint(loginId, customId);
 	}
 
+	@Transactional
 	@Override
 	public void updateCustomPersonLoginUserDel(String loginId, int customId) {
 		customPersonDao.updateCustomPersonLoginUserDel(loginId, customId);

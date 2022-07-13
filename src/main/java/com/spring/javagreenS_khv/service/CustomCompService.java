@@ -34,9 +34,9 @@ public interface CustomCompService {
 
 	public boolean emailCheck(String email);
 
-	public void insertCustomCompAndCustomCompLogin(CustomCompDTO compDto, CustomCompLoginDTO loginDto);
-
 	public int obtainCustomId(int customKindCode);
+
+	public void insertCustomCompAndCustomCompLogin(CustomCompDTO compDto, CustomCompLoginDTO loginDto);
 
 	public CustomCompDTO searchCustomComp(int customId);
 

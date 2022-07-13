@@ -57,6 +57,7 @@ public class CustomCompServiceImpl implements CustomCompService {
 		customCompDao.updatePoint(loginId, customId);
 	}
 
+	@Transactional
 	@Override
 	public void updateCustomCompLoginUserDel(String loginId, int customId) {
 		customCompDao.updateCustomCompLoginUserDel(loginId, customId);
@@ -83,14 +84,14 @@ public class CustomCompServiceImpl implements CustomCompService {
 	}
 
 	@Override
-	public void insertCustomCompAndCustomCompLogin(CustomCompDTO compDto, CustomCompLoginDTO loginDto) {
-		customCompDao.insertCustomCompAndCustomCompLogin(compDto, loginDto);
+	public int obtainCustomId(int customKindCode) {
+		return customCompDao.obtainCustomId(customKindCode);
 	}
 
 	@Transactional
 	@Override
-	public int obtainCustomId(int customKindCode) {
-		return customCompDao.obtainCustomId(customKindCode);
+	public void insertCustomCompAndCustomCompLogin(CustomCompDTO compDto, CustomCompLoginDTO loginDto) {
+		customCompDao.insertCustomCompAndCustomCompLogin(compDto, loginDto);
 	}
 
 	@Override
@@ -98,6 +99,7 @@ public class CustomCompServiceImpl implements CustomCompService {
 		return customCompDao.searchCustomComp(customId);
 	}
 
+	@Transactional
 	@Override
 	public void updateCustomComp(CustomCompDTO compDto) {
 		customCompDao.updateCustomComp(compDto);

@@ -46,7 +46,12 @@
 		UPDATE CUSTOM_COMP_LOGIN SET POINT = POINT + 100, UPDATE_DATE = DEFAULT, UPDATE_USER = #{loginId} WHERE LOGIN_ID = #{loginId} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL
 	</update>
 	<update id="updateCustomCompLoginUserDel">
-		UPDATE CUSTOM_COMP_LOGIN SET DELETE_DATE = DEFAULT, DELETE_USER = #{loginId}, LOGOUT_DATE = DEFAULT, LOGOUT_USER = #{loginId}  WHERE LOGIN_ID = #{loginId} AND CUSTOM_ID = #{customId}
+		UPDATE CUSTOM_COMP_LOGIN SET DELETE_DATE = DEFAULT, DELETE_USER = #{loginId}, LOGOUT_DATE = DEFAULT, LOGOUT_USER = #{loginId}  WHERE LOGIN_ID = #{loginId} AND CUSTOM_ID = #{customId};
+
+		UPDATE CUSTOM_COMP SET DELETE_DATE = DEFAULT, DELETE_USER = #{customId} WHERE CUSTOM_ID = #{customId};
+
+		UPDATE CUSTOM_COMP_HISTORY SET DELETE_DATE = DEFAULT, DELETE_USER = #{customId} WHERE CUSTOM_ID = #{customId};
+
 	</update>
 	<update id="updateLogout">
 		UPDATE CUSTOM_COMP_LOGIN SET LOGOUT_DATE = DEFAULT, LOGOUT_USER = #{loginId} WHERE LOGIN_ID = #{loginId} AND CUSTOM_ID = #{customId} AND DELETE_DATE IS NULL
@@ -101,7 +106,7 @@
 				NULL, 
 				NULL );
 		
-		INSERT INTO CUSTOM_COMP_HISTORY VALUES ( DEFAULT, #{compDto.custom_id}, #{compDto.custom_kind_cd}, 'O', DEFAULT, #{compDto.custom_id}, NULL, NULL, NULL, NULL );
+		INSERT INTO CUSTOM_COMP_HISTORY VALUES ( DEFAULT, #{compDto.custom_id}, #{compDto.custom_kind_cd}, 'O', DEFAULT, DEFAULT, #{compDto.custom_id}, NULL, NULL, NULL, NULL );
 
 		INSERT INTO CUSTOM_COMP_LOGIN VALUES ( #{loginDto.login_id}, #{loginDto.encrypt_pwd}, #{loginDto.custom_id}, 'O', DEFAULT, DEFAULT, DEFAULT, NULL, NULL, NULL, NULL, DEFAULT, #{loginDto.login_id}, NULL, NULL, NULL, NULL);
 		
