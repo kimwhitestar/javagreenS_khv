@@ -14,11 +14,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.javagreenS_khv.dto.CustomCompDeleteDTO;
+import com.spring.javagreenS_khv.dto.CustomCompLoginDTO;
 import com.spring.javagreenS_khv.dto.CustomPersonDeleteDTO;
+import com.spring.javagreenS_khv.dto.CustomPersonLoginDTO;
 import com.spring.javagreenS_khv.service.AdminService;
 import com.spring.javagreenS_khv.vo.AdminLoginVO;
 import com.spring.javagreenS_khv.vo.CustomCompDeleteFormVO;
+import com.spring.javagreenS_khv.vo.CustomCompSearchVO;
 import com.spring.javagreenS_khv.vo.CustomPersonDeleteFormVO;
+import com.spring.javagreenS_khv.vo.CustomPersonSearchVO;
 
 @Controller
 @RequestMapping("/admin")
@@ -61,16 +65,6 @@ public class AdminController {
 //		} else {
 //			return "redirect:/msgAdmin/LogoutNo";
 //		}
-	}
-	
-	//관리자 메인화면
-	@RequestMapping(value="/adminIndex", method=RequestMethod.GET)
-	public String adminIndexGet(Model model) {
-		
-		
-		
-		
-		return "admin/adminIndex";
 	}
 	
 	//기업고객회원탈퇴목록화면 - 전체목록
@@ -254,5 +248,90 @@ public class AdminController {
 		
 		//model.addAttribute("", );
 		return "admin/customPersonStats";
+	}
+	
+	//관리자 메인화면 (차후 기업고객,개인고객서비스검색으로 수정함)
+	@RequestMapping(value="/adminIndex", method=RequestMethod.GET)
+	public String adminIndexGet(Model model) {
+		/* 기업고객 대시보드 목록 조회 */
+		CustomCompSearchVO compVo = null;
+		//신규회원가입한 목록 - 가입일 1개월차
+		List<CustomCompLoginDTO> compRecentlyEntryDtoList = adminService.searchRecentlyEntryCustomCompList();
+		List<CustomCompSearchVO> compRecentlyEntryVoList = new ArrayList<>(); 
+		//최근접속회원목록
+		List<CustomCompLoginDTO> compRecentlyLoginDtoList = adminService.searchRecentlyLoginCustomCompList();
+		List<CustomCompSearchVO> compRecentlyLoginVoList = new ArrayList<>(); 
+		//탈퇴회원목록 - 회원삭제대상자(임시탈퇴유지기간 30일을 경과한 회원)
+		List<CustomCompLoginDTO> compPracDeleteDtoList = adminService.searchPracDeleteCustomCompList();
+		List<CustomCompSearchVO> compPracDeleteVoList = new ArrayList<>(); 
+
+		/* 개인고객 대시보드 목록 조회 */
+		CustomPersonSearchVO personVo = null;
+		//신규회원가입한 목록 - 가입일 1개월차
+		List<CustomPersonLoginDTO> personRecentlyEntryDtoList = adminService.searchRecentlyEntryCustomPersonList();
+		List<CustomPersonSearchVO> personRecentlyEntryVoList = new ArrayList<>(); 
+		//최근접속회원목록
+		List<CustomPersonLoginDTO> personRecentlyLoginDtoList = adminService.searchRecentlyLoginCustomPersonList();
+		List<CustomPersonSearchVO> personRecentlyLoginVoList = new ArrayList<>(); 
+		//탈퇴회원목록 - 회원삭제대상자(임시탈퇴유지기간 30일을 경과한 회원)
+		List<CustomPersonLoginDTO> personPracDeleteDtoList = adminService.searchPracDeleteCustomPersonList();
+		List<CustomPersonSearchVO> personPracDeleteVoList = new ArrayList<>(); 
+		
+		for (CustomCompLoginDTO compDto : compRecentlyEntryDtoList) {
+			compVo = new CustomCompSearchVO();
+			compVo.setLoginId(compDto.getLogin_id());
+			compVo.setCustomNameShort(compDto.getCustom_nm_short());
+			compVo.setCustomKindName(String.valueOf(compDto.getCustom_kind_nm()));
+			compVo.setCreateDate(compDto.getCreate_date());
+			compRecentlyEntryVoList.add(compVo);
+		}
+		for (CustomCompLoginDTO compDto : compRecentlyLoginDtoList) {
+			compVo = new CustomCompSearchVO();
+			compVo.setLoginId(compDto.getLogin_id());
+			compVo.setCustomNameShort(compDto.getCustom_nm_short());
+			compVo.setCustomKindName(String.valueOf(compDto.getCustom_kind_nm()));
+			compVo.setLoginDate(compDto.getLogin_date());
+			compRecentlyLoginVoList.add(compVo);
+		}
+		for (CustomCompLoginDTO compDto : compPracDeleteDtoList) {
+			compVo = new CustomCompSearchVO();
+			compVo.setLoginId(compDto.getLogin_id());
+			compVo.setCustomNameShort(compDto.getCustom_nm_short());
+			compVo.setCustomKindName(String.valueOf(compDto.getCustom_kind_nm()));
+			compVo.setDeleteDate(compDto.getDelete_date());
+			compPracDeleteVoList.add(compVo);
+		}
+		for (CustomPersonLoginDTO personDto : personRecentlyEntryDtoList) {
+			personVo = new CustomPersonSearchVO();
+			personVo.setLoginId(personDto.getLogin_id());
+			personVo.setCustomName(personDto.getCustom_name());
+			personVo.setCustomKindName(String.valueOf(personDto.getCustom_kind_nm()));
+			personVo.setCreateDate(personDto.getCreate_date());
+			personRecentlyEntryVoList.add(personVo);
+		}
+		for (CustomPersonLoginDTO personDto : personRecentlyLoginDtoList) {
+			personVo = new CustomPersonSearchVO();
+			personVo.setLoginId(personDto.getLogin_id());
+			personVo.setCustomName(personDto.getCustom_name());
+			personVo.setCustomKindName(String.valueOf(personDto.getCustom_kind_nm()));
+			personVo.setLoginDate(personDto.getLogin_date());
+			personRecentlyLoginVoList.add(personVo);
+		}
+		for (CustomPersonLoginDTO personDto : personPracDeleteDtoList) {
+			personVo = new CustomPersonSearchVO();
+			personVo.setLoginId(personDto.getLogin_id());
+			personVo.setCustomName(personDto.getCustom_name());
+			personVo.setCustomKindName(String.valueOf(personDto.getCustom_kind_nm()));
+			personVo.setDeleteDate(personDto.getDelete_date());
+			personPracDeleteVoList.add(personVo);
+		}
+		model.addAttribute("compRecentlyEntryVoList", compRecentlyEntryVoList);
+		model.addAttribute("compRecentlyLoginVoList", compRecentlyLoginVoList);
+		model.addAttribute("compPracDeleteVoList", compPracDeleteVoList);
+		model.addAttribute("personRecentlyEntryVoList", personRecentlyEntryVoList);
+		model.addAttribute("personRecentlyLoginVoList", personRecentlyLoginVoList);
+		model.addAttribute("personPracDeleteVoList", personPracDeleteVoList);
+		
+		return "admin/adminIndex";
 	}
 }

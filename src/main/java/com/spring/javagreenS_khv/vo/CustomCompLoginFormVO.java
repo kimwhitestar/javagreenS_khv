@@ -4,7 +4,7 @@ import javax.validation.constraints.Size;
 
 import lombok.Data;
 
-public @Data class CustomCompLoginVO {
+public @Data class CustomCompLoginFormVO {
 	/**
 	 * 기업고객회원로그인정보(customCompLogin)
 	 */

@@ -5,7 +5,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.spring.javagreenS_khv.dto.CustomCompDeleteDTO;
+import com.spring.javagreenS_khv.dto.CustomCompLoginDTO;
 import com.spring.javagreenS_khv.dto.CustomPersonDeleteDTO;
+import com.spring.javagreenS_khv.dto.CustomPersonLoginDTO;
 import com.spring.javagreenS_khv.vo.AdminLoginVO;
 
 public interface AdminDAO {
@@ -20,4 +22,16 @@ public interface AdminDAO {
 	public void deleteCustomCompDelete(@Param("customId") String customId);
 
 	public void deleteCustomPersonDelete(@Param("customId") String customId);
+
+	public List<CustomCompLoginDTO> searchRecentlyEntryCustomCompList();
+
+	public List<CustomCompLoginDTO> searchRecentlyLoginCustomCompList();
+
+	public List<CustomCompLoginDTO> searchPracDeleteCustomCompList();
+
+	public List<CustomPersonLoginDTO> searchRecentlyEntryCustomPersonList();
+
+	public List<CustomPersonLoginDTO> searchRecentlyLoginCustomPersonList();
+
+	public List<CustomPersonLoginDTO> searchPracDeleteCustomPersonList();
 }
