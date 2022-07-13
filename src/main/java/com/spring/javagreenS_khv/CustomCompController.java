@@ -573,14 +573,14 @@ public class CustomCompController {
 		//메모 정규식 에러 style class 적용
  		message = '${(String)messageMap.get("id........................................")}';
 		if ( '' == message ) {
-			$("#memo").addClass("is-invalid");
-			$("#memoInvalid").addClass("is-invalid");
-			$("#memoInvalid").text(message);
-			$("#memo").focus();
+			$("#CKEDITOR").addClass("is-invalid");
+			$("#CKEDITORInvalid").addClass("is-invalid");
+			$("#CKEDITORInvalid").text(message);
+			$("#CKEDITOR").focus();
 		} else {
-			$("#memo").addClass("is-valid");
-			$("#memoInvalid").addClass("is-valid");
-			$("#memoInvalid").text('');
+			$("#CKEDITOR").addClass("is-valid");
+			$("#CKEDITORInvalid").addClass("is-valid");
+			$("#CKEDITORInvalid").text('');
 		}
  		//회원사진명 정규식 에러 style class 적용
  		message = '${(String)messageMap.get("id........................................")}';

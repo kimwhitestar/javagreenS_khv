@@ -12,6 +12,8 @@
 	<!-- daum웹사이트에서 제공하는 script open 예제소스 -->
 	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script src="${ctxPath}/js/post.js"></script>
+	<!-- ckeditor 글자편집기 -->
+    <script src="${ctxPath}/ckeditor/ckeditor.js"></script>
 	<style>
 	</style>
 	<script>
@@ -251,17 +253,17 @@
 			}
 		}		
 		//메모 정규식 체크
- 		if ('' != $("#memo").val()) {
-			if ( ! $("#memo").val().match(regexMemo) ) {
-				$("#memo").addClass("is-invalid");
-				$("#memoInvalid").addClass("is-invalid");
-				$("#memoInvalid").text("문자, 숫자, 특수문자(~!?@#$%^&*()<>_+=-,.:;/ )의 조합 500자 이하로 입력하세요");
-				$("#memo").focus();
+ 		if ('' != $("#CKEDITOR").val()) {
+			if ( ! $("#CKEDITOR").val().match(regexMemo) ) {
+				$("#CKEDITOR").addClass("is-invalid");
+				$("#CKEDITORInvalid").addClass("is-invalid");
+				$("#CKEDITORInvalid").text("문자, 숫자, 특수문자(~!?@#$%^&*()<>_+=-,.:;/ )의 조합 500자 이하로 입력하세요");
+				$("#CKEDITOR").focus();
 	 			regexFlag = false;
 			} else {
-				$("#memo").addClass("is-valid");
-				$("#memoInvalid").addClass("is-valid");
-				$("#memoInvalid").text('');
+				$("#CKEDITOR").addClass("is-valid");
+				$("#CKEDITORInvalid").addClass("is-valid");
+				$("#CKEDITORInvalid").text('');
 			}
 		}
 
@@ -503,10 +505,19 @@
 			</div> 
     </div>
     <div class="form-group">
-			<label for="memo">메모 : </label>
-			<textarea rows="5" class="form-control" id="memo" name="memo"  placeholder="메모를 입력하세요" maxlength=500 >${vo.memo}</textarea>
-			<div id="memoInvalid" class="invalid-feedback"></div>
-    </div>
+	    <label for="CKEDITOR">메모 : </label>
+	    <textarea rows="5" class="form-control" id="CKEDITOR" name="memo" placeholder="메모를 입력하세요" maxlength=500 >${vo.memo}</textarea>
+	    <script>
+	    	<!-- ckeditor글자편집기로 작성한 내용을 사진과 함께 upload할 때 Ajax로 사진upload처리 -->
+	    	CKEDITOR.replace("memo", {
+	    		height:500px,
+	    		filebrowserUploadUrl : "${ctxPath}/customComp/imageUpload", //사진 1장
+	    		uploadUrl : "${ctxPath}/customComp/imageUpload" //사진 여러장 드래그
+	    	});
+	    </script>
+	    <div id="CKEDITORInvalid" class="invalid-feedback"></div>
+	</div>
+    
     <div class="form-group">
       기업 사진(파일용량:2MByte이내) :
 			<input type="file" id="customImgFileName" name="customImgFileName" src="${vo.customImgFileName}" class="form-control-file border btn-lg p-0 mt-2"/>

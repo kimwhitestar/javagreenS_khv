@@ -13,9 +13,9 @@
   	<jsp:include page="/include/bs4.jsp" />
 	<!-- daum웹사이트에서 제공하는 주소 script open 예제소스 -->
 	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script src="${ctxPath}/js/post.js"></script>
 	<!-- ckeditor 글자편집기 -->
     <script src="${ctxPath}/ckeditor/ckeditor.js"></script>
-	<script src="${ctxPath}/js/post.js"></script>
 	<style>
 	</style>
 	<script>
@@ -321,8 +321,8 @@ alert('customKindCode' + $("#customKindCode").val());
 			</div> 
     </div>
     <div class="form-group">
-	    <label for="memo">메모 : </label>
-	    <textarea rows="5" class="form-control" name="memo" id="CKEDITOR" placeholder="메모를 입력하세요" maxlength=500 ></textarea>
+	    <label for="CKEDITOR">메모 : </label>
+	    <textarea rows="5" class="form-control" id="CKEDITOR" name="memo" placeholder="메모를 입력하세요" maxlength=500 ></textarea>
 	    <script>
 	    	<!-- ckeditor글자편집기로 작성한 내용을 사진과 함께 upload할 때 Ajax로 사진upload처리 -->
 	    	CKEDITOR.replace("memo", {
