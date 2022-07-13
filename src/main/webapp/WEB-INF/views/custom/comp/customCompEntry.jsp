@@ -11,8 +11,10 @@
 	<meta charset="UTF-8">
 	<title>customCompEntry.jsp</title>
   	<jsp:include page="/include/bs4.jsp" />
-	<!-- daum웹사이트에서 제공하는 script open 예제소스 -->
+	<!-- daum웹사이트에서 제공하는 주소 script open 예제소스 -->
 	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<!-- ckeditor 글자편집기 -->
+    <script src="${ctxPath}/ckeditor/ckeditor.js"></script>
 	<script src="${ctxPath}/js/post.js"></script>
 	<style>
 	</style>
@@ -319,10 +321,18 @@ alert('customKindCode' + $("#customKindCode").val());
 			</div> 
     </div>
     <div class="form-group">
-			<label for="memo">메모 : </label>
-			<textarea rows="5" class="form-control" id="memo" name="memo" placeholder="메모를 입력하세요" maxlength=500 ></textarea>
-			<div id="memoInvalid" class="invalid-feedback"></div>
-    </div>
+	    <label for="memo">메모 : </label>
+	    <textarea rows="5" class="form-control" name="memo" id="CKEDITOR" placeholder="메모를 입력하세요" maxlength=500 ></textarea>
+	    <script>
+	    	<!-- ckeditor글자편집기로 작성한 내용을 사진과 함께 upload할 때 Ajax로 사진upload처리 -->
+	    	CKEDITOR.replace("memo", {
+	    		height:500px,
+	    		filebrowserUploadUrl : "${ctxPath}/customComp/imageUpload", //사진 1장
+	    		uploadUrl : "${ctxPath}/customComp/imageUpload" //사진 여러장 드래그
+	    	});
+	    </script>
+	    <div id="CKEDITORInvalid" class="invalid-feedback"></div>
+	</div>
     <div  class="form-group">
       기업 사진(파일용량:2MByte이내) :
 			<input type="file" id="customImgFileName" name="customImgFileName" class="form-control-file border btn-lg p-0 mt-2"/>
@@ -333,7 +343,7 @@ alert('customKindCode' + $("#customKindCode").val());
 	    <input type="button" class="btn btn-info" id="entry" value="회원가입" onclick="checkEntryForm()" />
 	    <input type="reset" class="btn btn-info"  value="다시작성"/>&nbsp;
 	    <input type="button" class="btn btn-info" value="돌아가기" onclick="location.href='${ctxPath}/customComp/customCompLogin';"/><br>
-		</div>
+	</div>
   </form>
   <p><br/></p>
 </div>

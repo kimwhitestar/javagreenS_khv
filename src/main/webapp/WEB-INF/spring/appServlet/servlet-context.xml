@@ -41,6 +41,7 @@
 		<beans:property name="defaultEncoding" value="utf-8" />
 	</beans:bean>
 	
+	<resources mapping="/ckeditor/**" location="/resources/ckeditor/" /><!-- 라이브러리에서 호출시 -->
 	
 	
 	

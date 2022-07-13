@@ -1,5 +1,9 @@
 package com.spring.javagreenS_khv;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.javagreenS_khv.dto.CustomCompDTO;
 import com.spring.javagreenS_khv.dto.CustomCompLoginDTO;
@@ -229,6 +234,35 @@ public class CustomCompController {
 //		} else {
 //			return "redirect:/msgCustomComp/LogoutNo";
 //		}
+	}
+	
+	//ckeditor에서 글을 올릴 때 image와 함께 올리려면, 이곳에서 서버파일시스템에 그림파일을 저장할 수 있도록 처리
+	@ResponseBody
+	@RequestMapping(value="/imageUpload", method=RequestMethod.GET)
+	public void imageUploadGet(HttpServletRequest request, HttpServletResponse response,
+		MultipartFile upload) throws Exception {
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("text/html; charset=utf-8");
+		String orgFName = upload.getOriginalFilename();
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyMMddhhmmss");
+		orgFName = sdf.format(date) + "_" + orgFName;
+		
+		//서버파일시스템에 사진 저장(전송하지 않아도, 호일읽는 것만으로 아래폴더에 사진이 저장되고, 사진을 뺀다고 지워지지않는다.
+		byte[] bytes = upload.getBytes();
+		String uploadPath = request.getSession().getServletContext().getRealPath("/resources/data/ckeditor/");
+		OutputStream os = new FileOutputStream(new File(uploadPath + orgFName));
+		os.write(bytes);
+		
+		//서버파일시스템에 저장된 파일을 화면에 보여주기위한 작업
+		PrintWriter out = response.getWriter();
+		String fileUrl = request.getContextPath() + "/data/ckeditor/" + orgFName;
+
+		// Json type으로 출력(전송) { key : value, key : value } 
+		out.println("{\"orgFName\":\""+orgFName+"\",\"uploaded\":1, \"url\":\""+fileUrl+"\"}");
+		
+		out.flush();
+		os.close();
 	}
 
 	//회원가입화면 이동
