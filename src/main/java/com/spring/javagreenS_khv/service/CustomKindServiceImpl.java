@@ -12,10 +12,10 @@ import com.spring.javagreenS_khv.dto.CustomKindDTO;
 public class CustomKindServiceImpl implements CustomKindService {
 
 	@Autowired
-	public CustomKindDAO CustomKindDao;
+	public CustomKindDAO customKindDao;
 
 	@Override
 	public List<CustomKindDTO> searchCustomKindList() {
-		return CustomKindDao.searchCustomKindList();
+		return customKindDao.searchCustomKindList();
 	}
 }
