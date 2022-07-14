@@ -10,10 +10,10 @@
   <a class="navbar-brand" href="<%=request.getContextPath()%>/admin/adminIndex">Home</a>
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav">
-      <li class="nav-item font-weight-bold">
-        <a href="${ctxPath}/" class="text-left">홈으로</a>
-      </li>
 	<%	if (sLevel.equals("0") && sLevelName.equals("관리자")) { //관리자 %>
+      <li class="nav-item font-weight-bold">
+        	<a href="${ctxPath}/admin/adminIndex" class="text-left">홈으로</a>
+      </li>
       <li class="nav-item font-weight-bold">
         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">회원관리</a>
         <div class="dropdown">
@@ -26,10 +26,10 @@
 		</div>
       </li>
       <li class="nav-item font-weight-bold">
-        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">게시판관리</a>
+        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pds관리</a>
         <div class="dropdown">
 		    <div class="dropdown-menu">
-				<a class="dropdown-item" href="<%=request.getContextPath()%>/admin/">회원게시판설정</a>
+				<a class="dropdown-item" href="<%=request.getContextPath()%>/admin/">Pds설정</a>
 				<a class="dropdown-item" href="<%=request.getContextPath()%>/admin/">회원게시판통계</a>
 		    </div>
 		</div>

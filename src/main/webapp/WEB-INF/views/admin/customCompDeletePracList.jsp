@@ -69,10 +69,10 @@
   	<form name="deletePracForm" method="post">
 	  	<div class="form-control">
 	  		<label for="overFlg" class="text-left">30일 경과</label>
-	  		<select id="overFlg" name="overFlg" class="text-left">
-	  			<option value="">- 전 체 -</option>
-	  			<option value="OVER">경과</option>
-	  			<option value="PRAC">미경과</option>
+	  		<select id="overFlg" name="overFlg" class="text-left" <c:if test="${'2' == delOverFlgVo.delFlag}"> disabled </c:if> >
+	  			<c:forEach var="flgVo" items="${delOverFlgVo.flagVos}">
+	  				<option value="${flgVo.flgCd}">${flgVo.flgNm}</option>
+	  			</c:forEach>
 	  		</select>
 	  		<input type="button" id="search" value="조회" class="text-right" onclick="searchCustomCompDelPracList()"/> &nbsp;&nbsp;
 	  		<input type="button" id="delete" value="삭제" class="text-right" onclick="deleteCustomCompPrac()"/>

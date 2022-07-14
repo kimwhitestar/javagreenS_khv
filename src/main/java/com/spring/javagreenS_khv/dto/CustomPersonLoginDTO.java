@@ -3,6 +3,7 @@ package com.spring.javagreenS_khv.dto;
 import lombok.Data;
 
 public @Data class CustomPersonLoginDTO {
+	private int seq;
 	private String login_id;
 	private String login_pwd;
 	private String encrypt_pwd;
@@ -25,4 +26,5 @@ public @Data class CustomPersonLoginDTO {
 	private String update_user;
 	private String delete_date;
 	private String delete_user;
+	
 }

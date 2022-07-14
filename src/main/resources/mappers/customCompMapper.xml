@@ -110,7 +110,8 @@
 
 		INSERT INTO CUSTOM_COMP_LOGIN VALUES ( #{loginDto.login_id}, #{loginDto.encrypt_pwd}, #{loginDto.custom_id}, 'O', DEFAULT, DEFAULT, DEFAULT, NULL, NULL, NULL, NULL, DEFAULT, #{loginDto.login_id}, NULL, NULL, NULL, NULL);
 		
-
+		
+********************CUSTOM_KIND.CUSTOM_KIND_NM,GRADE_NAME #{compDto.kind_name}, #{compDto.grade_name}
 	</insert>
 	<select id="searchCustomComp" resultType="com.spring.javagreenS_khv.dto.CustomCompDTO">
 	    SELECT * FROM CUSTOM_COMP WHERE CUSTOM_ID = #{customId}

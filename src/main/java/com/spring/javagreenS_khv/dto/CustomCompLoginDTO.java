@@ -6,6 +6,7 @@ import lombok.Data;
 //mapper쪽은 resultSet말고도 불편하더라도 DTO를 별도로 만드는 편이 좋을 것 같습니다.
 //입력화면쪽은 전용VO가 좋은 것 같습니다.
 public @Data class CustomCompLoginDTO {
+	private int seq;
 	private String login_id;
 	private String login_pwd;
 	private String encrypt_pwd;

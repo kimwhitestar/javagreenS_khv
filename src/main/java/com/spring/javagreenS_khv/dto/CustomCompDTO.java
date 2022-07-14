@@ -26,11 +26,12 @@ public @Data class CustomCompDTO {
 	private String detail_addr;
 	private String memo;
 	private String custom_img_file_name;
+	private int over_days_user_del; //회원탈퇴신청 후 30일 경과시 회원삭제처리
+	private String delete_over_flg;
 	private String create_date;
 	private String create_user;
 	private String update_date;
 	private String update_user;
 	private String delete_date;
 	private String delete_user;
-	private int over_days_user_del; //회원탈퇴신청 후 30일 경과시 회원삭제처리
 } 

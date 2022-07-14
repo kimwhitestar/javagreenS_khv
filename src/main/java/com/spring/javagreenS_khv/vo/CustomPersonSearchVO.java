@@ -18,6 +18,8 @@ public @Data class CustomPersonSearchVO {
 	private int point;
 	private int visitCnt;
 	private int todayCnt;
+	private String[] arrOverFlg;
+	private String overFlg;
 	private String loginDate;
 	private String logoutDate;
 	private String createDate;
