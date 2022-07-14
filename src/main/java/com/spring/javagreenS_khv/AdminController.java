@@ -99,23 +99,8 @@ public class AdminController {
 			vos.add(compDelVo);
 		}
 		
-		/*회원탈퇴후 30일 경과여부 flag */
-		FlgSummaryVO flgSummaryVo = new FlgSummaryVO();
-		FlgSummaryDTO flgSummaryDTO = flgSummaryService.searchFlg("DELETE_OVER_FLG", "000", "180");
-		String flgNm = flgSummaryDTO.getFlg_nm();//NONE:해당안됨|OVER:30일경과|PRAC:30일미경과
-		String[] flgNmRec = flgNm.split("|");
-		String[] flgNmColumn = new String[flgNmRec.length];
-		List<FlagVO> flagVos = new ArrayList<>();
-		FlagVO flagVo = null;
-		for (String flgNmRow : flgNmRec) {
-			flgNmColumn = flgNmRow.split(":");
-			flagVo = new FlagVO();
-			flagVo.setFlgCd(flgNmColumn[0]);
-			flagVo.setFlgNm(flgNmColumn[1]);
-			flagVos.add(flagVo);
-		}
-		flgSummaryVo.setFlagVos(flagVos);
-		flgSummaryVo.setDelFlag(flgSummaryDTO.getDel_flag());
+		/*회원탈퇴후 30일 경과여부 flag 획득 (NONE:해당안됨|OVER:30일경과|PRAC:30일미경과)*/
+		FlgSummaryVO flgSummaryVo = flgSummaryService.searchFlg("DELETE_OVER_FLG", "000", "180");
 		model.addAttribute("delOverFlgVo", flgSummaryVo);
 		model.addAttribute("vos", vos);
 		return "admin/customCompDeletePracList";

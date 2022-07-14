@@ -1,7 +1,7 @@
 package com.spring.javagreenS_khv.service;
 
-import com.spring.javagreenS_khv.dto.FlgSummaryDTO;
+import com.spring.javagreenS_khv.vo.FlgSummaryVO;
 
 public interface FlgSummaryService {
-	public FlgSummaryDTO searchFlg(String flgCd, String menuCd, String subMenuCd);
+	public FlgSummaryVO searchFlg(String flgCd, String menuCd, String subMenuCd);
 }
