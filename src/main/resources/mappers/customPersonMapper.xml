@@ -4,10 +4,7 @@
 
 <mapper namespace="com.spring.javagreenS_khv.dao.CustomPersonDAO">
 <!-- 수정 <mapper namespace="org.mybatis.example.BlogMapper"></mapper> -->
-	<select id="searchCustomPerson" resultType="com.spring.javagreenS_khv.dto.CustompersonDto">
-	    SELECT * FROM CUSTOM_PERSON WHERE CUSTOM_ID = #{customId}
-	</select>
-	<select id="searchLogin" resultType="com.spring.javagreenS_khv.dto.CustomPersonloginDto">
+	<select id="searchLogin" resultType="com.spring.javagreenS_khv.dto.CustomPersonLoginDTO">
 		SELECT 
 			LOGIN_ID,  -- primary key
 			LOGIN_PWD,
@@ -96,11 +93,11 @@
 			NULL, 
 			NULL );
 			
-		INSERT INTO CUSTOM_PERSON_HISTORY VALUES ( DEFAULT, #{personDto.custom_id}, #{personDto.custom_kind_cd}, 'P', #{personDto.gender}, DEFAULT, DEFAULT, #{compDto.custom_id}, NULL, NULL, NULL, NULL );
+		INSERT INTO CUSTOM_PERSON_HISTORY VALUES ( DEFAULT, #{personDto.custom_id}, #{personDto.custom_kind_cd}, 'P', #{personDto.gender}, DEFAULT, #{personDto.custom_id}, NULL, NULL, NULL, NULL, DEFAULT, #{personDto.kind_name}, #{personDto.grade_name} );
 	
 		INSERT INTO CUSTOM_PERSON_LOGIN VALUES ( #{loginDto.login_id}, #{loginDto.encrypt_pwd}, #{loginDto.custom_id}, 'P', DEFAULT, DEFAULT, DEFAULT, NULL, NULL, NULL, NULL, DEFAULT, #{loginDto.login_id}, NULL, NULL, NULL, NULL);
 	</insert>
-	<select id="searchCustomPerson" resultType="com.spring.javagreenS_khv.dto.CustompersonDto">
+	<select id="searchCustomPerson" resultType="com.spring.javagreenS_khv.dto.CustomPersonDTO">
 		SELECT 
 			SEQ, --  unique key 
 			CUSTOM_ID, --  primary key

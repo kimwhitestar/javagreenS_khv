@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +18,7 @@ import com.spring.javagreenS_khv.common.Support;
 import com.spring.javagreenS_khv.dao.PdsDAO;
 import com.spring.javagreenS_khv.vo.PdsVO;
 
+@Service
 public class PdsServiceImpl implements PdsService {
 
 	@Autowired

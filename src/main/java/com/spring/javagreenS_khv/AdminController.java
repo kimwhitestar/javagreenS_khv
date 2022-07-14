@@ -76,6 +76,7 @@ public class AdminController {
 	
 	
 	
+
 	//기업고객회원탈퇴목록화면 - 전체목록
 	@RequestMapping(value="/customCompDeletePracList", method=RequestMethod.GET)
 	public String customCompDeletePracListGet(Model model) {
@@ -131,6 +132,10 @@ public class AdminController {
 			compDelVo.setOverDaysUserDel(compDelDto.getOver_days_user_del());
 			vos.add(compDelVo);
 		}
+		
+		/*회원탈퇴후 30일 경과여부 flag 획득 (NONE:해당안됨|OVER:30일경과|PRAC:30일미경과)*/
+		FlgSummaryVO flgSummaryVo = flgSummaryService.searchFlg("DELETE_OVER_FLG", "000", "180");
+		model.addAttribute("delOverFlgVo", flgSummaryVo);
 		model.addAttribute("vos", vos);
 		return "admin/customCompDeletePracList";
 	}
@@ -157,6 +162,10 @@ public class AdminController {
 			personDelVo.setOverDaysUserDel(personDelDto.getOver_days_user_del());
 			vos.add(personDelVo);
 		}
+		
+		/*회원탈퇴후 30일 경과여부 flag 획득 (NONE:해당안됨|OVER:30일경과|PRAC:30일미경과)*/
+		FlgSummaryVO flgSummaryVo = flgSummaryService.searchFlg("DELETE_OVER_FLG", "000", "180");
+		model.addAttribute("delOverFlgVo", flgSummaryVo);
 		model.addAttribute("vos", vos);
 		return "admin/customPersonDeletePracList";
 	}
@@ -186,6 +195,11 @@ public class AdminController {
 			personDelVo.setOverDaysUserDel(personDelDto.getOver_days_user_del());
 			vos.add(personDelVo);
 		}
+
+		
+		/*회원탈퇴후 30일 경과여부 flag 획득 (NONE:해당안됨|OVER:30일경과|PRAC:30일미경과)*/
+		FlgSummaryVO flgSummaryVo = flgSummaryService.searchFlg("DELETE_OVER_FLG", "000", "180");
+		model.addAttribute("delOverFlgVo", flgSummaryVo);
 		model.addAttribute("vos", vos);
 		return "admin/customPersonDeletePracList";
 	}

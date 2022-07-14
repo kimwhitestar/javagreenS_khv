@@ -89,6 +89,10 @@ INSERT INTO `custom_comp` (`SEQ`, `CUSTOM_ID`, `CUSTOM_NM`, `CUSTOM_NM_SHORT`, `
 	(19, 30300002, '(주)그린컨베이어위탁산업', '(주)그린컨베이어위', 1, 303, 'O', '1950-06-25', '111-11-11111', '기타:기타:물류1팀', '02-8888-0625', '010-1234-0625', 'moolu1@green-conveyer.co.kr', NULL, '서울 송파구 올림픽로12길 51', ' (잠실동)', '옆 하얀빌딩5F ', '기업고객회원가입 테스트', 'noimage.jpg', '2022-07-06 13:36:47', '30300002', NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `custom_comp` ENABLE KEYS */;
 
+
+
+
+
 -- 테이블 javagreen_khv.custom_comp_login 구조 내보내기
 CREATE TABLE IF NOT EXISTS `custom_comp_login` (
   `LOGIN_ID` varchar(10) NOT NULL,

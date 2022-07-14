@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.spring.javagreenS_khv.dto.CustomGradeDTO;
 import com.spring.javagreenS_khv.dto.CustomKindDTO;
 import com.spring.javagreenS_khv.dto.CustomPersonDTO;
 import com.spring.javagreenS_khv.dto.CustomPersonLoginDTO;
+import com.spring.javagreenS_khv.service.CustomGradeService;
 import com.spring.javagreenS_khv.service.CustomKindService;
 import com.spring.javagreenS_khv.service.CustomPersonService;
 import com.spring.javagreenS_khv.vo.CustomKindVO;
@@ -37,6 +39,9 @@ public class CustomPersonController {
 	
 	@Autowired
 	public CustomKindService customKindService;
+	
+	@Autowired
+	public CustomGradeService customGradeService;
 	
 	//로그인화면 이동
 	@RequestMapping(value="/customPersonLogin", method=RequestMethod.GET)
@@ -226,6 +231,22 @@ public class CustomPersonController {
 		int customKindCode = Integer.parseInt(customPersonVo.getCustomKindCode());
 		int customId = customPersonService.obtainCustomId(customKindCode);
 
+		//기업고객고분코드명 설정
+		List<CustomKindDTO> customKindDtoList = customKindService.searchCustomKindList();
+		for (CustomKindDTO customKindDto : customKindDtoList) {
+			if (customKindDto.getCustom_kind_cd() == customKindCode) {
+				personDto.setKind_name(customKindDto.getCustom_kind_nm());
+			}
+		}
+		
+		//기업고객등급코드명 설정
+		List<CustomGradeDTO> customGradeDtoList = customGradeService.searchCustomGradeList();
+		for (CustomGradeDTO customGradeDto : customGradeDtoList) {
+			if (customGradeDto.getGrade_code().equals("P") ) {
+				personDto.setGrade_name(customGradeDto.getGrade_name());
+			}
+		}
+		
 		//개인고객 회원정보 VO 설정
 		personDto.setCustom_id(customId);
 		personDto.setCustom_nm(customPersonVo.getCustomName());

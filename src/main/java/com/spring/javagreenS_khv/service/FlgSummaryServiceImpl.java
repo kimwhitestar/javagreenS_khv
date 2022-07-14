@@ -5,17 +5,19 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Service;
 
 import com.spring.javagreenS_khv.dao.FlgSummaryDAO;
 import com.spring.javagreenS_khv.dto.FlgSummaryDTO;
 import com.spring.javagreenS_khv.vo.FlagVO;
 import com.spring.javagreenS_khv.vo.FlgSummaryVO;
 
+@Service
 public class FlgSummaryServiceImpl implements FlgSummaryService {
 	@Autowired
 	public FlgSummaryDAO flgSummaryDao;
 	
-	//@Service <========== 이게 왜 에러나지... ===========
+	@Override
 	public FlgSummaryVO searchFlg(String flgCd, String menuCd, String subMenuCd) {
 		FlgSummaryDTO flgSummaryDto = flgSummaryDao.searchFlg(flgCd, menuCd, subMenuCd);
 		FlgSummaryVO flgSummaryVo = new FlgSummaryVO();

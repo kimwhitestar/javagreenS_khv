@@ -30,8 +30,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.javagreenS_khv.dto.CustomCompDTO;
 import com.spring.javagreenS_khv.dto.CustomCompLoginDTO;
+import com.spring.javagreenS_khv.dto.CustomGradeDTO;
 import com.spring.javagreenS_khv.dto.CustomKindDTO;
 import com.spring.javagreenS_khv.service.CustomCompService;
+import com.spring.javagreenS_khv.service.CustomGradeService;
 import com.spring.javagreenS_khv.service.CustomKindService;
 import com.spring.javagreenS_khv.vo.CustomCompEntryUpdateFormVO;
 import com.spring.javagreenS_khv.vo.CustomKindVO;
@@ -47,6 +49,9 @@ public class CustomCompController {
 	
 	@Autowired
 	public CustomKindService customKindService;
+	
+	@Autowired
+	public CustomGradeService customGradeService;
 	
 //	@Autowired
 //	public CustomCompEntryUpdateFormVO customCompVo;
@@ -327,6 +332,22 @@ public class CustomCompController {
 		int customKindCode = Integer.parseInt(customCompVo.getCustomKindCode());
 		int customId = customCompService.obtainCustomId(customKindCode);
 
+		//기업고객고분코드명 설정
+		List<CustomKindDTO> customKindDtoList = customKindService.searchCustomKindList();
+		for (CustomKindDTO customKindDto : customKindDtoList) {
+			if (customKindDto.getCustom_kind_cd() == customKindCode) {
+				compDto.setKind_name(customKindDto.getCustom_kind_nm());
+			}
+		}
+		
+		//기업고객등급코드명 설정
+		List<CustomGradeDTO> customGradeDtoList = customGradeService.searchCustomGradeList();
+		for (CustomGradeDTO customGradeDto : customGradeDtoList) {
+			if (customGradeDto.getGrade_code().equals("O") ) {
+				compDto.setGrade_name(customGradeDto.getGrade_name());
+			}
+		}
+		
 		//기업고객 회원정보 VO 설정
 		compDto.setCustom_id(customId);
 		compDto.setCustom_nm(customCompVo.getCustomName());
