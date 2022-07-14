@@ -17,12 +17,16 @@ import com.spring.javagreenS_khv.dto.CustomCompDeleteDTO;
 import com.spring.javagreenS_khv.dto.CustomCompLoginDTO;
 import com.spring.javagreenS_khv.dto.CustomPersonDeleteDTO;
 import com.spring.javagreenS_khv.dto.CustomPersonLoginDTO;
+import com.spring.javagreenS_khv.dto.FlgSummaryDTO;
 import com.spring.javagreenS_khv.service.AdminService;
+import com.spring.javagreenS_khv.service.FlgSummaryService;
 import com.spring.javagreenS_khv.vo.AdminLoginVO;
 import com.spring.javagreenS_khv.vo.CustomCompDeleteFormVO;
 import com.spring.javagreenS_khv.vo.CustomCompSearchVO;
 import com.spring.javagreenS_khv.vo.CustomPersonDeleteFormVO;
 import com.spring.javagreenS_khv.vo.CustomPersonSearchVO;
+import com.spring.javagreenS_khv.vo.FlagVO;
+import com.spring.javagreenS_khv.vo.FlgSummaryVO;
 
 @Controller
 @RequestMapping("/admin")
@@ -30,6 +34,9 @@ public class AdminController {
 	
 	@Autowired
 	public AdminService adminService;
+	
+	@Autowired
+	public FlgSummaryService flgSummaryService;
 	
 	//로그인화면 이동
 	@RequestMapping(value="/adminLogin", method=RequestMethod.GET)
@@ -67,6 +74,8 @@ public class AdminController {
 //		}
 	}
 	
+	
+	
 	//기업고객회원탈퇴목록화면 - 전체목록
 	@RequestMapping(value="/customCompDeletePracList", method=RequestMethod.GET)
 	public String customCompDeletePracListGet(Model model) {
@@ -89,6 +98,25 @@ public class AdminController {
 			compDelVo.setOverDaysUserDel(compDelDto.getOver_days_user_del());
 			vos.add(compDelVo);
 		}
+		
+		/*회원탈퇴후 30일 경과여부 flag */
+		FlgSummaryVO flgSummaryVo = new FlgSummaryVO();
+		FlgSummaryDTO flgSummaryDTO = flgSummaryService.searchFlg("DELETE_OVER_FLG", "000", "180");
+		String flgNm = flgSummaryDTO.getFlg_nm();//NONE:해당안됨|OVER:30일경과|PRAC:30일미경과
+		String[] flgNmRec = flgNm.split("|");
+		String[] flgNmColumn = new String[flgNmRec.length];
+		List<FlagVO> flagVos = new ArrayList<>();
+		FlagVO flagVo = null;
+		for (String flgNmRow : flgNmRec) {
+			flgNmColumn = flgNmRow.split(":");
+			flagVo = new FlagVO();
+			flagVo.setFlgCd(flgNmColumn[0]);
+			flagVo.setFlgNm(flgNmColumn[1]);
+			flagVos.add(flagVo);
+		}
+		flgSummaryVo.setFlagVos(flagVos);
+		flgSummaryVo.setDelFlag(flgSummaryDTO.getDel_flag());
+		model.addAttribute("delOverFlgVo", flgSummaryVo);
 		model.addAttribute("vos", vos);
 		return "admin/customCompDeletePracList";
 	}
