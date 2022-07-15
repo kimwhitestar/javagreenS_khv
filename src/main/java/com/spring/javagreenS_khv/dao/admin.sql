@@ -35,7 +35,6 @@ insert into admin values (default, 0, 88888888, '박김이', 'M', '881225-100000
 select * from admin;
 select *, timestampdiff(day, lastDate, now()) as overDaysUserDel from admin order by idx desc;
 
-
 /*
 --datediff 함수 : 날짜 차이
 --datediff(날짜1, 날짜2) : 날짜1 - 날짜2

@@ -20,8 +20,8 @@ create table adminLogin (
 
 desc adminLogin;
 
-insert into adminLogin values (default, 'admin', '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', 0, 
+insert into adminLogin values (default, 'admin', 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 0, 
 default, 'admin', null, null, default, 'admin', null, null, null, null);
 
 select *, (select ifnull(levelName, '') from adminlevel where level = this.level) as levelName from adminLogin as this where deleteDate is null order by idx desc;
-
+select * from adminLogin;

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,6 @@ import com.spring.javagreenS_khv.dto.CustomCompDeleteDTO;
 import com.spring.javagreenS_khv.dto.CustomCompLoginDTO;
 import com.spring.javagreenS_khv.dto.CustomPersonDeleteDTO;
 import com.spring.javagreenS_khv.dto.CustomPersonLoginDTO;
-import com.spring.javagreenS_khv.dto.FlgSummaryDTO;
 import com.spring.javagreenS_khv.service.AdminService;
 import com.spring.javagreenS_khv.service.FlgSummaryService;
 import com.spring.javagreenS_khv.vo.AdminLoginVO;
@@ -25,7 +25,6 @@ import com.spring.javagreenS_khv.vo.CustomCompDeleteFormVO;
 import com.spring.javagreenS_khv.vo.CustomCompSearchVO;
 import com.spring.javagreenS_khv.vo.CustomPersonDeleteFormVO;
 import com.spring.javagreenS_khv.vo.CustomPersonSearchVO;
-import com.spring.javagreenS_khv.vo.FlagVO;
 import com.spring.javagreenS_khv.vo.FlgSummaryVO;
 
 @Controller
@@ -37,6 +36,9 @@ public class AdminController {
 	
 	@Autowired
 	public FlgSummaryService flgSummaryService;
+	
+	@Autowired
+	public BCryptPasswordEncoder bCrypt;
 	
 	//로그인화면 이동
 	@RequestMapping(value="/adminLogin", method=RequestMethod.GET)
