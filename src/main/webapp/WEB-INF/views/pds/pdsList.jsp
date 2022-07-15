@@ -131,11 +131,6 @@
     </script>
 </head>
 <body>
-<!-- Nav Menu -->
-<jsp:include page="${ctxPath}/common/menu.jsp" />
-
-<!-- Header -->
-<jsp:include page="${ctxPath}/common/header.jsp" />
 
 <!-- Page content -->
 <div class="w3-content w3-padding" style="max-width:100%">
@@ -249,6 +244,6 @@
 </div>
 
 <!-- Footer -->
-<jsp:include page="${ctxPath}/common/footer.jsp" />
+<jsp:include page="/common/footer.jsp" />
 </body>
 </html>

@@ -115,7 +115,7 @@
 		<div class="form-group text-center">
 			<input type="button" value="자료올리기" onclick="checkForm()" class="btn btn-primary">&nbsp;&nbsp;
 			<input type="reset" value="다시쓰기" class="btn btn-info">&nbsp;&nbsp;
-			<input type="button" value="돌아가기" onclick="location.href='${ctxPath}/pdsList?pageNo=${pagingVo.pageNo}&pageSize=${pagingVo.pageSize}&division=${pagingVo.division}'" class="btn btn-secondary">
+			<input type="button" value="돌아가기" onclick="location.href='${ctxPath}/pds/pdsList?pageNo=${pagingVo.pageNo}&pageSize=${pagingVo.pageSize}&division=${pagingVo.division}'" class="btn btn-secondary">
 		</div>
 		<input type="hidden" name="mid" value="${sMid}" />
 		<input type="hidden" name="nickName" value="${sNickName}" />
