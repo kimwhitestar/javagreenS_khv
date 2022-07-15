@@ -49,7 +49,7 @@
     <div class="container">
 	<h2>저장된 지명으로 검색</h2>
 	<hr/>
-	<div>
+	<div class="m-2">
 		<form name="myForm" method="post">
 			<div>
 				<font size="4"><b>저장된 지명으로 검색</b></font>

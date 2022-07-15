@@ -44,10 +44,12 @@
     </script>
 </head>
 <body>
+
     <p><br></p>
     <div class="container">
 	<h2>클릭한 위치에 마커 표시</h2>
-
+	<hr/>
+	
 <!-- 지도를 표시할 div 입니다 -->
 <div id="map" style="width:100%;height:500px;"></div>
 <p><b>지도를 클릭해 주세요</b></p>
