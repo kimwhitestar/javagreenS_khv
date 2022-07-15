@@ -15,6 +15,8 @@
 	<!-- daum웹사이트에서 제공하는 script open 예제소스 -->
 	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script src="${ctxPath}/js/post.js"></script>
+	<!-- ckeditor 글자편집기 -->
+    <script src="${ctxPath}/ckeditor/ckeditor.js"></script>
 	<style>
 	</style>
 	<script>
@@ -265,20 +267,6 @@
 				$("#hp2Invalid").text('');
 			}
 		}		
-		//메모 정규식 체크
- 		if ('' != $("#memo").val()) {
-			if ( ! $("#memo").val().match(regexMemo) ) {
-				$("#memo").addClass("is-invalid");
-				$("#memoInvalid").addClass("is-invalid");
-				$("#memoInvalid").text("문자, 숫자, 특수문자(~!?@#$%^&*()<>_+=-,.:;/ )의 조합 500자 이하로 입력하세요");
-				$("#memo").focus();
-	 			regexFlag = false;
-			} else {
-				$("#memo").addClass("is-valid");
-				$("#memoInvalid").addClass("is-valid");
-				$("#memoInvalid").text("");
-			}
-		}
 		
 		return regexFlag;
 	}
@@ -559,9 +547,17 @@ alert('${now}' - $("#birthDate").val());
 			<input type="hidden" id="checkedHobbies" name="checkedHobbies" />
     </div>
     <div class="form-group">
-			<label for="memo">메모 : </label>
-			<textarea rows="5" class="form-control" id="memo" name="memo" placeholder="메모를 입력하세요" maxlength=500 ></textarea>
-			<div id="memoInvalid" class="invalid-feedback"></div>
+	    <label for="CKEDITOR">메모 : </label>
+	    <textarea rows="5" class="form-control" id="CKEDITOR" name="memo" placeholder="메모를 입력하세요" maxlength=500 ></textarea>
+	    <script>
+	    	<!-- ckeditor글자편집기로 작성한 내용을 사진과 함께 upload할 때 Ajax로 사진upload처리 -->
+	    	CKEDITOR.replace("memo", {
+	    		height:120, /*px쓰면 안뜸*/
+	    		filebrowserUploadUrl : "${ctxPath}/customComp/imageUpload", //사진 1장
+	    		uploadUrl : "${ctxPath}/customComp/imageUpload" //사진 여러장 드래그
+	    	});
+	    </script>
+	    <div id="CKEDITORInvalid" class="invalid-feedback"></div>
     </div>
     <div class="form-group text-center">
 	    <input type="button" class="btn btn-success" id="entry" value="회원가입" onclick="checkEntryForm()" />

@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="ctxPath" value="${pageContext.request.contextPath}" />
 <c:set var="security" value="<%= new com.spring.javagreenS_khv.common.SecurityUtil() %>" />
+<%-- <c:set var="bcrypt" value="<%= new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder() %>" /> --%>
 <!DOCTYPE html>
 <html>
 <head>

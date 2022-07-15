@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="ctxPath" value="${pageContext.request.contextPath}"/>
 <c:set var="security" value="<%= new com.spring.javagreenS_khv.common.SecurityUtil() %>" />
+<%-- <c:set var="bcrypt" value="<%= new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder() %>" /> --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -510,7 +511,7 @@
 	    <script>
 	    	<!-- ckeditor글자편집기로 작성한 내용을 사진과 함께 upload할 때 Ajax로 사진upload처리 -->
 	    	CKEDITOR.replace("memo", {
-	    		height:500px,
+	    		height:120, /*px쓰면 안뜸*/
 	    		filebrowserUploadUrl : "${ctxPath}/customComp/imageUpload", //사진 1장
 	    		uploadUrl : "${ctxPath}/customComp/imageUpload" //사진 여러장 드래그
 	    	});
