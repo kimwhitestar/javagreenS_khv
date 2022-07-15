@@ -84,7 +84,7 @@ public class CustomPersonController {
 		session.setAttribute("sGradeCode", loginDto.getCustom_grade());//고객등급
 		session.setAttribute("sGradeName", loginDto.getGrade_name());//고객등급명
 		session.setAttribute("sCustomId", loginDto.getCustom_id());//고객ID -- SEQ로 바꾸자
-		session.setAttribute("sCustomName", loginDto.getCustom_name());//고객명
+		session.setAttribute("sCustomName", loginDto.getCustom_nm());//고객명
 		session.setAttribute("sLoginDate", loginDto.getLogin_date());//로그인날짜
 		
 		// --------------------------------------------------

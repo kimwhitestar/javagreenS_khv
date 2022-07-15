@@ -310,7 +310,7 @@ public class AdminController {
 			compVo = new CustomCompSearchVO();
 			compVo.setLoginId(compDto.getLogin_id());
 			compVo.setCustomNameShort(compDto.getCustom_nm_short());
-			compVo.setCustomKindName(String.valueOf(compDto.getCustom_kind_nm()));
+			compVo.setCustomKindName(compDto.getCustom_kind_nm());
 			compVo.setCreateDate(compDto.getCreate_date());
 			compRecentlyEntryVoList.add(compVo);
 		}
@@ -318,7 +318,7 @@ public class AdminController {
 			compVo = new CustomCompSearchVO();
 			compVo.setLoginId(compDto.getLogin_id());
 			compVo.setCustomNameShort(compDto.getCustom_nm_short());
-			compVo.setCustomKindName(String.valueOf(compDto.getCustom_kind_nm()));
+			compVo.setCustomKindName(compDto.getCustom_kind_nm());
 			compVo.setLoginDate(compDto.getLogin_date());
 			compRecentlyLoginVoList.add(compVo);
 		}
@@ -326,31 +326,31 @@ public class AdminController {
 			compVo = new CustomCompSearchVO();
 			compVo.setLoginId(compDto.getLogin_id());
 			compVo.setCustomNameShort(compDto.getCustom_nm_short());
-			compVo.setCustomKindName(String.valueOf(compDto.getCustom_kind_nm()));
+			compVo.setCustomKindName(compDto.getCustom_kind_nm());
 			compVo.setDeleteDate(compDto.getDelete_date());
 			compPracDeleteVoList.add(compVo);
 		}
 		for (CustomPersonLoginDTO personDto : personRecentlyEntryDtoList) {
 			personVo = new CustomPersonSearchVO();
 			personVo.setLoginId(personDto.getLogin_id());
-			personVo.setCustomName(personDto.getCustom_name());
-			personVo.setCustomKindName(String.valueOf(personDto.getCustom_kind_nm()));
+			personVo.setCustomName(personDto.getCustom_nm());
+			personVo.setCustomKindName(personDto.getCustom_kind_nm());
 			personVo.setCreateDate(personDto.getCreate_date());
 			personRecentlyEntryVoList.add(personVo);
 		}
 		for (CustomPersonLoginDTO personDto : personRecentlyLoginDtoList) {
 			personVo = new CustomPersonSearchVO();
 			personVo.setLoginId(personDto.getLogin_id());
-			personVo.setCustomName(personDto.getCustom_name());
-			personVo.setCustomKindName(String.valueOf(personDto.getCustom_kind_nm()));
+			personVo.setCustomName(personDto.getCustom_nm());
+			personVo.setCustomKindName(personDto.getCustom_kind_nm());
 			personVo.setLoginDate(personDto.getLogin_date());
 			personRecentlyLoginVoList.add(personVo);
 		}
 		for (CustomPersonLoginDTO personDto : personPracDeleteDtoList) {
 			personVo = new CustomPersonSearchVO();
 			personVo.setLoginId(personDto.getLogin_id());
-			personVo.setCustomName(personDto.getCustom_name());
-			personVo.setCustomKindName(String.valueOf(personDto.getCustom_kind_nm()));
+			personVo.setCustomName(personDto.getCustom_nm());
+			personVo.setCustomKindName(personDto.getCustom_kind_nm());
 			personVo.setDeleteDate(personDto.getDelete_date());
 			personPracDeleteVoList.add(personVo);
 		}

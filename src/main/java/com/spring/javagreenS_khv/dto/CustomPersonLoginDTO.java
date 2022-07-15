@@ -8,9 +8,9 @@ public @Data class CustomPersonLoginDTO {
 	private String login_pwd;
 	private String encrypt_pwd;
 	private int custom_id;
-	private String custom_name;
+	private String custom_nm;
 	private int custom_kind_cd;
-	private int custom_kind_nm;
+	private String custom_kind_nm;
 	private String custom_grade;
 	private String grade_name;
 	private int point;
