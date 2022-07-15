@@ -5,10 +5,10 @@
 <mapper namespace="com.spring.javagreenS_khv.dao.CustomCompDAO">
 <!-- 수정 <mapper namespace="org.mybatis.example.BlogMapper"></mapper> -->
 	<delete id="kakaoEx2Delete">
-		DELETE FROM KAKAOADDRESS WHERE ADDRESS = #{ADDRESS} 
+		DELETE FROM KAKAOADDRESS WHERE ADDRESS = #{address} 
 	</delete>
 	<select id="searchAddressName" resultType="com.spring.javagreenS_khv.vo.KakaoAddressVO">
-		SELECT * FROM KAKAOADDRESS WHERE ADDRESS = #{ADDRESS} 
+		SELECT * FROM KAKAOADDRESS WHERE ADDRESS = #{address} 
 	</select>
 	<insert id="insertAddressName">
 		INSERT INTO KAKAOADDRESS VALUES (#{vo.address},#{vo.latitude},#{vo.longitude})

@@ -17,7 +17,6 @@
    		address = document.getElementById("address").value;
    		if ('' == address) {
    			alert('검색할 지점의 장소명을 선택하세요.');
-   			document.myForm.address.focus();
    			return false;
    		}
    		//alert('위도 : '+latitude+' 경도 : '+longitude+' 장소명 : ' + address);
@@ -27,7 +26,6 @@
    		address = document.getElementById("address").value;
    		if ('' == address) {
    			alert('검색할 지점의 장소명을 선택하세요.');
-   			document.myForm.address.focus();
    			return false;
    		}
 		if (!confirm('선택하신 지역명을 DB에서 삭제합니까?')) return false;
@@ -43,9 +41,6 @@
 				alert('전송오류!');
 			}
 		});
-		
-   		//alert('위도 : '+latitude+' 경도 : '+longitude+' 장소명 : ' + address);
-		location.href = "${ctxPath}/customComp/kakaoEx2?address="+address;
    	}
     </script>
 </head>
@@ -54,14 +49,13 @@
     <div class="container">
 	<h2>저장된 지명으로 검색</h2>
 	<hr/>
-	<div id="map" style="width:100%; height:500px;"></div>
 	<div>
 		<form name="myForm" method="post">
 			<div>
 				<font size="4"><b>저장된 지명으로 검색</b></font>
 				<select name="address" id="address">
 					<option value="">지명선택</option>
-					<c:forEach value="vo" items="${vos}">
+					<c:forEach var="vo" items="${vos}">
 						<option value="${vo.address}" <c:if test="${vo.address == address}">selected</c:if> > ${vo.address}</option>
 					</c:forEach>
 				</select>
@@ -76,9 +70,11 @@
 <!-- 지도를 표시할 div 입니다 -->
 <div id="map" style="width:100%;height:500px;"></div>
 <p><b>지도를 클릭해 주세요</b></p>
-
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d8f3f7e2264be9f8d127deb69568488d&libraries=services,clusterer,drawing"></script>
 <script>
+// 마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
+var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = { 
         center: new kakao.maps.LatLng(36.6348, 127.45), // 지도의 중심좌표
@@ -135,7 +131,7 @@ function displayMarker(place) {
 }
 </script>
 <hr/>
-<jsp:include page="${ctxPath}/custom/comp/kakaomap/kakaomenu.jsp"/>
+		<jsp:include page="kakaomenu.jsp"/>
 		
     </div>
 	<jsp:include page="/common/footer.jsp"/>

@@ -16,25 +16,27 @@
 </head>
 <body>
     <p><br></p>
-    <div class="container">
-	
 
-<div id="map" style="width:100%;height:350px;"></div>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d8f3f7e2264be9f8d127deb69568488d"></script>
-<script>
-var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-    mapOption = { 
-        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
-    };
+	<div class="container">
+	  <h2>KakaoMap API(기본지도)</h2>
+	  <hr/>
+		<div id="map" style="width:100%;height:500px;"></div>
+		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4bdca9fd1682feca5a5acff3304e1e35"></script>
+		<script>
+			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+			    mapOption = { 
+			        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+			        level: 3 // 지도의 확대 레벨
+			    };
+			
+			// 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+			var map = new kakao.maps.Map(mapContainer, mapOption); 
+		</script>
+		<hr/>
+		<jsp:include page="kakaomenu.jsp"/>
+	  <hr/>
+	</div>
 
-// 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
-var map = new kakao.maps.Map(mapContainer, mapOption); 
-</script>
-<hr/>
-<jsp:include page="${ctxPath}/custom/comp/kakaomap/kakaomenu.jsp"/>
-		
-    </div>
 	<jsp:include page="/common/footer.jsp"/>
 </body>
 </html>

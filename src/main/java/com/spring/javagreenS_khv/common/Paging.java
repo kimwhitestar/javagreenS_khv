@@ -7,13 +7,13 @@ import javax.servlet.ServletException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
-import com.spring.javagreenS_khv.dao.PdsDAO;
+//import com.spring.javagreenS_khv.dao.PdsDAO;
 import com.spring.javagreenS_khv.vo.PagingVO;
 
 public class Paging {
-	@Autowired
-	private PdsDAO pdsDao;
-	@Autowired
+//	@Autowired
+//	private PdsDAO pdsDao;
+	
 	private PagingVO pagingVo;
 	
 	private Model model;
@@ -113,7 +113,7 @@ public class Paging {
 //				totRecCnt = boardDao.searchBoardListTotSearchRecCnt(division, searchingKeyWord);
 //			}
 //		} else if (menuName.equals("pds")) {
-			totRecCnt = pdsDao.searchPdsListTotRecCnt(division);
+			totRecCnt = 0;//pdsDao.searchPdsListTotRecCnt(division);
 //		}
 		
 		int totPage = (totRecCnt % pageSize)==0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize)+1;

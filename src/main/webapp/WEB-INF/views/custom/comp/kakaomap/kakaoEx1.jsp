@@ -12,17 +12,17 @@
    	//위도latitude, 경도longitude, 장소명 저장
    	function addressCheck(latitude, longitude) {
    		var address = document.myForm.address.value;
-   		if ('' == address) {
-   			alert('선택한 지점의 장소명을 입력하세요.');
-   			document.myForm.address.focus();
-   			return false;
-   		}
+    	if (address == "") {
+    		alert("선택한 지점의 장소명을 입력하세요.");
+    		document.myForm.address.focus();
+    		return false;
+    	}
    		//alert('위도 : '+latitude+' 경도 : '+longitude+' 장소명 : ' + address);
    		
    		var query = {
-				latitude : latitude,
-				longitude : longitude,
-				address : address
+			address : address,
+			latitude : latitude,
+			longitude : longitude
    		}
    		
    		$.ajax({
@@ -54,15 +54,15 @@
 <form name="myForm">
 	<div id="clickPoint"></div>
 </form>
-<div id="clickPoint"></div>
-
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d8f3f7e2264be9f8d127deb69568488d"></script>
 <script>
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-    mapOption = { 
-        center: new kakao.maps.LatLng(36.6348, 127.45), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
-    };
+mapOption = { 
+//center: new kakao.maps.LatLng(36.635094996846895, 127.4595267180685), // 지도의 중심좌표
+//level: 2 // 지도의 확대 레벨
+    center: new kakao.maps.LatLng(36.6348, 127.45), // 지도의 중심좌표
+    level: 1 // 지도의 확대 레벨
+};
 
 // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
 var map = new kakao.maps.Map(mapContainer, mapOption); 
@@ -85,19 +85,19 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     // 마커 위치를 클릭한 위치로 옮깁니다
     marker.setPosition(latlng);
     
-    var message = '클릭한 위치의 위도는  <font color="blue"> ' + latlng.getLat() + ' </font> 이고, ';
-    message += '경도는 <font color="red"> ' + latlng.getLng() + ' </font> 입니다';
-    message += '&nbsp; <input type="button" value="처음위치로 복귀" onclick="location.reload();"/>';
-    message += '<p>선택한 지점의 장소명 : <input type="text" name="address" /> &nbsp;';
-    message += '<input type="button" value="장소저장" onclick="addressCheck('+ latlng.getLat() +', '+ latlng.getLng() +')"/></p>';
-    
+    var message = '클릭한 위치의 위도는 <font color="red">' + latlng.getLat() + '</font> 이고, ';
+    message += '경도는 <font color="red">' + latlng.getLng() + '</font> 입니다';
+    message += '&nbsp; <input type="button" value="처음위치로복귀" onclick="location.reload();"/><br/>';
+    message += '<p>선택한 지점의 장소명 : <input type="text" name="address"/> &nbsp;';
+    message += '<input type="button" value="장소저장" onclick="addressCheck('+latlng.getLat()+','+latlng.getLng()+')"/>';
+       
     //var resultDiv = document.getElementById('clickLatlng'); 
     //resultDiv.innerHTML = message;
     document.getElementById("clickPoint").innerHTML = message;
 });
 </script>
 <hr/>
-<jsp:include page="${ctxPath}/custom/comp/kakaomap/kakaomenu.jsp"/>
+		<jsp:include page="kakaomenu.jsp"/>
 		
     </div>
 	<jsp:include page="/common/footer.jsp"/>

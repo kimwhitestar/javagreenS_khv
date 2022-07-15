@@ -94,8 +94,8 @@ public class CustomCompController {
 	
 	//카카오맵 응용2.2 - 지점명 DB에서 삭제
 	@ResponseBody
-	@RequestMapping(value="/kakaoEx2Delete", method=RequestMethod.GET)
-	public String kakaoEx2DeleteGet(String address) {
+	@RequestMapping(value="/kakaoEx2Delete", method=RequestMethod.POST)
+	public String kakaoEx2DeletePost(String address) {
 		customCompService.kakaoEx2Delete(address);
 		
 		return "";
