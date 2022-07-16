@@ -171,7 +171,7 @@ alert('customKindCode' + $("#customKindCode").val());
 	}
 </script>
 </head>
-<body class="jumbotron">
+<body class="jumbotron" >
 <div class="container" style="padding:30px">
   <form name="entryForm" method="post" action="${ctxPath}/customComp/customCompEntry" class="was-validated" enctype="multipart/form-data">
     <h2 class="text-center">기 업 고 객 회 원 가 입</h2>

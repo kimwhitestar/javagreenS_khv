@@ -17,7 +17,7 @@
     	});
     </script>
 </head>
-<body class="jumbotron" background="${ctxPath}/images/backgroundimg.gif" >
+<body class="jumbotron"  background="${ctxPath}/images/bgimg.gif" >
 <p><br></p>
 <div class="container">
 	<h2>개 인 회 원 전 용 방</h2>
@@ -36,7 +36,7 @@
 	<p>자료실에 올린 글 수 : <font color="blue">${sPdsWritingCnt}</font></p>
 --%>
 </div>
-<br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br>
 <jsp:include page="/common/footer.jsp" />
 </body>
 </html>

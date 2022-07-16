@@ -72,13 +72,13 @@
    	}
     </script>
 </head>
-<body class="jumbotron" background="${ctxPath}/images/backgroundimg.gif" >
-<p><br></p>
+<body class="jumbotron">
+<br><br><br>
 <div class="container">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="container p-3 border">
-				<form name="loginForm" method="post" action="${ctxPath}/customPerson/customPersonLogin" class="was-validated">
+				<form name="loginForm" method="post" action="${ctxPath}/customPerson/customPersonLogin" class="was-validated" >
 					<h2 class="text-center">개 인 고 객 로 그 인</h2>
 					<p class="text-center">아이디와 비밀번호를 입력해 주세요</p>
 					<div class="form-group">

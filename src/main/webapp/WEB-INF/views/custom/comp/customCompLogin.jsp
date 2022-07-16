@@ -72,8 +72,8 @@
    	}
      </script>
 </head>
-<body class="jumbotron" background="${ctxPath}/images/backgroundimg.gif" >
-<p><br></p>
+<body class="jumbotron">
+<br><br><br>
 <div class="container">
 	<div class="modal-dialog">
 		<div class="modal-content">

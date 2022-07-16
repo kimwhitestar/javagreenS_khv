@@ -26,7 +26,7 @@
   <jsp:include page="/common/admin/header_home.jsp" />
   <jsp:include page="/common/admin/adminNav.jsp" />
 
-  <p><br></p>
+  <p><br><br><br><br><br><br><br></p>
   <div class="container">
   <form name="myForm" method="post">
   	<table class="table table-bordered text-center">
@@ -50,7 +50,7 @@
   	</table>
   </form>
   </div>
-   
+  <p><br><br><br><br><br><br><br></p>
 <jsp:include page="/common/admin/footer.jsp"/>
 </body>
 </html>

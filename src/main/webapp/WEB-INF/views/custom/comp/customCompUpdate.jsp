@@ -351,7 +351,7 @@
  	
 </script>
 </head>
-<body class="jumbotron" background="${ctxPath}/images/backgroundimg.gif" >
+<body class="jumbotron"  >
 <div class="container" style="padding:30px" >
   <form name="updateForm" method="post" action="${ctxPath}/customComp/customCompUpdate" class="was-validated" enctype="multipart/form-data">
 	<h2 class="text-center">기 업 고 객 회 원 정 보 수 정</h2><br>

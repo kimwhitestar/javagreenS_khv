@@ -12,9 +12,18 @@
   	'use strict';
   </script>
 </head>
-	<frameset cols="32%, 68%">
-		<frame src="${ctxPath}/common/customNav.jsp" name="customLeft" id="customLeft" frameborder="0" />
-		<frame src="${ctxPath}/customComp/customCompLogin" name="customContent" id="customContent" frameborder="0" />
+	<frameset rows="20%, 80%">
+		<!-- Header -->
+		<frame src="${ctxPath}/common/header.jsp" name="customHeader" id="customHeader" frameborder="0" />
+		<frameset cols="18%, 82%">
+			<!-- Nav Menu -->
+			<frame src="${ctxPath}/common/customNav.jsp" name="customLeft" id="customLeft" frameborder="0" />
+			<frameset rows="6.18%, 93.82%">
+				<!-- Image Line -->
+				<frame src="${ctxPath}/common/line.jsp" name="customLine" id="customLine" frameborder="0" />
+				<!-- Page content -->
+				<frame src="${ctxPath}/customComp/customCompLogin" name="customContent" id="customContent" frameborder="0" />
+			</frameset>
+		</frameset>
 	</frameset>
-	
 </html>

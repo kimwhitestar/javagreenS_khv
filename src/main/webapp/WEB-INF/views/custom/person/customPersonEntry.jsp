@@ -349,7 +349,7 @@ alert('${now}' - $("#birthDate").val());
  	}
 </script>
 </head>
-<body class="jumbotron" background="${ctxPath}/images/backgroundimg.gif" >
+<body class="jumbotron"  >
 <div class="container" style="padding:30px">
   <form name="entryForm" method="post" action="${ctxPath}/customPerson/customPersonEntry" class="was-validated">
     <h2 class="text-center">개 인 고 객 회 원 가 입</h2>
