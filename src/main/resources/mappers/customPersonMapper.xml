@@ -92,10 +92,11 @@
 			NULL, 
 			NULL, 
 			NULL );
-			
-		INSERT INTO CUSTOM_PERSON_HISTORY VALUES ( DEFAULT, #{personDto.custom_id}, #{personDto.custom_kind_cd}, 'P', #{personDto.gender}, DEFAULT, #{personDto.custom_id}, NULL, NULL, NULL, NULL, DEFAULT, #{personDto.kind_name}, #{personDto.grade_name} );
+
+		INSERT INTO CUSTOM_PERSON_HISTORY VALUES ( DEFAULT, #{personDto.custom_id}, #{personDto.custom_kind_cd}, #{personDto.kind_name}, 'P', #{personDto.grade_name}, #{personDto.gender}, DEFAULT, DEFAULT, #{personDto.custom_id}, NULL, NULL, NULL, NULL);
 	
 		INSERT INTO CUSTOM_PERSON_LOGIN VALUES ( #{loginDto.login_id}, #{loginDto.encrypt_pwd}, #{loginDto.custom_id}, 'P', DEFAULT, DEFAULT, DEFAULT, NULL, NULL, NULL, NULL, DEFAULT, #{loginDto.login_id}, NULL, NULL, NULL, NULL);
+
 	</insert>
 	<select id="searchCustomPerson" resultType="com.spring.javagreenS_khv.dto.CustomPersonDTO">
 		SELECT 

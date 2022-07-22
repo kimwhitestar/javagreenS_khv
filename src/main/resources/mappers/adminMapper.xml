@@ -4,6 +4,7 @@
 
 <mapper namespace="com.spring.javagreenS_khv.dao.AdminDAO">
 <!-- 수정 <mapper namespace="org.mybatis.example.BlogMapper"></mapper> -->
+
 	<select id="searchAdminLogin" resultType="com.spring.javagreenS_khv.vo.AdminLoginVO">
 		select *, (select ifnull(levelName, '') from adminlevel where level = this.level) as levelName 
 		from adminLogin as this
@@ -15,13 +16,14 @@
 	<update id="updateLogout">
 		update adminLogin set logoutDate = default, logoutUser = #{loginId} where loginId = #{loginId}
 	</update>
+	
 	<select id="searchCustomCompDeleteList" resultType="com.spring.javagreenS_khv.dto.CustomCompDeleteDTO">
 		SELECT DEL_PRAC.LOGIN_ID, 
 			DEL_PRAC.CUSTOM_ID CUSTOM_ID,
 			DEL_PRAC.CUSTOM_NM CUSTOM_NM, 
 			DEL_PRAC.COMPANY_NO COMPANY_NO, 
 			DEL_PRAC.OVER_DAYS_USER_DEL OVER_DAYS_USER_DEL,
-			IFNULL(DEL_OVER.OVER_FLG, 'PRAC') OVER_FLG, 
+			IF(DEL_OVER.CUSTOM_ID IS NULL, 'PRAC', 'OVER') AS OVER_FLG, 
 			DEL_PRAC.DELETE_DATE DELETE_DATE, 
 			DEL_PRAC.DELETE_USER DELETE_USER 
 		FROM 
@@ -29,16 +31,15 @@
 			FROM CUSTOM_COMP_LOGIN A, CUSTOM_COMP B
 			WHERE A.DELETE_DATE IS NOT NULL -- 탈퇴회원(임시탈퇴자, 로그인삭제일) 
 			AND A.CUSTOM_ID = B.CUSTOM_ID
-			<!-- 크고 작은 연산자를 mybatis에서는 사용안되서 CDATA로 변환해서 사용. 단, 동적query에서는 CDATA(convert data)를 사용할 수 없다 -->
-			<if test='#{overFlg} == "OVER"'>
+			<if test='overFlg == "OVER" '>
 				<![CDATA[ AND TIMESTAMPDIFF(DAY, A.DELETE_DATE, NOW()) >= 30 ]]> 
 			</if>
-			<if test='#{overFlg} == "PRAC"'>
+			<if test='overFlg == "PRAC" '>
 				<![CDATA[ AND TIMESTAMPDIFF(DAY, A.DELETE_DATE, NOW()) < 30 ]]> 
 			</if>
 			) AS DEL_PRAC 
 		LEFT OUTER JOIN 
-			(SELECT CUSTOM_ID, 'OVER' AS OVER_FLG 
+			(SELECT CUSTOM_ID  
 			FROM CUSTOM_COMP_LOGIN 
 			WHERE TIMESTAMPDIFF(DAY, DELETE_DATE, NOW()) >= 30 
 			) AS DEL_OVER 
@@ -51,7 +52,7 @@
 			DEL_PRAC.CUSTOM_NM CUSTOM_NM, 
 			DEL_PRAC.BIRTH_DATE BIRTH_DATE, 
 			DEL_PRAC.OVER_DAYS_USER_DEL OVER_DAYS_USER_DEL,
-			IFNULL(DEL_OVER.OVER_FLG, 'PRAC') OVER_FLG, 
+			IF(DEL_OVER.CUSTOM_ID IS NULL, 'PRAC', 'OVER') AS OVER_FLG, 
 			DEL_PRAC.DELETE_DATE DELETE_DATE, 
 			DEL_PRAC.DELETE_USER DELETE_USER 
 		FROM 
@@ -59,15 +60,15 @@
 			FROM CUSTOM_PERSON_LOGIN A, CUSTOM_PERSON B
 			WHERE A.DELETE_DATE IS NOT NULL -- 탈퇴회원(임시탈퇴자, 로그인삭제일) 
 			AND A.CUSTOM_ID = B.CUSTOM_ID
-			<if test='#{overFlg} == "OVER"'>
+			<if test='overFlg == "OVER" '>
 				<![CDATA[ AND TIMESTAMPDIFF(DAY, A.DELETE_DATE, NOW()) >= 30 ]]> 
 			</if>
-			<if test='#{overFlg} == "PRAC"'>
+			<if test='overFlg == "PRAC" '>
 				<![CDATA[ AND TIMESTAMPDIFF(DAY, A.DELETE_DATE, NOW()) < 30 ]]> 
 			</if>
 			) AS DEL_PRAC 
 		LEFT OUTER JOIN 
-			(SELECT CUSTOM_ID, 'OVER' AS OVER_FLG 
+			(SELECT CUSTOM_ID 
 			FROM CUSTOM_PERSON_LOGIN 
 			WHERE TIMESTAMPDIFF(DAY, DELETE_DATE, NOW()) >= 30 
 			) AS DEL_OVER 

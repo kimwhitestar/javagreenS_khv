@@ -1,5 +1,7 @@
 package com.spring.javagreenS_khv;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,8 @@ import com.spring.javagreenS_khv.common.Paging;
 @Controller
 @RequestMapping("/pds")
 public class PdsController {
+
+	private static final Logger logger = LoggerFactory.getLogger(PdsController.class);
 	
 //	@Autowired
 //	public PdsService pdsService;
@@ -25,6 +29,7 @@ public class PdsController {
 //		@RequestParam(name="pageSize", defaultValue="3", required=false) int pageSize,
 //		@RequestParam(name="part", defaultValue="전체", required=false) String part,
 //		Model model) {
+//	logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
 //
 //		PagingVO pagingVo = paging.totRecCnt(5, pageSize, pageNo, "pds", part, "");
 //		List<PdsVO> vos = pdsService.searchPdsList(pagingVo.getStartIndexNo(), pagingVo.getPageSize(), part);

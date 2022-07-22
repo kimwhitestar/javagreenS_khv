@@ -2,18 +2,27 @@ package com.spring.javagreenS_khv;
 
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MessageCustomPersonController {
 
+	private static final Logger logger = LoggerFactory.getLogger(MessageCustomPersonController.class);
+
 	@RequestMapping(value="/msgCustomPerson/{msgFlag}", method=RequestMethod.GET)
-	public String msgGet(@PathVariable String msgFlag, Model m, HttpSession session) {
-		System.out.println("msgFlag : " + msgFlag);
+	public String msgGet(@PathVariable String msgFlag, 
+		@RequestParam(name="levelName", defaultValue="", required=false) String levelName,
+		Model m, HttpSession session) {
+		logger.info("********************************************************************************");
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
+		logger.info("msgFlag = " + msgFlag);
 		
 		String sCustomName = (String)session.getAttribute("sCustomName");
 		
@@ -76,20 +85,7 @@ public class MessageCustomPersonController {
     	m.addAttribute("url", "customPerson/customPersonMain");
     }		
 
+		logger.info("********************************************************************************");
 		return "msg/message";
 	}	
-	
-	
-//	@RequestMapping(value="/msgLogout/{msgFlag}/{name}", method=RequestMethod.GET)
-//	public String msgLogoutGet(@PathVariable String msgFlag, @PathVariable String name, Model m) {
-//		System.out.println("msgFlag : " + msgFlag);
-//		System.out.println("name : " + name);
-//		
-//		if (msgFlag.equals("memberLogout")) {
-//			m.addAttribute("msg", name + "님 로그아웃됬습니다");
-//			m.addAttribute("url", "/customPerson/memberLogin");
-//		}
-//		
-//		return "include/message");
-//	}
 }

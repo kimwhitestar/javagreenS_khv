@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,6 +46,8 @@ import com.spring.javagreenS_khv.vo.KakaoAddressVO;
 @RequestMapping("/customComp")
 public class CustomCompController {
 	
+	private static final Logger logger = LoggerFactory.getLogger(CustomCompController.class);
+	
 	@Autowired
 	public CustomCompService customCompService;
 	
@@ -56,55 +60,86 @@ public class CustomCompController {
 //	@Autowired
 //	public CustomCompEntryUpdateFormVO customCompVo;
 	
+	
 	//카카오맵 사용
 	@RequestMapping(value="/kakaomap", method=RequestMethod.GET)
 	public String kakaomapGet() {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
 		return "custom/comp/kakaomap/kakaomap";
 	}
+	
 	
 	//카카오맵 응용1 - Map 조회
 	@RequestMapping(value="/kakaoEx1", method=RequestMethod.GET)
 	public String kakaoEx1Get() {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
 		return "custom/comp/kakaomap/kakaoEx1";
 	}
+	
 	
 	//카카오맵 응용1 - 주소명으로 저장
 	@ResponseBody
 	@RequestMapping(value="/kakaoEx1", method=RequestMethod.POST)
-	public String kakaoEx1Post(KakaoAddressVO vo) {
-		KakaoAddressVO searchVo = customCompService.searchAddressName(vo.getAddress());
+	public String kakaoEx1Post(HttpSession session, KakaoAddressVO vo) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
+		
+		KakaoAddressVO searchVo = customCompService.searchAddressName(vo.getMapaddress());
 		if (null != searchVo) return "0";
+		vo.setCustomid( (int) session.getAttribute("sCustomId") );
 		customCompService.insertAddressName(vo);
 		return "1";
 	}
 	
+	
 	//카카오맵 응용2 - Map 조회
 	@RequestMapping(value="/kakaoEx2", method=RequestMethod.GET)
-	public String kakaoEx2Get(Model model, @RequestParam(name="address", defaultValue="db에 저장되어있는 주소명 한개", required=false) String address) {
+	public String kakaoEx2Get(Model model, @RequestParam(name="mapaddress", defaultValue="db에 저장되어있는 주소명 한개", required=false) String mapaddress) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
 		
 		List<KakaoAddressVO> vos = customCompService.searchAddressNameList();
-		KakaoAddressVO searchVo = customCompService.searchAddressName(address);
+		KakaoAddressVO searchVo = customCompService.searchAddressName(mapaddress);
 		
 		model.addAttribute("vos", vos);
 		model.addAttribute("vo", searchVo);
-		model.addAttribute("address", address);
+		model.addAttribute("mapaddress", mapaddress);
 		
 		return "custom/comp/kakaomap/kakaoEx2";
 	}
 	
+	
 	//카카오맵 응용2.2 - 지점명 DB에서 삭제
 	@ResponseBody
 	@RequestMapping(value="/kakaoEx2Delete", method=RequestMethod.POST)
-	public String kakaoEx2DeletePost(String address) {
-		customCompService.kakaoEx2Delete(address);
+	public String kakaoEx2DeletePost(String mapaddress) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
+		
+		customCompService.kakaoEx2Delete(mapaddress);
 		
 		return "";
 	}
 	
+	// 카카오맵 응용하기3
+	@RequestMapping(value="/kakaoEx3", method=RequestMethod.GET)
+	public String kakaoEx3Get(Model model, String mapaddress) {
+		if(mapaddress == null) mapaddress = "";
+		model.addAttribute("mapaddress", mapaddress);
+		return "custom/comp/kakaomap/kakaoEx3";
+	}
+	
+	//고객회사소개 (Map)
+	@RequestMapping(value="/customCompMap", method=RequestMethod.GET)
+	public String customCompMapGet(HttpSession session, String address, Model model) {
+		String sAddress = (String)session.getAttribute("sAddress");
+		if(address == null) address = sAddress;
+		model.addAttribute("address", address);
+		return "custom/comp/kakaomap/customCompMap";
+	}
 	
 	//로그인화면 이동
 	@RequestMapping(value="/customCompLogin", method=RequestMethod.GET)
 	public String customCompLoginGet(HttpServletRequest request) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
+
 		Cookie[] cookies = request.getCookies();
 		String cLoginId = "";
 		for (int i=0; i<cookies.length; i++) {
@@ -117,6 +152,7 @@ public class CustomCompController {
 		return "custom/comp/customCompLogin";
 	}
 	
+	
 	//로그인
 	@RequestMapping(value="/customCompLogin", method=RequestMethod.POST)
 	public String customCompLoginPost(HttpSession session, HttpServletRequest request, HttpServletResponse response,
@@ -124,6 +160,7 @@ public class CustomCompController {
 		@RequestParam("encryptPwd") String encryptPwd,
 		@RequestParam(name="idSave", defaultValue="", required=false) String idSave,
 		Model model) {//Model쓸때는 RedirectAttribute를 같이 쓸 수 없다
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
 		
 		// --------------------------------------------------
 		// 로그인 성공시 처리 내용
@@ -144,6 +181,7 @@ public class CustomCompController {
 		session.setAttribute("sGradeName", loginDto.getGrade_name());//고객등급명
 		session.setAttribute("sCustomId", loginDto.getCustom_id());//고객ID -- SEQ로 바꾸자
 		session.setAttribute("sCustomName", loginDto.getCustom_name());//고객명
+		session.setAttribute("sAddress", loginDto.getAddress());//고객회사소개-kakaoMap검색용(도로명주소)
 		session.setAttribute("sLoginDate", loginDto.getLogin_date());//로그인날짜
 		
 		// --------------------------------------------------
@@ -193,24 +231,31 @@ public class CustomCompController {
 		return "redirect:/msgCustomComp/LoginOk";
 	}
 	
+	
 	//회원전용방
 	@RequestMapping(value="/customCompMain", method=RequestMethod.GET)
 	public String customCompMainGet(HttpSession session, Model model) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
+		
 		String sLoginId = (String)session.getAttribute("sLoginId");
 		String sGradeCode = (String)session.getAttribute("sGradeCode");
 		
 		if ((null == sLoginId || 0 == sLoginId.trim().length()) 
-				&& (null == sGradeCode || 0 == sGradeCode.trim().length())) {
+			&& (null == sGradeCode || 0 == sGradeCode.trim().length())) {
+			
 			//비회원 화면
 			return "redirect:/msgCustomComp/LoginNo";
 		}
 		
 		return "custom/comp/customCompMain";
 	}
+
 	
 	//회원탈퇴(기업고객로그인테이블) - 30일 회원정보유지, 회원로그인정보 임시삭제(delete_date=탈퇴날짜(회원탈퇴))
 	@RequestMapping(value="/customCompDeletePract", method=RequestMethod.GET)
 	public String customCompDeletePractGet(HttpServletRequest request) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
+		
 		HttpSession session = request.getSession();
 		String sLoginId = (String) session.getAttribute("sLoginId");
 		int sCustomId = (int) session.getAttribute("sCustomId");
@@ -227,25 +272,29 @@ public class CustomCompController {
 
 	//로그아웃
 	@RequestMapping(value="/customCompLogout", method=RequestMethod.GET)
-	public String customCompLogoutGet(HttpServletRequest request) {
+	public String customCompLogoutGet(HttpServletRequest request, Model model) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
 		HttpSession session = request.getSession();
-		String sLoginId = (String)session.getAttribute("sLoginId");
+		String sLoginId = (String) session.getAttribute("sLoginId");
 		int sCustomId = (int) session.getAttribute("sCustomId");
+		String sCustomName = (String) session.getAttribute("sCustomName");
 		
 		customCompService.updateLogout(sLoginId, sCustomId);//DB 로그아웃정보 수정
 //		if (1 == res) {
 			session.invalidate();//세션삭제
+			model.addAttribute("customName", sCustomName);
 			return "redirect:/msgCustomComp/LogoutOk";
 //		} else {
 //			return "redirect:/msgCustomComp/LogoutNo";
 //		}
 	}
-	
 	//ckeditor에서 글을 올릴 때 image와 함께 올리려면, 이곳에서 서버파일시스템에 그림파일을 저장할 수 있도록 처리
 	@ResponseBody
 	@RequestMapping(value="/imageUpload", method=RequestMethod.GET)
 	public void imageUploadGet(HttpServletRequest request, HttpServletResponse response,
 		MultipartFile upload) throws Exception {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
+
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8");
 		String orgFName = upload.getOriginalFilename();
@@ -273,6 +322,8 @@ public class CustomCompController {
 	//회원가입화면 이동
 	@RequestMapping(value="/customCompEntry", method=RequestMethod.GET)
 	public String customCompEntryGet(Model model) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
+
 		//기업고객고분코드 목록조회 
 		List<CustomKindDTO> customKindDtoList = customKindService.searchCustomKindList();
 		List<CustomKindVO> customKindVoList = new ArrayList<>();
@@ -290,6 +341,7 @@ public class CustomCompController {
 	//회원가입
 	@RequestMapping(value="/customCompEntry", method=RequestMethod.POST)
 	public String customCompEntryPost(Model model, @Validated CustomCompEntryUpdateFormVO customCompVo, BindingResult bindRes) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
 		
 		if (bindRes.hasErrors()) {
 			List<FieldError> fieldErrors = bindRes.getFieldErrors();
@@ -305,7 +357,6 @@ public class CustomCompController {
 			}			
 			System.out.println(" ObjectErrors : " + i);
 
-			
 			model.addAttribute("errMsgMap", errMsgMap);
 			
 			//기업고객고분코드 목록조회 
@@ -383,6 +434,8 @@ public class CustomCompController {
 	}
 	
 	private void initErrMsgList(HashMap errMsgMap, List<FieldError> fieldErrors) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
+
 		int i=0;
 		for (FieldError fe : fieldErrors) {
 			errMsgMap.put(fe.getField(), "");
@@ -620,6 +673,7 @@ public class CustomCompController {
 	//로그인ID중복체크화면 이동
 	@RequestMapping(value="/customCompLoginIdCheck", method=RequestMethod.GET)
 	public String customCompLoginIdCheckGet() {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
 		return "custom/comp/customCompLoginIdCheck";
 	}
 	
@@ -628,6 +682,7 @@ public class CustomCompController {
 	public String customCompLoginIdCheckPost(
 		@RequestParam(name="loginId", defaultValue="", required=true) String loginId,
 		Model model) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
 		
 		model.addAttribute("loginId", loginId);
 		//isExist = true 아이디 중복
@@ -642,6 +697,7 @@ public class CustomCompController {
 	//사업자등록번호중복체크화면 이동
 	@RequestMapping(value="/customCompCompanyNoCheck", method=RequestMethod.GET)
 	public String customCompCompanyNoCheckGet() {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
 		return "custom/comp/customCompCompanyNoCheck";
 	}
 	
@@ -650,6 +706,7 @@ public class CustomCompController {
 	public String customCompCompanyNoCheckPost(
 		@RequestParam(name="companyNo", defaultValue="", required=true) String companyNo,
 		Model model) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
 		
 		model.addAttribute("companyNo", companyNo);
 		//isExist = true 아이디 중복
@@ -664,6 +721,7 @@ public class CustomCompController {
 	//이메일중복체크화면 이동
 	@RequestMapping(value="/customCompEmailCheck", method=RequestMethod.GET)
 	public String customCompEmailCheckGet() {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
 		return "custom/comp/customCompEmailCheck";
 	}
 	
@@ -675,6 +733,7 @@ public class CustomCompController {
 		@RequestParam(name="email2", defaultValue="", required=true) String email2,
 		@RequestParam(name="txtEmail2", defaultValue="", required=true) String txtEmail2,
 		Model model) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
 		
 		model.addAttribute("email", email);
 		model.addAttribute("email1", email1);
@@ -692,6 +751,8 @@ public class CustomCompController {
 	//회원정보수정화면 이동
 	@RequestMapping(value="/customCompUpdate", method=RequestMethod.GET)
 	public String customCompUpdateGet(HttpServletRequest request, Model model) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
+
 		HttpSession session = request.getSession();
 		int sCustomId = (int) session.getAttribute("sCustomId");
 
@@ -786,6 +847,7 @@ public class CustomCompController {
 		@Validated CustomCompEntryUpdateFormVO customCompVo, 
 		BindingResult bindRes, 
 		Model model) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
 		
 		HttpSession session = request.getSession();
 		String sLoginId = (String) session.getAttribute("sLoginId");

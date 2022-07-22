@@ -11,16 +11,16 @@
     <script>
    	//위도latitude, 경도longitude, 장소명 저장
    	function addressCheck(latitude, longitude) {
-   		var address = document.myForm.address.value;
-    	if (address == "") {
+   		var mapaddress = document.myForm.mapaddress.value;
+    	if (mapaddress == "") {
     		alert("선택한 지점의 장소명을 입력하세요.");
-    		document.myForm.address.focus();
+    		document.myForm.mapaddress.focus();
     		return false;
     	}
-   		//alert('위도 : '+latitude+' 경도 : '+longitude+' 장소명 : ' + address);
+   		//alert('위도 : '+latitude+' 경도 : '+longitude+' 장소명 : ' + mapaddress);
    		
    		var query = {
-			address : address,
+			mapaddress : mapaddress,
 			latitude : latitude,
 			longitude : longitude
    		}
@@ -90,7 +90,7 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     var message = '클릭한 위치의 위도는 <font color="red">' + latlng.getLat() + '</font> 이고, ';
     message += '경도는 <font color="red">' + latlng.getLng() + '</font> 입니다';
     message += '&nbsp; <input type="button" value="처음위치로복귀" onclick="location.reload();"/><br/>';
-    message += '<p>선택한 지점의 장소명 : <input type="text" name="address"/> &nbsp;';
+    message += '<p>선택한 지점의 장소명 : <input type="text" name="mapaddress"/> &nbsp;';
     message += '<input type="button" value="장소저장" onclick="addressCheck('+latlng.getLat()+','+latlng.getLng()+')"/>';
        
     //var resultDiv = document.getElementById('clickLatlng'); 

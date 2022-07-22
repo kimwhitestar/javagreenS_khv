@@ -4,13 +4,19 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
+import com.spring.javagreenS_khv.HomeController;
 //import com.spring.javagreenS_khv.dao.PdsDAO;
 import com.spring.javagreenS_khv.vo.PagingVO;
 
 public class Paging {
+	
+	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	
 //	@Autowired
 //	private PdsDAO pdsDao;
 	
@@ -28,6 +34,7 @@ public class Paging {
 	 * @throws IOException
 	 */
 	public Paging(Model model) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
 		this.model = model;
 	}
 	
@@ -39,6 +46,8 @@ public class Paging {
 	 * @param blockingSize 페이징할 블록 갯수
 	 */
 	public void setPaging(int pageNo, int totalRecordSize, int pagingRecordSize, int blockingSize) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
+
 		/*
 		 *   페이징 처리
 		 *   0. 현 페이지 구하기 : page = @param pageNo
@@ -103,6 +112,8 @@ public class Paging {
 
 	/* 선생님 수업용 */
 	public PagingVO totRecCnt(int blockSize, int pageSize, int pageNo, String menuName, String division, String searchingKeyWord) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
+
 		int totRecCnt = 0;
 //		if (menuName.equals("member")) {
 //			totRecCnt = memberDao.searchMemberListTotRecCnt();

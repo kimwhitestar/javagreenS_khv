@@ -17,6 +17,7 @@ public @Data class CustomCompLoginDTO {
 	private String custom_kind_nm;
 	private String custom_grade;
 	private String grade_name;
+	private String address;
 	private int point;
 	private int visit_cnt;
 	private int today_cnt;

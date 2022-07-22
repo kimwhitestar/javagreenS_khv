@@ -6,12 +6,21 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.spring.javagreenS_khv.HomeController;
+
 public class Support {
+
+	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	
 	public int fileUpload(MultipartFile fName) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
+
 		int res = 0;
 		try {
 			UUID uuid = UUID.randomUUID();//화일명 중복방지 랜덤 난수 id
@@ -29,6 +38,8 @@ public class Support {
 	}
 	
 	public void writeFile(MultipartFile fName, String saveFName, String flag) throws IOException {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
+		
 		byte[] data = fName.getBytes();
 		String uploadPath = "";
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();//자료업로드시킬 request객체 생성
@@ -44,6 +55,8 @@ public class Support {
 	}
 	
 	public void writeFile(MultipartFile fName, String saveFName) throws IOException {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
+		
 		byte[] data = fName.getBytes();
 		String uploadPath = "";
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();//자료업로드시킬 request객체 생성

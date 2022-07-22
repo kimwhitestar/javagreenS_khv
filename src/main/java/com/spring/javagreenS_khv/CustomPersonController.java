@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,6 +36,8 @@ import com.spring.javagreenS_khv.vo.CustomPersonEntryUpdateFormVO;
 @RequestMapping("/customPerson")
 public class CustomPersonController {
 
+	private static final Logger logger = LoggerFactory.getLogger(CustomPersonController.class);
+
 	@Autowired
 	public CustomPersonService customPersonService;
 	
@@ -46,6 +50,8 @@ public class CustomPersonController {
 	//로그인화면 이동
 	@RequestMapping(value="/customPersonLogin", method=RequestMethod.GET)
 	public String customPersonLoginGet(HttpServletRequest request) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
+
 		Cookie[] cookies = request.getCookies();
 		String cLoginId = "";
 		for (int i=0; i<cookies.length; i++) {
@@ -65,6 +71,7 @@ public class CustomPersonController {
 		@RequestParam("encryptPwd") String encryptPwd,
 		@RequestParam(name="idSave", defaultValue="", required=false) String idSave,
 		Model model) {//Model쓸때는 RedirectAttribute를 같이 쓸 수 없다
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
 		
 		// --------------------------------------------------
 		// 로그인 성공시  내용
@@ -137,6 +144,8 @@ public class CustomPersonController {
 	//회원전용방
 	@RequestMapping(value="/customPersonMain", method=RequestMethod.GET)
 	public String customPersonMainGet(HttpSession session, Model model) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
+
 		String sLoginId = (String)session.getAttribute("sLoginId");
 		String sGradeCode = (String)session.getAttribute("sGradeCode");
 		
@@ -152,6 +161,8 @@ public class CustomPersonController {
 	//회원탈퇴(기업고객로그인테이블) - 30일 회원정보유지, 회원로그인정보 임시삭제(delete_date=탈퇴날짜(회원탈퇴))
 	@RequestMapping(value="/customPersonDeletePract", method=RequestMethod.GET)
 	public String customPersonDeletePractGet(HttpServletRequest request) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
+
 		HttpSession session = request.getSession();
 		String sLoginId = (String) session.getAttribute("sLoginId");
 		int sCustomId = (int) session.getAttribute("sCustomId");
@@ -169,6 +180,8 @@ public class CustomPersonController {
 	//로그아웃
 	@RequestMapping(value="/customPersonLogout", method=RequestMethod.GET)
 	public String customPersonLogoutGet(HttpServletRequest request) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
+
 		HttpSession session = request.getSession();
 		String sLoginId = (String)session.getAttribute("sLoginId");
 		int sCustomId = (int) session.getAttribute("sCustomId");
@@ -185,6 +198,8 @@ public class CustomPersonController {
 	//회원가입화면 이동
 	@RequestMapping(value="/customPersonEntry", method=RequestMethod.GET)
 	public String customPersonEntryGet(Model model) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
+
 		//기업고객고분코드 목록조회 
 		List<CustomKindDTO> customKindDtoList = customKindService.searchCustomKindList();
 		List<CustomKindVO> customKindVoList = new ArrayList<>();
@@ -203,6 +218,7 @@ public class CustomPersonController {
 	//회원가입화면
 	@RequestMapping(value="/customPersonEntry", method=RequestMethod.POST)
 	public String customPersonEntryPost(Model model, @Validated CustomPersonEntryUpdateFormVO customPersonVo, BindingResult bindRes) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
 
 		if (bindRes.hasErrors()) {
 //			model.addAttribute("errMsgMap", errMsgMap);
@@ -284,27 +300,33 @@ public class CustomPersonController {
 	//로그인ID중복체크화면 이동
 	@RequestMapping(value="/customPersonLoginIdCheck", method=RequestMethod.GET)
 	public String customPersonLoginIdCheckGet() {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
 		return "custom/person/customPersonLoginIdCheck";
 	}
 	
 	//로그인ID중복체크
 	@RequestMapping(value="/customPersonLoginIdCheck", method=RequestMethod.POST)
 	public String customPersonLoginIdCheckPost(
-			@RequestParam(name="loginId", defaultValue="", required=true) String loginId,
-			Model model) {
+		@RequestParam(name="loginId", defaultValue="", required=true) String loginId,
+		Model model) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
+
 		model.addAttribute("loginId", loginId);
+		
 		//isExist = true 아이디 중복
 		if (customPersonService.loginIdCheck(loginId)) {
 			model.addAttribute("existLoginIdYN", "Y");
 		} else {
 			model.addAttribute("existLoginIdYN", "N");
 		}
+		
 		return "custom/person/customPersonLoginIdCheck";
 	}
 	
 	//주민등록번호중복체크화면 이동
 	@RequestMapping(value="/customPersonJuminNoCheck", method=RequestMethod.GET)
 	public String customPersonJuminNoCheckGet() {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
 		return "custom/person/customPersonJuminNoCheck";
 	}
 	
@@ -313,21 +335,25 @@ public class CustomPersonController {
 	public String customPersonJuminNoCheckPost(
 		@RequestParam(name="juminNo", defaultValue="", required=true) String juminNo,
 		Model model) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
 		
 		model.addAttribute("juminNo", juminNo);
 		model.addAttribute("existJuminNoYN", null);
+		
 		//isExist = true 아이디 중복
 		if (customPersonService.juminNoCheck(juminNo)) {
 			model.addAttribute("existJuminNoYN", "Y");
 		} else {
 			model.addAttribute("existJuminNoYN", "N");
 		}
+		
 		return "custom/person/customPersonJuminNoCheck";
 	}
 	
 	//이메일중복체크화면 이동
 	@RequestMapping(value="/customPersonEmailCheck", method=RequestMethod.GET)
 	public String customPersonEmailCheckGet() {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
 		return "custom/person/customPersonEmailCheck";
 	}
 	
@@ -339,23 +365,28 @@ public class CustomPersonController {
 		@RequestParam(name="email2", defaultValue="", required=true) String email2,
 		@RequestParam(name="txtEmail2", defaultValue="", required=true) String txtEmail2,
 		Model model) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
 		
 		model.addAttribute("email", email);
 		model.addAttribute("email1", email1);
 		model.addAttribute("email2", email2);
 		model.addAttribute("txtEmail2", txtEmail2);
-			//이메일 중복 / 존재 체크
-			if (customPersonService.emailCheck(email)) {
-				model.addAttribute("existEmailYN", "Y");
-			} else {
-				model.addAttribute("existEmailYN", "N");
-			}
-			return "custom/person/customPersonEmailCheck";
+		
+		//이메일 중복 / 존재 체크
+		if (customPersonService.emailCheck(email)) {
+			model.addAttribute("existEmailYN", "Y");
+		} else {
+			model.addAttribute("existEmailYN", "N");
+		}
+	
+		return "custom/person/customPersonEmailCheck";
 	}
 	
 	//회원정보수정화면 이동
 	@RequestMapping(value="/customPersonUpdate", method=RequestMethod.GET)
 	public String customPersonUpdateGet(HttpServletRequest request, Model model) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
+
 		HttpSession session = request.getSession();
 		int sCustomId = (int) session.getAttribute("sCustomId");
 
@@ -445,6 +476,7 @@ public class CustomPersonController {
 		@Validated CustomPersonEntryUpdateFormVO customPersonVo, 
 		BindingResult bindRes, 
 		Model model) {
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
 		
 		//개인고객 로그인 정보 취득
 		HttpSession session = request.getSession();

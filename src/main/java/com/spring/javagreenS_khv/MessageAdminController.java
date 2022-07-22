@@ -1,19 +1,31 @@
 package com.spring.javagreenS_khv;
 
+import java.lang.reflect.Method;
+
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MessageAdminController {
 	
+	private static final Logger logger = LoggerFactory.getLogger(MessageAdminController.class);
+	
 	@RequestMapping(value="/msgAdmin/{msgFlag}", method=RequestMethod.GET)
-	public String msgGet(@PathVariable String msgFlag, Model m, HttpSession session) {
-		System.out.println("msgFlag : " + msgFlag);
+	public String msgGet(@PathVariable String msgFlag, 
+		@RequestParam(name="levelName", defaultValue="", required=false) String levelName,
+		@RequestParam(name="overFlg", defaultValue="NONE", required=false) String overFlg,
+		Model m, HttpSession session) {
+		logger.info("********************************************************************************");
+		logger.info("[" + new Object(){}.getClass().getEnclosingMethod().getName() + "]"); //현재 실행중인 메소드명
+		logger.info("msgFlag = " + msgFlag);
 		
 		String sLevelName = (String)session.getAttribute("sLevelName");
 		
@@ -24,10 +36,27 @@ public class MessageAdminController {
     	m.addAttribute("msg", sLevelName + "님 로그인됬습니다");
     	m.addAttribute("url", "admin/adminIndex");
   	} else if (msgFlag.equals("LogoutOk")) { 
-    	m.addAttribute("msg", sLevelName + "님 로그아웃됬습니다"); 
+    	m.addAttribute("msg", levelName + "님 로그아웃됬습니다"); 
     	m.addAttribute("url", "admin/adminLogin");
+    } else if (msgFlag.equals("CompDeleteOk")) { 
+  		m.addAttribute("overFlg", overFlg);
+    	m.addAttribute("msg", "기업회원DB에서 회원을 삭제했습니다"); 
+    	m.addAttribute("url", "admin/customCompDeletePracList");
+    } else if (msgFlag.equals("CompDeleteNo")) { 
+  		m.addAttribute("overFlg", overFlg);
+    	m.addAttribute("msg", "기업회원DB에서 회원 삭제 실패"); 
+    	m.addAttribute("url", "admin/customCompDeletePracList");
+    } else if (msgFlag.equals("PersonDeleteOk")) { 
+  		m.addAttribute("overFlg", overFlg);
+    	m.addAttribute("msg", "개인회원DB에서 회원을 삭제했습니다"); 
+    	m.addAttribute("url", "admin/customPersonDeletePracList");
+    } else if (msgFlag.equals("PersonDeleteNo")) { 
+  		m.addAttribute("overFlg", overFlg);
+    	m.addAttribute("msg", "개인회원DB에서 회원 삭제 실패"); 
+    	m.addAttribute("url", "admin/customPersonDeletePracList");
   	}
     
+		logger.info("********************************************************************************");
 		return "msg/message";
 	}
 }

@@ -12,19 +12,19 @@
    	//위도latitude, 경도longitude, 장소명 저장
  	var	latitude = '${vo.latitude}';
 	var	longitude = '${vo.longitude}';
-	var	address = '${address}';
+	var	mapaddress = '${mapaddress}';
    	function addressSearch() {
-   		address = document.getElementById("address").value;
-   		if ('' == address) {
+   		mapaddress = document.getElementById("mapaddress").value;
+   		if ('' == mapaddress) {
    			alert('검색할 지점의 장소명을 선택하세요.');
    			return false;
    		}
-   		//alert('위도 : '+latitude+' 경도 : '+longitude+' 장소명 : ' + address);
-		location.href = "${ctxPath}/customComp/kakaoEx2?address="+address;
+   		//alert('위도 : '+latitude+' 경도 : '+longitude+' 장소명 : ' + mapaddress);
+		location.href = "${ctxPath}/customComp/kakaoEx2?mapaddress="+mapaddress;
    	}
    	function addressDelete() {
-   		address = document.getElementById("address").value;
-   		if ('' == address) {
+   		mapaddress = document.getElementById("mapaddress").value;
+   		if ('' == mapaddress) {
    			alert('검색할 지점의 장소명을 선택하세요.');
    			return false;
    		}
@@ -32,7 +32,7 @@
 		$.ajax({
 			type : "post",
 			url : "${ctxPath}/customComp/kakaoEx2Delete",
-			data : {address : address},
+			data : {mapaddress : mapaddress},
 			success : function() {
 				alert('DB에 저장된 지역명이 삭제됬습니다');
 				location.href = '${ctxPath}/customComp/kakaoEx2';
@@ -53,10 +53,10 @@
 		<form name="myForm" method="post">
 			<div>
 				<font size="4"><b>저장된 지명으로 검색</b></font>
-				<select name="address" id="address">
+				<select name="mapaddress" id="mapaddress">
 					<option value="">지명선택</option>
 					<c:forEach var="vo" items="${vos}">
-						<option value="${vo.address}" <c:if test="${vo.address == address}">selected</c:if> > ${vo.address}</option>
+						<option value="${vo.mapaddress}" <c:if test="${vo.mapaddress == mapaddress}">selected</c:if> > ${vo.mapaddress}</option>
 					</c:forEach>
 				</select>
 				<input type="button" value="지역검색" onclick="addressSearch()"/>
@@ -89,7 +89,7 @@ var map = new kakao.maps.Map(mapContainer, mapOption);
 var ps = new kakao.maps.services.Places(); 
 
 // 키워드로 장소를 검색합니다
-ps.keywordSearch(address, placesSearchCB); 
+ps.keywordSearch(mapaddress, placesSearchCB); 
 
 // 키워드 검색 완료 시 호출되는 콜백함수 입니다
 function placesSearchCB (data, status, pagination) {

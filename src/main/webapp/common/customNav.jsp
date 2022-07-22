@@ -74,7 +74,7 @@
 			      <a class="dropdown-item navbar-brand" target="customContent"  href="${ctxPath}/customComp/customCompMain">기업고객 회원방</a>
 			      <a class="dropdown-item navbar-brand" target="customContent"  href="${ctxPath}/customComp/customCompUpdate">고객정보변경</a>
 			      <a class="dropdown-item navbar-brand" target="customContent"  href="${ctxPath}/customComp/customCompUpdatePwd">고객비밀번호변경</a>
-			      <a class="dropdown-item navbar-brand" target="customContent"  href="${ctxPath}/customComp/kakaoEx1">고객회사 Map</a>
+			      <a class="dropdown-item navbar-brand" target="customContent"  href="${ctxPath}/customComp/customCompMap">고객회사소개 (Map)</a>
 			      <a class="dropdown-item navbar-brand" href="javascript:checkCustomCompDelete();">기업고객 회원탈퇴</a>
 			    </div>
 			</div>
